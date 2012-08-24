@@ -10,7 +10,10 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Custom post type and taxonomies
 	* User Settings
 	* WP-Cron
-
+* Single blog and network-wide activation
+* Plugin options
+* Upgrade routine
+* CSS/JavaScript enqueing
 
 ## Notes
 
@@ -58,10 +61,13 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Add extra error checking/handling when calling API functions (e.g., register_post_type() )
 	* Update Features w/ any other advantages
 	* Throw/catch exceptions in places. Maybe just in action/filter callbacks, since everything should bubble up to them
-	* CPT meta boxes - use get_current_screen() instead of global $post 
+	* CPT meta boxes - use get_current_screen() instead of global $post
+	* Add network-wide deactivation? Or is that done automatically?
+	* BGMP addFeaturedImageSupport() ?
 	
 * Low Priority
 	* Better singular/plural handling for custom post type names
+	* Maybe use a single view file for all meta boxes (within a class), rather than multiple. Switch on the box id just like the callback does.
 	
 ## License
 
