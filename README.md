@@ -58,6 +58,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Add extra error checking/handling when calling API functions (e.g., register_post_type() )
 	* Update Features w/ any other advantages
 	* Throw/catch exceptions in places. Maybe just in action/filter callbacks, since everything should bubble up to them
+	* CPT meta boxes - use get_current_screen() instead of global $post 
 	
 * Low Priority
 	* Better singular/plural handling for custom post type names

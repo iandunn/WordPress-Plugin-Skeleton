@@ -27,9 +27,11 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 		public static function registerCallbacks()
 		{
 			// NOTE: Make sure you update the did_action() parameter in the corresponding callback method when changing the hooks here
-			add_action( 'init',		__CLASS__ . '::init' );
-			add_action( 'init',		__CLASS__ . '::createPostType' );
-			add_action( 'init',		__CLASS__ . '::createTaxonomies' );	
+			add_action( 'init',			__CLASS__ . '::init' );
+			add_action( 'init',			__CLASS__ . '::createPostType' );
+			add_action( 'init',			__CLASS__ . '::createTaxonomies' );	
+			add_action( 'admin_init',	__CLASS__ . '::addMetaBoxes' );
+			add_action( 'save_post',	__CLASS__ . '::saveCustomFields' );
 		}
 		
 		/**
@@ -97,7 +99,7 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 					'has_archive'		=> true,
 					'rewrite'			=> array( 'slug' => self::POST_TYPE_SLUG, 'with_front' => false ),
 					'query_var'			=> true,
-					'supports'			=> array( 'title', 'editor', 'author', 'thumbnail', 'custom-fields', 'revisions' )
+					'supports'			=> array( 'title', 'editor', 'author', 'thumbnail', 'revisions' )
 				);
 
 				$postType = register_post_type(
@@ -136,6 +138,90 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 					apply_filters( WordPressPluginSkeleton::PREFIX . 'tag-taxonomy-params', $taxParams )
 				);
 			}
+		}
+		
+		/**
+		 * Adds meta boxes for the custom post type
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 */
+		public static function addMetaBoxes()
+		{
+			if( did_action( 'admin_init' ) !== 1 )
+				return;
+
+			add_meta_box(
+				WordPressPluginSkeleton::PREFIX . 'example-box',
+				'Example Box',
+				__CLASS__ . '::markupMetaBoxes',
+				self::POST_TYPE_SLUG,
+				'normal',
+				'core'
+			);
+		}
+
+		/**
+		 * Builds the markup for all meta boxes
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param object $post
+		 * @param array $box
+		 */
+		public static function markupMetaBoxes( $post, $box )
+		{
+			switch( $box[ 'id' ] )
+			{
+				case WordPressPluginSkeleton::PREFIX . 'example-box':
+					$exampleBoxField = get_post_meta( $post->ID, WordPressPluginSkeleton::PREFIX . 'example-box-field', true );
+					require_once( dirname( __FILE__ ) . '/../views/wpps-custom-post-type/metabox-example-box.php' );
+				break;
+				
+				/*
+				case WordPressPluginSkeleton::PREFIX . 'some-other-box':
+					$someOtherField = get_post_meta( $post->ID, WordPressPluginSkeleton::PREFIX . 'some-other-field', true );
+					require_once( dirname( __FILE__ ) . '/../views/wpps-custom-post-type/metabox-some-other-box.php' );
+				break;
+				*/
+			}
+		}
+
+		/**
+		 * Saves values of the the custom post type's extra fields
+		 * @mvc Controller
+		 * @param int $postID
+		 * @author Ian Dunn <ian@iandunn.name>
+		 */
+		public static function saveCustomFields( $postID )
+		{
+			global $post;
+
+			if( did_action( 'save_post' ) !== 1 )
+				return;
+
+			if( isset( $_GET[ 'action' ] ) && ( $_GET[ 'action' ] == 'trash' || $_GET[ 'action' ] == 'untrash' ) )
+				return;
+
+			if(	!$post || $post->post_type != self::POST_TYPE_SLUG || !current_user_can( 'edit_posts' ) )
+				return;
+
+			if( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || $post->post_status == 'auto-draft' )
+				return;
+
+			self::saveCustomFieldValues( $postID, $_POST );
+		}
+
+		/**
+		 * Saves values of the the custom post type's extra fields
+		 * @mvc Model
+		 * @param int $postID
+		 * @param array $newValues
+		 * @author Ian Dunn <ian@iandunn.name>
+		 */
+		protected static function saveCustomFieldValues( $postID, $newValues )
+		{
+			// Add validation as needed
+			
+			update_post_meta( $postID, WordPressPluginSkeleton::PREFIX . 'example-box-field', $newValues[ WordPressPluginSkeleton::PREFIX . 'example-box-field' ] );
 		}
 	} // end WPPSCustomPostType
 }
