@@ -1,0 +1,3 @@
+[submodule "includes/IDAdminNotices"]
+	path = includes/IDAdminNotices
+	url = git://github.com/iandunn/IDAdminNotices.git
