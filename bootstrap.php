@@ -2,7 +2,7 @@
 /*
 Plugin Name: WordPress Plugin Skeleton
 Plugin URI: https://github.com/iandunn/WordPress-Plugin-Skeleton
-Description: The skeleton for a object-oriented/MVC WordPress plugin
+Description: The skeleton for an object-oriented/MVC WordPress plugin
 Version: 0.1
 Author: Ian Dunn
 Author URI: http://iandunn.name

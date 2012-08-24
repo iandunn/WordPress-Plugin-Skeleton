@@ -10,8 +10,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Custom post type and taxonomies
 	* User Settings
 	* WP-Cron
-* Single blog and network-wide activation
-* Plugin options
+* Single and network-wide activation
 * Upgrade routine
 * CSS/JavaScript enqueing
 
@@ -24,8 +23,10 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 ## Installation
 
 * cd /var/www/vhosts/example.com/content/plugins
-* git clone git://github.com/iandunn/WordPress-Plugin-Skeleton.git plugin-slug
+* git clone https://github.com/iandunn/WordPress-Plugin-Skeleton.git plugin-slug
 * cd plugin-slug
+* git submodule init
+* git submodule update
 * git remote rm origin
 * git rm README.md
 * Find/replace class names/slugs
@@ -40,6 +41,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 
 * High Priority
 	* Bug - notices inside WordPressPluginSkeleton::init() never get cleared when viewing cpt page, but they mostly do on dashboard
+	* Bug - cron job not scheduled under WPMS 3.4.1, but works fine on single install. Maybe related to WPMS cron bugs, see Trac tickets.
 	* Add more sample classes, then add to features
 		* Custom menu pages w/ options. Add to Settings class
 		* AJAX. Not really its own class, so maybe just add to CPT
@@ -68,6 +70,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 * Low Priority
 	* Better singular/plural handling for custom post type names
 	* Maybe use a single view file for all meta boxes (within a class), rather than multiple. Switch on the box id just like the callback does.
+	
 	
 ## License
 
