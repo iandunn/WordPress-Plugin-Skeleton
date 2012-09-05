@@ -31,7 +31,7 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 			add_action( 'init',			__CLASS__ . '::createPostType' );
 			add_action( 'init',			__CLASS__ . '::createTaxonomies' );	
 			add_action( 'admin_init',	__CLASS__ . '::addMetaBoxes' );
-			add_action( 'save_post',	__CLASS__ . '::saveCustomFields' );
+			add_action( 'save_post',	__CLASS__ . '::savePost' );
 		}
 		
 		/**
@@ -191,7 +191,7 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 		 * @param int $postID
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		public static function saveCustomFields( $postID )
+		public static function savePost( $postID )
 		{
 			global $post;
 
@@ -207,7 +207,7 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 			if( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || $post->post_status == 'auto-draft' )
 				return;
 
-			self::saveCustomFieldValues( $postID, $_POST );
+			self::saveCustomFields( $postID, $_POST );
 		}
 
 		/**
@@ -217,11 +217,12 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 		 * @param array $newValues
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		protected static function saveCustomFieldValues( $postID, $newValues )
+		protected static function saveCustomFields( $postID, $newValues )
 		{
-			// Add validation as needed
-			
-			update_post_meta( $postID, WordPressPluginSkeleton::PREFIX . 'example-box-field', $newValues[ WordPressPluginSkeleton::PREFIX . 'example-box-field' ] );
+			if( false )
+				self::$notices->mEnqueue( 'Example of failing validation', 'error' );
+			else
+				update_post_meta( $postID, WordPressPluginSkeleton::PREFIX . 'example-box-field', $newValues[ WordPressPluginSkeleton::PREFIX . 'example-box-field' ] );
 		}
 	} // end WPPSCustomPostType
 }
