@@ -160,28 +160,14 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 			if( version_compare( self::$options[ 'dbVersion' ], self::VERSION, '==' ) )
 				return;
 			
-			self::runUpgradeParts( self::$options[ 'dbVersion' ] );
+			WPPSCustomPostType::upgrade( self::$options[ 'dbVersion' ] );
+			WPPSCron::upgrade( self::$options[ 'dbVersion' ] );
+			WPPSSettings::upgrade( self::$options[ 'dbVersion' ] );
 
 			self::$options[ 'dbVersion'] = self::VERSION;
 			self::$optionsUpdated = true;
 
 			self::clearCachingPlugins();
-		}
-		
-		/**
-		 * Executes the logic of upgrading from specific older versions of the plugin to the current version
-		 * @mvc Model
-		 * @author Ian Dunn <ian@iandunn.name>
-		 * @param string $dbVersion
-		 */
-		protected static function runUpgradeParts( $dbVersion )
-		{
-			/*
-			if( version_compare( $dbVersion, 'x.y.z', '<' ) )
-			{
-				// Do stuff
-			}
-			*/
 		}
 		
 		/**

@@ -29,6 +29,24 @@ if( !class_exists( 'WPPSSettings' ) )
 		}
 		
 		/**
+		 * Prepares site to use the plugin during activation
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 */
+		public static function activate()
+		{
+		}
+
+		/**
+		 * Rolls back activation procedures when de-activating the plugin
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 */
+		public static function deactivate()
+		{
+		}
+		
+		/**
 		 * Initializes variables
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
@@ -41,6 +59,22 @@ if( !class_exists( 'WPPSSettings' ) )
 			self::$notices = IDAdminNotices::cGetSingleton();
 			if( WordPressPluginSkeleton::DEBUG_MODE )
 				self::$notices->debugMode = true;
+		}
+		
+		/**
+		 * Executes the logic of upgrading from specific older versions of the plugin to the current version
+		 * @mvc Model
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param string $dbVersion
+		 */
+		public static function upgrade( $dbVersion )
+		{
+			/*
+			if( version_compare( $dbVersion, 'x.y.z', '<' ) )
+			{
+				// Do stuff
+			}
+			*/
 		}
 		
 		/**

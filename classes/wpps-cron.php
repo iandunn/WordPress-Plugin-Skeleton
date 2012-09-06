@@ -70,6 +70,22 @@ if( !class_exists( 'WPPSCron' ) )
 		}
 		
 		/**
+		 * Executes the logic of upgrading from specific older versions of the plugin to the current version
+		 * @mvc Model
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param string $dbVersion
+		 */
+		public static function upgrade( $dbVersion )
+		{
+			/*
+			if( version_compare( $dbVersion, 'x.y.z', '<' ) )
+			{
+				// Do stuff
+			}
+			*/
+		}
+		
+		/**
 		 * Adds custom intervals to the cron schedule.
 		 * @mvc Model
 		 * @author Ian Dunn <ian@iandunn.name>

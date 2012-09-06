@@ -46,6 +46,15 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 		}
 
 		/**
+		 * Rolls back activation procedures when de-activating the plugin
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 */
+		public static function deactivate()
+		{
+		}
+		
+		/**
 		 * Initializes variables
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
@@ -60,6 +69,22 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 				self::$notices->debugMode = true;
 		}
 
+		/**
+		 * Executes the logic of upgrading from specific older versions of the plugin to the current version
+		 * @mvc Model
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param string $dbVersion
+		 */
+		public static function upgrade( $dbVersion )
+		{
+			/*
+			if( version_compare( $dbVersion, 'x.y.z', '<' ) )
+			{
+				// Do stuff
+			}
+			*/
+		}
+		
 		/**
 		 * Registers the custom post type
 		 * @mvc Controller

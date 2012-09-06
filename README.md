@@ -31,7 +31,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 * git rm README.md
 * Find/replace class names/slugs
 * Rename files to match class slugs
-* Rename files you don't think you'll to to _[original-name]. Delete them before pushing to production if you don't end up using them.
+* Uncomment or delete references to files you won't be using.
 * Rename generic comments, method names, etc to describe their specific implementations. 
 * Update bootstrap.php headers
 * If you're not using a custom post type or something else that updates the rewrite rules, you can remove the flush_rewrite_rules() call in WordPresPluginSkeleton::activate() and ::deactivate().
@@ -42,21 +42,24 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 * High Priority
 	* Bug - notices inside WordPressPluginSkeleton::init() never get cleared when viewing cpt page, but they mostly do on dashboard
 	* Bug - cron job not scheduled under WPMS 3.4.1, but works fine on single install. Maybe related to WPMS cron bugs, see Trac tickets.
+	* Ask other devs for feedback on most things being static, general OO design, etc
 	* Add more sample classes, then add to features
+		* Cron interval middleman from kiosk content plugin, so can run jobs at specific time of day
 		* Custom menu pages w/ options. Add to Settings class
 		* AJAX. Not really its own class, so maybe just add to CPT
 		* Shortcodes. Not really its own class, so maybe just add to CPT
-		* Widgets
 		* Look at BGMP and other past plugins for ideas
+		* Widgets
 	* Javascript
 		* Register event handlers
 		* Add AJAX calls
-	* Add data validation to options, etc 
+		* Example of filters/hooks once WP settles how those will be handeled (see comments on http://www.meetup.com/SeattleWordPressMeetup/events/76033072/)
+	* Add data validation to options, etc
 	* Add sanization/escaping, then add as feature
 	* Add filters to everything, then add as feature
+	* Add unit tests
 	
 * Medium Priority
-	* Add db upgrade logic
 	* Support for conditionally loading js/css
 	* Add to notes section for any non-standard things or anything that needs explaining
 	* Add exceptions. Add try/catch blocks to all hook callbooks, but nowhere else
@@ -65,11 +68,13 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Throw/catch exceptions in places. Maybe just in action/filter callbacks, since everything should bubble up to them
 	* CPT meta boxes - use get_current_screen() instead of global $post
 	* Add network-wide deactivation? Or is that done automatically?
-	* BGMP addFeaturedImageSupport() ?
+	* BGMP addFeaturedImageSupport()
 	
 * Low Priority
 	* Better singular/plural handling for custom post type names
 	* Maybe use a single view file for all meta boxes (within a class), rather than multiple. Switch on the box id just like the callback does.
+	* Add underscore to custom post meta fields, so they don't show up in Custom Fields box? See http://net.tutsplus.com/tutorials/wordpress/creating-custom-fields-for-attachments-in-wordpress/
+	* Maybe make $notices public in main class, and have others call it, instead of each class creating its own reference
 	
 	
 ## License
