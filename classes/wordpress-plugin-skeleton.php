@@ -32,7 +32,6 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 			add_action( 'init',						__CLASS__ . '::upgrade', 11 );
 			add_action( 'wpmu_new_blog', 			__CLASS__ . '::activateNewSite' );
 			add_action( 'admin_enqueue_scripts',	__CLASS__ . '::loadResources' );
-			add_action( 'shutdown',					__CLASS__ . '::shutdown' );
 						
 			WPPSCustomPostType::registerHookCallbacks();
 			WPPSCron::registerHookCallbacks();
