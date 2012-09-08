@@ -67,7 +67,7 @@ if( wpps_requirementsMet() )
 	{
 		register_activation_hook( __FILE__, 'WordPressPluginSkeleton::activate' );
 		register_deactivation_hook( __FILE__, 'WordPressPluginSkeleton::deactivate' );
-		WordPressPluginSkeleton::registerCallbacks();
+		WordPressPluginSkeleton::registerHookCallbacks();
 	}
 }
 else

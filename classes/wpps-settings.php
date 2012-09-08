@@ -11,7 +11,7 @@ if( !class_exists( 'WPPSSettings' ) )
 	 */
 	class WPPSSettings
 	{
-		public static $settings; 
+		public static $settings;
 		protected static $notices, $defaultSettings;
 		const REQUIRED_CAPABILITY = 'administrator';
 		
@@ -20,7 +20,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		public static function registerCallbacks()
+		public static function registerHookCallbacks()
 		{
 			// NOTE: Make sure you update the did_action() parameter in the corresponding callback method when changing the hooks here
 			add_action( 'init',							__CLASS__ . '::init' );
@@ -269,6 +269,7 @@ if( !class_exists( 'WPPSSettings' ) )
 				add_settings_error( WordPressPluginSkeleton::PREFIX . 'settings', 'Example 1', 'Example 1 must have x and y properties.' );
 				$settings[ 'basic' ][ 'field-example1' ] = self::$defaultSettings[ 'basic' ][ 'field-example1' ];
 			}
+			
 			
 			/*
 			 * Advanced Settings

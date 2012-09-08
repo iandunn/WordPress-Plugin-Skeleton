@@ -22,7 +22,7 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		public static function registerCallbacks()
+		public static function registerHookCallbacks()
 		{
 			if( self::$callbacksRegistered === true )
 				return;
@@ -34,9 +34,9 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 			add_action( 'admin_enqueue_scripts',	__CLASS__ . '::loadResources' );
 			add_action( 'shutdown',					__CLASS__ . '::shutdown' );
 						
-			WPPSCustomPostType::registerCallbacks();
-			WPPSCron::registerCallbacks();
-			WPPSSettings::registerCallbacks();
+			WPPSCustomPostType::registerHookCallbacks();
+			WPPSCron::registerHookCallbacks();
+			WPPSSettings::registerHookCallbacks();
 			
 			self::$callbacksRegistered = true;
 		}

@@ -18,7 +18,7 @@ if( !class_exists( 'WPPSCron' ) )
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		public static function registerCallbacks()
+		public static function registerHookCallbacks()
 		{
 			// NOTE: Make sure you update the did_action() parameter in the corresponding callback method when changing the hooks here
 			add_action( 'init',													__CLASS__ . '::init' );
