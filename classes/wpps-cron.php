@@ -22,6 +22,7 @@ if( !class_exists( 'WPPSCron' ) )
 		{
 			// NOTE: Make sure you update the did_action() parameter in the corresponding callback method when changing the hooks here
 			add_action( 'init',													__CLASS__ . '::init' );
+			add_action( WordPressPluginSkeleton::PREFIX . 'cron_timed_jobs',	__CLASS__ . '::fireJobAtTime' );
 			add_action( WordPressPluginSkeleton::PREFIX . 'cron_example_job',	__CLASS__ . '::exampleJob' );
 			
 			add_filter( 'cron_schedules',										__CLASS__ . '::addCustomCronIntervals' );
@@ -34,11 +35,20 @@ if( !class_exists( 'WPPSCron' ) )
 		 */
 		public static function activate()
 		{
+			if( wp_next_scheduled( WordPressPluginSkeleton::PREFIX . 'cron_timed_jobs' ) === false )
+			{
+				wp_schedule_event(
+					current_time( 'timestamp' ),
+					WordPressPluginSkeleton::PREFIX . 'ten_minutes',
+					WordPressPluginSkeleton::PREFIX . 'cron_timed_jobs'
+				);
+			}
+				
 			if( wp_next_scheduled( WordPressPluginSkeleton::PREFIX . 'cron_example_job' ) === false )
 			{
 				wp_schedule_event(
 					current_time( 'timestamp' ),
-					WordPressPluginSkeleton::PREFIX . 'cron_example_interval',
+					WordPressPluginSkeleton::PREFIX . 'example_interval',
 					WordPressPluginSkeleton::PREFIX . 'cron_example_job'
 				);
 			}
@@ -51,7 +61,8 @@ if( !class_exists( 'WPPSCron' ) )
 		 */
 		public static function deactivate()
 		{
-			wp_clear_scheduled_hook( WordPressPluginSkeleton::PREFIX . 'cron_example_job' );
+			wp_clear_scheduled_hook( WordPressPluginSkeleton::PREFIX . 'timed_jobs' );
+			wp_clear_scheduled_hook( WordPressPluginSkeleton::PREFIX . 'example_job' );
 		}
 		
 		/**
@@ -94,12 +105,45 @@ if( !class_exists( 'WPPSCron' ) )
 		 */
 		public static function addCustomCronIntervals( $schedules )
 		{
-			$schedules[ WordPressPluginSkeleton::PREFIX . 'cron_example_interval' ] = array(
+			$schedules[ WordPressPluginSkeleton::PREFIX . 'debug' ] = array(
+				'interval'	=> 5,
+				'display'	=> 'Every 5 seconds'
+			);
+			
+			$schedules[ WordPressPluginSkeleton::PREFIX . 'ten_minutes' ] = array(
+				'interval'	=> 60 * 10,
+				'display'	=> 'Every 10 minutes'
+			);
+			
+			$schedules[ WordPressPluginSkeleton::PREFIX . 'example_interval' ] = array(
 				'interval'	=> 60 * 60 * 5,
 				'display'	=> 'Every 5 hours'
 			);
 
 			return $schedules;
+		}
+		
+		/**
+		 * Fires a cron job at a specific time of day, rather than on an interval
+		 * @mvc Model
+		 * @author Ian Dunn <ian@iandunn.name>
+		 */
+		public static function fireJobAtTime()
+		{
+			if( did_action( WordPressPluginSkeleton::PREFIX . 'cron_timed_jobs' ) !== 1 )
+				return;
+				
+			$now = current_time( 'timestamp' );
+			
+			// Example job to fire between 1am and 3am
+			if( (int) date( 'G', $now ) >= 1 && (int) date( 'G', $now ) <= 3 )
+			{
+				if( !get_transient( WordPressPluginSkeleton::PREFIX . 'cron_example_timed_job' ) )
+				{
+					//WPPSCustomPostType::exampleTimedJob();
+					set_transient( WordPressPluginSkeleton::PREFIX . 'cron_example_timed_job', true, 60 * 60 * 6 );
+				}
+			}
 		}
 		
 		/**
