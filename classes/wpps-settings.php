@@ -62,7 +62,7 @@ if( !class_exists( 'WPPSSettings' ) )
 			if( did_action( 'init' ) !== 1 )
 				return;
 
-			self::$notices = IDAdminNotices::cGetSingleton();
+			self::$notices = IDAdminNotices::getSingleton();
 			if( WordPressPluginSkeleton::DEBUG_MODE )
 				self::$notices->debugMode = true;
 			
@@ -314,7 +314,7 @@ if( !class_exists( 'WPPSSettings' ) )
 			if( !current_user_can( 'manage_options' ) )
 			{
 				if( get_user_meta( $userID, WordPressPluginSkeleton::PREFIX . 'user-example-field1', true ) != $_POST[ WordPressPluginSkeleton::PREFIX . 'user-example-field1' ] )
-					self::$notices->mEnqueue( 'You do not have permission to change the Example Field 1 for this user.', 'error' );
+					self::$notices->enqueue( 'You do not have permission to change the Example Field 1 for this user.', 'error' );
 			}
 			else
 				update_user_meta( $userID, WordPressPluginSkeleton::PREFIX . 'user-example-field1', $_POST[ WordPressPluginSkeleton::PREFIX . 'user-example-field1' ] );
@@ -322,7 +322,7 @@ if( !class_exists( 'WPPSSettings' ) )
 			if( true )
 				update_user_meta( $userID, WordPressPluginSkeleton::PREFIX . 'user-example-field2', $_POST[ WordPressPluginSkeleton::PREFIX . 'user-example-field2' ] );
 			else
-				self::$notices->mEnqueue( 'Example validation error', 'error' );
+				self::$notices->enqueue( 'Example validation error', 'error' );
 		}
 	} // end WPPSSettings
 }

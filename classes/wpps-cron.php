@@ -75,7 +75,7 @@ if( !class_exists( 'WPPSCron' ) )
 			if( did_action( 'init' ) !== 1 )
 				return;
 
-			self::$notices = IDAdminNotices::cGetSingleton();
+			self::$notices = IDAdminNotices::getSingleton();
 			if( WordPressPluginSkeleton::DEBUG_MODE )
 				self::$notices->debugMode = true;
 		}
@@ -158,7 +158,7 @@ if( !class_exists( 'WPPSCron' ) )
 			if( did_action( WordPressPluginSkeleton::PREFIX . 'cron_example_job' ) !== 1 )
 				return;
 			
-			self::$notices->mEnqueue( __METHOD__ . ' cron job fired.' );
+			self::$notices->enqueue( __METHOD__ . ' cron job fired.' );
 		}
 	} // end WPPSCron
 }

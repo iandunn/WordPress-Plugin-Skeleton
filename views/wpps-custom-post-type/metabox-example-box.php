@@ -1,11 +1,11 @@
 <p>Meta box introduction / user instructions</p>
 
-<table id="<?php echo WordPressPluginSkeleton::PREFIX; ?>example-box">
+<table id="<?php esc_attr_e( WordPressPluginSkeleton::PREFIX ); ?>example-box">
 	<tbody>
 		<tr>
-			<th><label for="<?php echo WordPressPluginSkeleton::PREFIX; ?>example-box-field">Example Box Field:</label></th>
+			<th><label for="<?php esc_attr_e( WordPressPluginSkeleton::PREFIX ); ?>example-box-field">Example Box Field:</label></th>
 			<td>
-				<input id="<?php echo WordPressPluginSkeleton::PREFIX; ?>example-box-field" name="<?php echo WordPressPluginSkeleton::PREFIX; ?>example-box-field" type="text" class="regular-text" value="<?php echo $exampleBoxField; ?>" />
+				<input id="<?php esc_attr_e( WordPressPluginSkeleton::PREFIX ); ?>example-box-field" name="<?php esc_attr_e( WordPressPluginSkeleton::PREFIX ); ?>example-box-field" type="text" class="regular-text" value="<?php esc_attr_e( $exampleBoxField ); ?>" />
 			</td>
 		</tr>
 	</tbody>

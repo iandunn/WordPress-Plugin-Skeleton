@@ -41,10 +41,6 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 ## TODO
 
 * High Priority
-	* Checkout latest IDAdminNotices and update getSingleton/enqueue calls
-	* Cron interval middleman from kiosk content plugin, so can run jobs at specific time of day
-		* Do a custom 10 or 15 minute interval for it
-	
 	* Bug - notices inside WordPressPluginSkeleton::init() never get cleared when viewing cpt page, but they mostly do on dashboard
 	* Bug - cron job not scheduled under WPMS 3.4.1, but works fine on single install. Maybe related to WPMS cron bugs, see Trac tickets.
 	* Go through everything and comment out stuff that shouldn't be enabled by default. Things like setting field error messages and things the user would see
@@ -60,7 +56,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 		* Example of filters/hooks once WP settles how those will be handeled (see comments on http://www.meetup.com/SeattleWordPressMeetup/events/76033072/)
 	* Add data validation to user options
 		* Add domain-level validation (verify type, format, whitelist values, etc)
-	* Add sanization/escaping, then add as feature
+	* Add validation/sanization everywhere, then add as feature
 	* Add filters to everything, then add as feature
 	* Add unit tests
 	
@@ -82,7 +78,8 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Maybe use a single view file for all meta boxes (within a class), rather than multiple. Switch on the box id just like the callback does.
 	* Add underscore to custom post meta fields, so they don't show up in Custom Fields box? See http://net.tutsplus.com/tutorials/wordpress/creating-custom-fields-for-attachments-in-wordpress/
 	* Maybe make $notices public in main class, and have others call it, instead of each class creating its own reference
-	* WPPSSettings - Is making $settings public the right way to share it across classes? Maybe use magic getters instead?
+	* Is making WPPSSettings::$settings public the right way to share it across classes? Maybe use magic getters instead?
+	* Use API functions in WPPSCustomPostType::savePost() instead of accessing $post directly
 	
 ## License
 

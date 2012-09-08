@@ -128,7 +128,7 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 			if( did_action( 'init' ) !== 1 )
 				return;
 
-			self::$notices = IDAdminNotices::cGetSingleton();
+			self::$notices = IDAdminNotices::getSingleton();
 			if( self::DEBUG_MODE )
 				self::$notices->debugMode = true;
 
@@ -142,11 +142,11 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 			try
 			{
 				$nonStatic = new WPPSNonStaticClass( 'Non-static example', '42' );
-				//self::$notices->mEnqueue( $nonStatic->foo .' '. $nonStatic->bar );
+				//self::$notices->enqueue( $nonStatic->foo .' '. $nonStatic->bar );
 			}
 			catch( Exception $e )
 			{
-				self::$notices->mEnqueue( __METHOD__ . ' error: '. $e->getMessage(), 'error' );
+				self::$notices->enqueue( __METHOD__ . ' error: '. $e->getMessage(), 'error' );
 			}
 		}
 		

@@ -31,7 +31,7 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 			add_action( 'init',			__CLASS__ . '::createPostType' );
 			add_action( 'init',			__CLASS__ . '::createTaxonomies' );	
 			add_action( 'admin_init',	__CLASS__ . '::addMetaBoxes' );
-			add_action( 'save_post',	__CLASS__ . '::savePost' );
+			add_action( 'save_post',	__CLASS__ . '::savePost', 10, 2 );
 		}
 		
 		/**
@@ -64,7 +64,7 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 			if( did_action( 'init' ) !== 1 )
 				return;
 
-			self::$notices = IDAdminNotices::cGetSingleton();
+			self::$notices = IDAdminNotices::getSingleton();
 			if( WordPressPluginSkeleton::DEBUG_MODE )
 				self::$notices->debugMode = true;
 		}
@@ -133,7 +133,7 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 				);
 				
 				if( is_wp_error( $postType ) )
-					self::$notices->mEnqueue( __METHOD__ . ' error: '. $postType->get_error_message(), 'error' );
+					self::$notices->enqueue( __METHOD__ . ' error: '. $postType->get_error_message(), 'error' );
 			}
 		}
 
@@ -214,19 +214,20 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 		 * Saves values of the the custom post type's extra fields
 		 * @mvc Controller
 		 * @param int $postID
+		 * @param object $post
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		public static function savePost( $postID )
+		public static function savePost( $postID, $revision )
 		{
 			global $post;
-
+			
 			if( did_action( 'save_post' ) !== 1 )
 				return;
 
 			if( isset( $_GET[ 'action' ] ) && ( $_GET[ 'action' ] == 'trash' || $_GET[ 'action' ] == 'untrash' ) )
 				return;
 
-			if(	!$post || $post->post_type != self::POST_TYPE_SLUG || !current_user_can( 'edit_posts' ) )
+			if(	!$post || $post->post_type != self::POST_TYPE_SLUG || !current_user_can( 'edit_posts', $postID ) )
 				return;
 
 			if( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || $post->post_status == 'auto-draft' )
@@ -236,7 +237,7 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 		}
 
 		/**
-		 * Saves values of the the custom post type's extra fields
+		 * Validates and saves values of the the custom post type's extra fields
 		 * @mvc Model
 		 * @param int $postID
 		 * @param array $newValues
@@ -247,7 +248,7 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 			if( true )
 				update_post_meta( $postID, WordPressPluginSkeleton::PREFIX . 'example-box-field', $newValues[ WordPressPluginSkeleton::PREFIX . 'example-box-field' ] );
 			else
-				self::$notices->mEnqueue( 'Example of failing validation', 'error' );
+				self::$notices->enqueue( 'Example of failing validation', 'error' );
 		}
 	} // end WPPSCustomPostType
 }
