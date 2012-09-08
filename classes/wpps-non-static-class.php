@@ -74,7 +74,6 @@ if( !class_exists( 'WPPSNonStaticClass' ) )
 		}
 
 
-
 		/*
 		 * Static methods
 		 */

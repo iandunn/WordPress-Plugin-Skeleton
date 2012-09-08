@@ -30,21 +30,24 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 * git submodule update
 * git remote rm origin
 * git rm README.md
-* Find/replace class names/slugs
-* Rename files to match class slugs
-* Uncomment or delete references to files you won't be using.
-* Rename generic comments, method names, etc to describe their specific implementations. 
 * Update bootstrap.php headers
+* Reset version number to 0.1
+* Find/replace class names/slugs
+* git mv files to match class slugs
+* Comment out references to classes that aren't needed.
+* Rename generic comments, method names, etc to describe their specific implementations. 
 * If you're not using a custom post type or something else that updates the rewrite rules, you can remove the flush_rewrite_rules() call in WordPresPluginSkeleton::activate() and ::deactivate().
 
 
 ## TODO
 
 * High Priority
-	* Bug - notices inside WordPressPluginSkeleton::init() never get cleared when viewing cpt page, but they mostly do on dashboard
-	* Bug - cron job not scheduled under WPMS 3.4.1, but works fine on single install. Maybe related to WPMS cron bugs, see Trac tickets.
-	* Go through everything and comment out stuff that shouldn't be enabled by default. Things like setting field error messages and things the user would see
 	* Ask other devs for feedback on most things being static, general OO design, etc
+		* add #note about the static methods
+			reference php-49 list archive and replies
+			http://stackoverflow.com/questions/2470552/is-there-anything-wrong-with-a-class-with-all-static-methods
+	* Add unit tests
+		* add #note linking to simpletest wp plugin
 	* Add more sample classes, then add to features
 		* AJAX. Not really its own class, so maybe just add to CPT
 		* Shortcodes. Not really its own class, so maybe just add to CPT
@@ -58,9 +61,10 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 		* Add domain-level validation (verify type, format, whitelist values, etc)
 	* Add validation/sanization everywhere, then add as feature
 	* Add filters to everything, then add as feature
-	* Add unit tests
+	* Bug - cron job not scheduled under WPMS 3.4.1, but works fine on single install. Maybe related to WPMS cron bugs, see Trac tickets.
 	
 * Medium Priority
+	* Bug - notices inside WordPressPluginSkeleton::init() never get cleared when viewing cpt page, but they mostly do on dashboard
 	* Support for conditionally loading js/css
 	* Add to notes section for any non-standard things or anything that needs explaining
 	* Add exceptions. Add try/catch blocks to all hook callbooks, but nowhere else. Let them bubble up to first callback.
@@ -80,6 +84,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Maybe make $notices public in main class, and have others call it, instead of each class creating its own reference
 	* Is making WPPSSettings::$settings public the right way to share it across classes? Maybe use magic getters instead?
 	* Use API functions in WPPSCustomPostType::savePost() instead of accessing $post directly
+	* Make sure all hook callbacks have all of their parameters declared, even if you don't typically use them
 	
 ## License
 

@@ -103,7 +103,6 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 			WPPSSettings::activate();
 			flush_rewrite_rules();
 		}
-		
 
 		/**
 		 * Rolls back activation procedures when de-activating the plugin
