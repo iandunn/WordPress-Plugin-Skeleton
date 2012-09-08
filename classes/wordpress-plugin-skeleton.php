@@ -13,8 +13,8 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 	{
 		// Declare variables and constants
 		protected static $callbacksRegistered, $notices, $options, $optionsUpdated;
-		const VERSION			= '0.1';
-		const PREFIX			= 'WPPS_';
+		const VERSION			= '0.2';
+		const PREFIX			= 'wpps_';
 		const DEBUG_MODE		= false;
 
 		/**
@@ -51,7 +51,7 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 		{
 			global $wpdb;
 			
-			if( did_action( 'activate_' . plugin_basename( dirname( __FILE__ ) . '/../bootstrap.php' ) ) !== 1 )
+			if( did_action( 'activate_' . plugin_basename( dirname( __DIR__ ) . '/bootstrap.php' ) ) !== 1 )
 				return;
 
 			if( function_exists( 'is_multisite' ) && is_multisite() )
@@ -100,6 +100,7 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 		{
 			WPPSCustomPostType::activate();
 			WPPSCron::activate();
+			WPPSSettings::activate();
 			flush_rewrite_rules();
 		}
 		
@@ -111,7 +112,9 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 		 */
 		public static function deactivate()
 		{
+			WPPSCustomPostType::deactivate();
 			WPPSCron::deactivate();
+			WPPSSettings::deactivate();
 			flush_rewrite_rules();
 		}
 		
@@ -228,7 +231,7 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 		}
 	} // end WordPressPluginSkeleton
 	
-	require_once( dirname( __FILE__ ) . '/../includes/IDAdminNotices/id-admin-notices.php' );
+	require_once( dirname( __DIR__  ) . '/includes/IDAdminNotices/id-admin-notices.php' );
 	require_once( dirname( __FILE__ ) . '/wpps-custom-post-type.php' );
 	require_once( dirname( __FILE__ ) . '/wpps-settings.php' );
 	require_once( dirname( __FILE__ ) . '/wpps-cron.php' );

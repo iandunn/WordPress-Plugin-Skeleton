@@ -198,13 +198,13 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 			{
 				case WordPressPluginSkeleton::PREFIX . 'example-box':
 					$exampleBoxField = get_post_meta( $post->ID, WordPressPluginSkeleton::PREFIX . 'example-box-field', true );
-					require_once( dirname( __FILE__ ) . '/../views/wpps-custom-post-type/metabox-example-box.php' );
+					require_once( dirname( __DIR__ ) . '/views/wpps-custom-post-type/metabox-example-box.php' );
 				break;
 				
 				/*
 				case WordPressPluginSkeleton::PREFIX . 'some-other-box':
 					$someOtherField = get_post_meta( $post->ID, WordPressPluginSkeleton::PREFIX . 'some-other-field', true );
-					require_once( dirname( __FILE__ ) . '/../views/wpps-custom-post-type/metabox-some-other-box.php' );
+					require_once( dirname( __DIR__ ) . '/views/wpps-custom-post-type/metabox-some-other-box.php' );
 				break;
 				*/
 			}
@@ -244,10 +244,10 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 		 */
 		protected static function saveCustomFields( $postID, $newValues )
 		{
-			if( false )
-				self::$notices->mEnqueue( 'Example of failing validation', 'error' );
-			else
+			if( true )
 				update_post_meta( $postID, WordPressPluginSkeleton::PREFIX . 'example-box-field', $newValues[ WordPressPluginSkeleton::PREFIX . 'example-box-field' ] );
+			else
+				self::$notices->mEnqueue( 'Example of failing validation', 'error' );
 		}
 	} // end WPPSCustomPostType
 }
