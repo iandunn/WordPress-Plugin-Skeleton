@@ -12,7 +12,7 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 	class WordPressPluginSkeleton
 	{
 		// Declare variables and constants
-		protected static $callbacksRegistered, $notices, $options, $optionsUpdated;
+		protected static $callbacksRegistered, $notices;
 		const VERSION			= '0.2';
 		const PREFIX			= 'wpps_';
 		const DEBUG_MODE		= false;
@@ -130,13 +130,6 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 			self::$notices = IDAdminNotices::getSingleton();
 			if( self::DEBUG_MODE )
 				self::$notices->debugMode = true;
-
-			$defaultOptions = array(
-				'dbVersion'	=> '0'
-			);
-
-			self::$options = array_merge( $defaultOptions, get_option( self::PREFIX . 'options', array() ) );
-			self::$optionsUpdated = false;
 			
 			try
 			{
@@ -159,15 +152,14 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 			if( did_action( 'init' ) !== 1 )
 				return;
 			
-			if( version_compare( self::$options[ 'dbVersion' ], self::VERSION, '==' ) )
+			if( version_compare( WPPSSettings::$settings[ 'db-version' ], self::VERSION, '==' ) )
 				return;
 			
-			WPPSCustomPostType::upgrade( self::$options[ 'dbVersion' ] );
-			WPPSCron::upgrade( self::$options[ 'dbVersion' ] );
-			WPPSSettings::upgrade( self::$options[ 'dbVersion' ] );
-
-			self::$options[ 'dbVersion'] = self::VERSION;
-			self::$optionsUpdated = true;
+			WPPSCustomPostType::upgrade( WPPSSettings::$settings[ 'db-version' ] );
+			WPPSCron::upgrade( WPPSSettings::$settings[ 'db-version' ] );
+			WPPSSettings::upgrade( WPPSSettings::$settings[ 'db-version' ] );
+			
+			WPPSSettings::updateSettings( array( 'db-version' => self::VERSION ) );
 
 			self::clearCachingPlugins();
 		}
@@ -213,20 +205,6 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 
 			if( is_admin() )
 				wp_enqueue_style( self::PREFIX . 'admin-style' );
-		}
-		
-		/**
-		 * Performs shutdown tasks
-		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
-		 */
-		public static function shutdown()
-		{
-			if( did_action( 'shutdown' ) !== 1 )
-				return;
-
-			if( self::$optionsUpdated )
-				update_option( self::PREFIX . 'options', self::$options );
 		}
 	} // end WordPressPluginSkeleton
 	

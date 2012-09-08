@@ -11,7 +11,7 @@ if( !class_exists( 'WPPSSettings' ) )
 	 */
 	class WPPSSettings
 	{
-		public static $settings;
+		public static $settings;	// Note: this should be considered read-only. It won't be automatically updated during the script's execution when values change
 		protected static $notices, $defaultSettings;
 		const REQUIRED_CAPABILITY = 'administrator';
 		
@@ -67,10 +67,46 @@ if( !class_exists( 'WPPSSettings' ) )
 				self::$notices->debugMode = true;
 			
 			self::$defaultSettings = self::getDefaultSettings();
-			self::$settings = shortcode_atts(
+			self::$settings = self::getSettings();
+		}
+		
+		/**
+		 * Establishes initial values for all settings
+		 * @mvc Model
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @return array
+		 */
+		protected static function getDefaultSettings()
+		{
+			$basic = array(
+				'field-example1'	=> ''
+			);
+				
+			$advanced = array(
+				'field-example2'	=> ''
+			);
+			
+			return array(
+				'db-version'	=> 0, 
+				'basic'			=> $basic,
+				'advanced'		=> $advanced
+			);
+		}
+		
+		/**
+		 * Retrieves all of the settings from the database
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @return array
+		 */
+		protected static function getSettings()
+		{
+			$settings = shortcode_atts(
 				self::$defaultSettings,
 				get_option( WordPressPluginSkeleton::PREFIX . 'settings', array() )
 			);
+			
+			return $settings;
 		}
 		
 		/**
@@ -87,6 +123,20 @@ if( !class_exists( 'WPPSSettings' ) )
 				// Do stuff
 			}
 			*/
+		}
+		
+		/**
+		 * Updates settings outside of the Settings API or other subsystems
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param array $newValues An array of new values to be merged with WPPSSettings::$settings. 
+		 */
+		public static function updateSettings( $newValues )
+		{
+			$newValues		= shortcode_atts( self::$defaultSettings, $newValues );
+			self::$settings	= shortcode_atts( self::$settings, $newValues );
+			
+			update_option( WordPressPluginSkeleton::PREFIX . 'settings', self::$settings );
 		}
 		
 		
@@ -107,25 +157,6 @@ if( !class_exists( 'WPPSSettings' ) )
 			array_unshift( $links, '<a href="options-general.php?page='. WordPressPluginSkeleton::PREFIX . 'settings">Settings</a>' );
 			
 			return $links; 
-		}
-		
-		/**
-		 * Retrieves all of the settings from the database
-		 * @mvc Model
-		 * @author Ian Dunn <ian@iandunn.name>
-		 * @return array
-		 */
-		protected static function getDefaultSettings()
-		{
-			$basic = array(
-				'field-example1'	=> ''
-			);
-				
-			$advanced = array(
-				'field-example2'	=> ''
-			);
-			
-			return array( 'basic' => $basic, 'advanced' => $advanced );
 		}
 		
 		/**
