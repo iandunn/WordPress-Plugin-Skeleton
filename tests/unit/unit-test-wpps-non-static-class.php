@@ -24,19 +24,19 @@ class UnitTestWPPSNonStaticClass extends UnitTestCase
 		
 		foreach( $validDataSet as $pair )
 		{
-	        try
-	        {
-	            $valid = new WPPSNonStaticClass( $pair[ 0 ], $pair[ 1 ] );
+			try
+			{
+				$valid = new WPPSNonStaticClass( $pair[ 0 ], $pair[ 1 ] );
 				$this->pass();
 				
 				$valid->foo = $pair[ 0 ];
 				$this->pass();
-	        }
-	
-	        catch( Exception $e )
+			}
+
+			catch( Exception $e )
 			{
-	            $this->fail( 'Unexpected exception from ('. $pair[ 0 ] .', '. $pair[ 1 ] .'). '. $e->getMessage() );
-	        }
+				$this->fail( 'Unexpected exception from ('. $pair[ 0 ] .', '. $pair[ 1 ] .'). '. $e->getMessage() );
+			}
 		}		
 		
 		// Invalid
@@ -48,16 +48,16 @@ class UnitTestWPPSNonStaticClass extends UnitTestCase
 		
 		foreach( $invalidDataSet as $pair )
 		{
-	        try
-	        {
-	            $invalid = new WPPSNonStaticClass( $pair[ 0 ], $pair[ 1 ] );
-				$this->fail( 'Expected exception from ('. $pair[ 0 ] .', '. $pair[ 1 ] .').' );
-	        }
-	
-	        catch( Exception $e )
+			try
 			{
-	            $this->pass();
-	        }
+				$invalid = new WPPSNonStaticClass( $pair[ 0 ], $pair[ 1 ] );
+				$this->fail( 'Expected exception from ('. $pair[ 0 ] .', '. $pair[ 1 ] .').' );
+			}
+			
+			catch( Exception $e )
+			{
+				$this->pass();
+			}
 		}
 	}
 } // end UnitTestWPPSSettings

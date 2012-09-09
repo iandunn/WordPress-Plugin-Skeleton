@@ -12,10 +12,10 @@ class WPPSUnitTestSuite extends TestSuite
 {
 	function __construct()
 	{
-       parent::__construct();
-	   
-       $this->addFile( dirname( __FILE__ ) . '/unit-test-wpps-settings.php' );
-	   $this->addFile( dirname( __FILE__ ) . '/unit-test-wpps-non-static-class.php' );
+		parent::__construct();
+
+		$this->addFile( dirname( __FILE__ ) . '/unit-test-wpps-settings.php' );
+		$this->addFile( dirname( __FILE__ ) . '/unit-test-wpps-non-static-class.php' );
    }
 	
 	/**

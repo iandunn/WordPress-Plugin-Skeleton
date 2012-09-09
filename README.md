@@ -6,15 +6,19 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 ## Features
 
 * Minimal, clean and organized
+* Object-oriented
+* Uses [the Model-View-Controller pattern](http://www.codinghorror.com/blog/2008/05/understanding-model-view-controller.html)
 * Sample classes
 	* Custom post type and taxonomies
 	* Plugin settings
 	* Extra user profile fields
 	* WP-Cron jobs
+* Unit testing
 * Single and network-wide activation
 * Upgrade routine
 * CSS/JavaScript enqueing
-* Unit testing
+* JavaScript event handlers
+
 
 ## Notes
 
@@ -40,6 +44,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 * If you're not using a custom post type or something else that updates the rewrite rules, you can remove the flush_rewrite_rules() call in WordPresPluginSkeleton::activate() and ::deactivate().
 * For unit testing, use install [SimpleTest for WordPress](http://wordpress.org/extend/plugins/simpletest-for-wordpress/) and use a shortcode like this: [simpletest name="WordPress Plugin Skeleton Unit Test Suite" path="/wordpress-plugin-skeleton/tests/unit/wpps-unit-test-suite.php"]
 
+
 ## TODO
 
 * High Priority
@@ -53,7 +58,6 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 		* Look at BGMP and other past plugins for ideas
 		* Widgets
 	* Javascript
-		* Register event handlers
 		* Add AJAX calls
 		* Example of filters/hooks once WP settles how those will be handeled (see comments on http://www.meetup.com/SeattleWordPressMeetup/events/76033072/)
 	* Add data validation to user options
