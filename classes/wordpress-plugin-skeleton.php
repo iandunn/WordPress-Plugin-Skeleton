@@ -34,6 +34,7 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 			add_action( 'init',						__CLASS__ . '::init' );
 			add_action( 'init',						__CLASS__ . '::upgrade', 11 );
 			add_action( 'wpmu_new_blog', 			__CLASS__ . '::activateNewSite' );
+			add_action( 'wp_enqueue_scripts',		__CLASS__ . '::loadResources' );
 			add_action( 'admin_enqueue_scripts',	__CLASS__ . '::loadResources' );
 						
 			WPPSCustomPostType::registerHookCallbacks();
@@ -194,11 +195,19 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 		 */
 		public static function loadResources()
 		{
-			if( did_action( 'admin_enqueue_scripts' ) !== 1 )
-				return;
+			//if( did_action( 'wp_enqueue_scripts' ) !== 1 && did_action( 'admin_enqueue_scripts' ) !== 1 )
+				//return;
 
+			wp_register_script(
+				self::PREFIX . 'wordpress-plugin-skeleton',
+				plugins_url( 'javascript/wordpress-plugin-skeleton.js', dirname( __FILE__ ) ),
+				array( 'jquery' ),
+				self::VERSION,
+				true
+			);
+			
 			wp_register_style(
-				self::PREFIX .'admin-style',
+				self::PREFIX .'admin',
 				plugins_url( 'css/admin.css', dirname( __FILE__ ) ),
 				array(),
 				self::VERSION,
@@ -206,7 +215,9 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 			);
 
 			if( is_admin() )
-				wp_enqueue_style( self::PREFIX . 'admin-style' );
+				wp_enqueue_style( self::PREFIX . 'admin' );
+			else
+				wp_enqueue_script( self::PREFIX . 'wordpress-plugin-skeleton' );
 		}
 	} // end WordPressPluginSkeleton
 	

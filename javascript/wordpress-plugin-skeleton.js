@@ -18,8 +18,32 @@ function wpps_wrapper( $ )
 		 */
 		init : function()
 		{
-			wpps.templateURL = $( '#templateURL' ).val(); 
-			wpps.ajaxPostURL = $( '#ajaxPostURL' ).val();
+			wpps.prefix			= 'wpps_';
+			wpps.templateURL	= $( '#templateURL' ).val(); 
+			wpps.ajaxPostURL	= $( '#ajaxPostURL' ).val();
+			
+			wpps.registerEventHandlers();
+		},
+		
+		/**
+		 * Registers event handlers
+		 * @author Ian Dunn <ian@iandunn.name>
+		 */
+		registerEventHandlers : function()
+		{
+			$( '#example-container' ).children( 'a' ).click( wpps.exampleHandler );
+		},
+		
+		/**
+		 * Example event handler
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param object event
+		 */
+		exampleHandler : function( event )
+		{
+			event.preventDefault();
+			
+			alert( $( this ).attr( 'href' ) );
 		}
 	}; // end wpps
 	
