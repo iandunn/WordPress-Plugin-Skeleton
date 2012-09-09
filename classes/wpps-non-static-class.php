@@ -6,6 +6,7 @@ if( $_SERVER[ 'SCRIPT_FILENAME' ] == __FILE__ )
 if( !class_exists( 'WPPSNonStaticClass' ) )
 {
 	/**
+	 * Example of a non-static class
 	 * @package WordPressPluginSkeleton
 	 * @author Ian Dunn <ian@iandunn.name>
 	 */
@@ -67,7 +68,7 @@ if( !class_exists( 'WPPSNonStaticClass' ) )
 				$this->$variable = $value;
 				
 				if( !$this->isValid() )
-					throw new Exception( __METHOD__ . ' error: input was invalid.' );
+					throw new Exception( __METHOD__ . ' error: $'. $value .' is not valid.' );
 			}
 			else
 				throw new Exception( __METHOD__ . " error: $". $variable ." doesn't exist or isn't writable." );

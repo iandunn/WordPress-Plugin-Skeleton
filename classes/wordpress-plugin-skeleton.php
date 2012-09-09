@@ -6,6 +6,9 @@ if( $_SERVER[ 'SCRIPT_FILENAME' ] == __FILE__ )
 if( !class_exists( 'WordPressPluginSkeleton' ) )
 {
 	/**
+	 * Main controller class
+	 * WordPressPluginSkeleton is an object-oriented/MVC base for building WordPress plugins
+	 * 
 	 * @package WordPressPluginSkeleton
 	 * @author Ian Dunn <ian@iandunn.name>
 	 */

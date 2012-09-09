@@ -14,6 +14,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 * Single and network-wide activation
 * Upgrade routine
 * CSS/JavaScript enqueing
+* Unit testing
 
 ## Notes
 
@@ -37,17 +38,15 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 * Comment out references to classes that aren't needed.
 * Rename generic comments, method names, etc to describe their specific implementations. 
 * If you're not using a custom post type or something else that updates the rewrite rules, you can remove the flush_rewrite_rules() call in WordPresPluginSkeleton::activate() and ::deactivate().
-
+* For unit testing, use install [SimpleTest for WordPress](http://wordpress.org/extend/plugins/simpletest-for-wordpress/) and use a shortcode like this: [simpletest name="WordPress Plugin Skeleton Unit Test Suite" path="/wordpress-plugin-skeleton/tests/unit/wpps-unit-test-suite.php"]
 
 ## TODO
 
 * High Priority
 	* Ask other devs for feedback on most things being static, general OO design, etc
-		* add #note about the static methods
-			reference php-49 list archive and replies
-			http://stackoverflow.com/questions/2470552/is-there-anything-wrong-with-a-class-with-all-static-methods
-	* Add unit tests
-		* add #note linking to simpletest wp plugin
+		* If it's good, add #note about the static methods
+			* reference php-49 list archive and replies
+			* http://stackoverflow.com/questions/2470552/is-there-anything-wrong-with-a-class-with-all-static-methods
 	* Add more sample classes, then add to features
 		* AJAX. Not really its own class, so maybe just add to CPT
 		* Shortcodes. Not really its own class, so maybe just add to CPT
@@ -62,6 +61,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Add validation/sanization everywhere, then add as feature
 	* Add filters to everything, then add as feature
 	* Bug - cron job not scheduled under WPMS 3.4.1, but works fine on single install. Maybe related to WPMS cron bugs, see Trac tickets.
+	* Add integration tests
 	
 * Medium Priority
 	* Bug - notices inside WordPressPluginSkeleton::init() never get cleared when viewing cpt page, but they mostly do on dashboard

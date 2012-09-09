@@ -6,7 +6,7 @@ if( $_SERVER[ 'SCRIPT_FILENAME' ] == __FILE__ )
 if( !class_exists( 'WPPSCustomPostType' ) )
 {
 	/**
-	 * Creates a custom post type and a custom taxonomy
+	 * Creates a custom post type and associates taxonomies
 	 * @package WordPressPluginSkeleton
 	 * @author Ian Dunn <ian@iandunn.name>
 	 */

@@ -6,6 +6,7 @@ if( $_SERVER[ 'SCRIPT_FILENAME' ] == __FILE__ )
 if( !class_exists( 'WPPSCron' ) )
 {
 	/**
+	 * Handles cron jobs and intervals
 	 * @package WordPressPluginSkeleton
 	 * @author Ian Dunn <ian@iandunn.name>
 	 */

@@ -6,6 +6,7 @@ if( $_SERVER[ 'SCRIPT_FILENAME' ] == __FILE__ )
 if( !class_exists( 'WPPSSettings' ) )
 {
 	/**
+	 * Handles plugin settings and user profile meta fields
 	 * @package WordPressPluginSkeleton
 	 * @author Ian Dunn <ian@iandunn.name>
 	 */
@@ -284,7 +285,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		 * @mvc Model
 		 * @author Ian Dunn <ian.dunn@mpangodev.com>
 		 * @param array $settings
-		 * @return string
+		 * @return array
 		 */
 		public static function validateFieldValues( $settings )
 		{
