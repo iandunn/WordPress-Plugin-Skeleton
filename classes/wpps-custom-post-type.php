@@ -29,7 +29,7 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 			// NOTE: Make sure you update the did_action() parameter in the corresponding callback method when changing the hooks here
 			add_action( 'init',			__CLASS__ . '::init' );
 			add_action( 'init',			__CLASS__ . '::createPostType' );
-			add_action( 'init',			__CLASS__ . '::createTaxonomies' );	
+			add_action( 'init',			__CLASS__ . '::createTaxonomies' );
 			add_action( 'admin_init',	__CLASS__ . '::addMetaBoxes' );
 			add_action( 'save_post',	__CLASS__ . '::savePost', 10, 2 );
 		}

@@ -14,7 +14,7 @@ if( $_SERVER[ 'SCRIPT_FILENAME' ] == __FILE__ )
 	die( 'Access denied.' );
 
 define( 'WPPS_NAME',					'WordPress Plugin Skeleton' );
-define( 'WPPS_REQUIRED_PHP_VERSION',	'5.0' );	// because of object-oriented features
+define( 'WPPS_REQUIRED_PHP_VERSION',	'5.2.3' );	// because of ClassName::MethodName callbacks -- http://php.net/manual/en/language.types.callable.php
 define( 'WPPS_REQUIRED_WP_VERSION',		'3.0' );	// because of custom post type support
 
 /**
