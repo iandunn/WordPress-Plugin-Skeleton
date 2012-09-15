@@ -1,5 +1,8 @@
 <?php
 
+require_once( WP_PLUGIN_DIR . '/simpletest-for-wordpress/WpSimpleTest.php' );
+require_once( dirname( dirname( __DIR__ ) ) . '/classes/wpps-non-static-class.php' );
+
 /**
  * Unit tests for the WPPSSettings class
  * Uses the SimpleTest For WordPress plugin
@@ -76,8 +79,5 @@ if( !class_exists( 'GenericObject' ) )
 		}
 	} // end GenericObject
 }
-
-require_once( WP_PLUGIN_DIR . '/simpletest-for-wordpress/WpSimpleTest.php' );
-require_once( dirname( dirname( __DIR__ ) ) . '/classes/wpps-non-static-class.php' );
 
 ?>

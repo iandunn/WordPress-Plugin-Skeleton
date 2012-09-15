@@ -1,5 +1,8 @@
 <?php
 
+require_once( WP_PLUGIN_DIR . '/simpletest-for-wordpress/WpSimpleTest.php' );
+require_once( dirname( dirname( __DIR__ ) ) . '/classes/wpps-settings.php' );
+
 /**
  * Unit tests for the WPPSSettings class
  * Uses the SimpleTest For WordPress plugin
@@ -51,9 +54,6 @@ if( !class_exists( 'UnitTestWPPSSettings' ) )
 		}
 	} // end UnitTestWPPSSettings
 }
-
-require_once( WP_PLUGIN_DIR . '/simpletest-for-wordpress/WpSimpleTest.php' );
-require_once( dirname( dirname( __DIR__ ) ) . '/classes/wpps-settings.php' );
 
 // Create any necessary stubs
 if( !function_exists( 'add_settings_error' ) ) { function add_settings_error() {} }
