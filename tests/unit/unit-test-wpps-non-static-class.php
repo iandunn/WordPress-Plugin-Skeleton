@@ -21,7 +21,7 @@ if( !class_exists( 'UnitTestWPPSNonStaticClass' ) )
 			$validDataSet = array(
 				array( 'KUOW', 94.9 ),
 				array( array( 'x' ), '1e4' ),
-				array( new stdClass(), 5 ),
+				array( new GenericObject(), 5 ),
 			);
 			
 			foreach( $validDataSet as $pair )
@@ -39,7 +39,8 @@ if( !class_exists( 'UnitTestWPPSNonStaticClass' ) )
 				{
 					$this->fail( 'Unexpected exception from ('. $pair[ 0 ] .', '. $pair[ 1 ] .'). '. $e->getMessage() );
 				}
-			}		
+			}
+			
 			
 			// Invalid
 			$invalidDataSet = array(
