@@ -32,7 +32,10 @@ if( !class_exists( 'WPPSSettings' ) )
 			add_action( 'personal_options_update',		__CLASS__ . '::saveUserFields' );
 			add_action( 'edit_user_profile_update',		__CLASS__ . '::saveUserFields' );
 			
-			add_filter( 'plugin_action_links_'. plugin_basename( dirname( __DIR__ ) ) .'/bootstrap.php',	__CLASS__ . '::addPluginActionLinks' );
+			add_filter(
+				'plugin_action_links_'. plugin_basename( dirname( __DIR__ ) ) .'/bootstrap.php',
+				__CLASS__ . '::addPluginActionLinks'
+			);
 		}
 		
 		/**
@@ -69,8 +72,6 @@ if( !class_exists( 'WPPSSettings' ) )
 			
 			self::$defaultSettings = self::getDefaultSettings();
 			self::$settings = self::getSettings();
-			
-			self::$notices->enqueue( 'v: '.self::$settings['db-version'] );
 		}
 		
 		/**
@@ -136,7 +137,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		 */
 		public static function updateSettings( $newValues )
 		{
-			self::$settings	= self::validateFieldValues( $newValues );
+			self::$settings	= self::validateSettings( $newValues );
 			update_option( WordPressPluginSkeleton::PREFIX . 'settings', self::$settings );
 		}
 		
@@ -247,7 +248,7 @@ if( !class_exists( 'WPPSSettings' ) )
 			register_setting(
 				WordPressPluginSkeleton::PREFIX . 'settings',
 				WordPressPluginSkeleton::PREFIX . 'settings',
-				__CLASS__ . '::validateFieldValues'
+				__CLASS__ . '::validateSettings'
 			);
 		}
 
@@ -281,13 +282,13 @@ if( !class_exists( 'WPPSSettings' ) )
 		}
 
 		/**
-		 * Validates submitted field values before they get saved to the database
+		 * Validates submitted setting values before they get saved to the database
 		 * @mvc Model
 		 * @author Ian Dunn <ian.dunn@mpangodev.com>
 		 * @param array $settings
 		 * @return array
 		 */
-		public static function validateFieldValues( $settings )
+		public static function validateSettings( $settings )
 		{
 			$settings = shortcode_atts( self::$settings, $settings );
 			
@@ -343,19 +344,41 @@ if( !class_exists( 'WPPSSettings' ) )
 		{
 			if( did_action( 'personal_options_update' ) !== 1 && did_action( 'edit_user_profile_update' ) !== 1 )
 				return;
-
+			
+			$userFields = self::validateUserFields( $userID, $_POST );
+			
+			update_user_meta( $userID, WordPressPluginSkeleton::PREFIX . 'user-example-field1', $userFields[ WordPressPluginSkeleton::PREFIX . 'user-example-field1' ] );
+			update_user_meta( $userID, WordPressPluginSkeleton::PREFIX . 'user-example-field2', $userFields[ WordPressPluginSkeleton::PREFIX . 'user-example-field2' ] );
+		}
+		
+		/**
+		 * Validates submitted user field values before they get saved to the database
+		 * @mvc Model
+		 * @author Ian Dunn <ian.dunn@mpangodev.com>
+		 * @param int $userID
+		 * @param array $userFields
+		 * @return array
+		 */
+		public static function validateUserFields( $userID, $userFields )
+		{
+			if( $userFields[ WordPressPluginSkeleton::PREFIX . 'user-example-field1' ] == false )
+			{
+				$userFields[ WordPressPluginSkeleton::PREFIX . 'user-example-field1' ] = true;
+				self::$notices->enqueue( 'Example Field 1 should be true', 'error' );
+			}
+			
 			if( !current_user_can( 'manage_options' ) )
 			{
-				if( get_user_meta( $userID, WordPressPluginSkeleton::PREFIX . 'user-example-field1', true ) != $_POST[ WordPressPluginSkeleton::PREFIX . 'user-example-field1' ] )
-					self::$notices->enqueue( 'You do not have permission to change the Example Field 1 for this user.', 'error' );
+				$currentField2 = get_user_meta( $userID, WordPressPluginSkeleton::PREFIX . 'user-example-field2', true );
+				
+				if( $currentField2 != $userFields[ WordPressPluginSkeleton::PREFIX . 'user-example-field2' ] )
+				{
+					$userFields[ WordPressPluginSkeleton::PREFIX . 'user-example-field2' ] = $currentField2;
+					self::$notices->enqueue( 'Only administrators can change Example Field 2.', 'error' );
+				}
 			}
-			else
-				update_user_meta( $userID, WordPressPluginSkeleton::PREFIX . 'user-example-field1', $_POST[ WordPressPluginSkeleton::PREFIX . 'user-example-field1' ] );
 			
-			if( true )
-				update_user_meta( $userID, WordPressPluginSkeleton::PREFIX . 'user-example-field2', $_POST[ WordPressPluginSkeleton::PREFIX . 'user-example-field2' ] );
-			else
-				self::$notices->enqueue( 'Example validation error', 'error' );
+			return $userFields;
 		}
 	} // end WPPSSettings
 }
