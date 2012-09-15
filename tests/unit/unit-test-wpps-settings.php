@@ -8,46 +8,49 @@
  * @author Ian Dunn <ian@iandunn.name>
  * @link http://wordpress.org/extend/plugins/simpletest-for-wordpress/
  */
-class UnitTestWPPSSettings extends UnitTestCase
+if( !class_exists( 'UnitTestWPPSSettings' ) )
 {
-	/*
-	 * validateFieldValues()
-	 */
-	public function testValidateFieldValues()
+	class UnitTestWPPSSettings extends UnitTestCase
 	{
-		// Valid settings
-		$validSettings = array(
-			'basic'		=> array(
-				'field-example1'	=> 'valid data'
-			),
+		/*
+		 * validateFieldValues()
+		 */
+		public function testValidateFieldValues()
+		{
+			// Valid settings
+			$validSettings = array(
+				'basic'		=> array(
+					'field-example1'	=> 'valid data'
+				),
+				
+				'advanced'	=> array(
+					'field-example2'	=> 5
+				)
+			);
 			
-			'advanced'	=> array(
-				'field-example2'	=> 5
-			)
-		);
-		
-		$cleanSettings = WPPSSettings::validateFieldValues( $validSettings );
-		$this->assertEqual( $validSettings[ 'basic' ][ 'field-example1' ], $cleanSettings[ 'basic' ][ 'field-example1' ] );
-		$this->assertEqual( $validSettings[ 'advanced' ][ 'field-example2' ], $cleanSettings[ 'advanced' ][ 'field-example2' ] );
-		
-		
-		// Invalid settings
-		$invalidSettings = array(
-			'basic'		=> array(
-				'field-example1'	=> 'invalid data'
-			),
+			$cleanSettings = WPPSSettings::validateFieldValues( $validSettings );
+			$this->assertEqual( $validSettings[ 'basic' ][ 'field-example1' ], $cleanSettings[ 'basic' ][ 'field-example1' ] );
+			$this->assertEqual( $validSettings[ 'advanced' ][ 'field-example2' ], $cleanSettings[ 'advanced' ][ 'field-example2' ] );
 			
-			'advanced'	=> array(
-				'field-example2'	=> -5
-			)
-		);
-		
-		$cleanSettings = WPPSSettings::validateFieldValues( $invalidSettings );
-		$this->assertNotEqual( $invalidSettings[ 'basic' ][ 'field-example1' ], $cleanSettings[ 'basic' ][ 'field-example1' ] );
-		$this->assertNotEqual( $invalidSettings[ 'advanced' ][ 'field-example2' ], $cleanSettings[ 'advanced' ][ 'field-example2' ] );
-		
-	}
-} // end UnitTestWPPSSettings
+			
+			// Invalid settings
+			$invalidSettings = array(
+				'basic'		=> array(
+					'field-example1'	=> 'invalid data'
+				),
+				
+				'advanced'	=> array(
+					'field-example2'	=> -5
+				)
+			);
+			
+			$cleanSettings = WPPSSettings::validateFieldValues( $invalidSettings );
+			$this->assertNotEqual( $invalidSettings[ 'basic' ][ 'field-example1' ], $cleanSettings[ 'basic' ][ 'field-example1' ] );
+			$this->assertNotEqual( $invalidSettings[ 'advanced' ][ 'field-example2' ], $cleanSettings[ 'advanced' ][ 'field-example2' ] );
+			
+		}
+	} // end UnitTestWPPSSettings
+}
 
 require_once( WP_PLUGIN_DIR . '/simpletest-for-wordpress/WpSimpleTest.php' );
 require_once( dirname( dirname( __DIR__ ) ) . '/classes/wpps-settings.php' );

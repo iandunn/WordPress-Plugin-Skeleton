@@ -69,6 +69,8 @@ if( !class_exists( 'WPPSSettings' ) )
 			
 			self::$defaultSettings = self::getDefaultSettings();
 			self::$settings = self::getSettings();
+			
+			self::$notices->enqueue( 'v: '.self::$settings['db-version'] );
 		}
 		
 		/**
@@ -88,9 +90,9 @@ if( !class_exists( 'WPPSSettings' ) )
 			);
 			
 			return array(
-				'db-version'	=> 0, 
-				'basic'			=> $basic,
-				'advanced'		=> $advanced
+				'db-version'		=> 0, 
+				'basic'				=> $basic,
+				'advanced'			=> $advanced
 			);
 		}
 		
@@ -134,9 +136,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		 */
 		public static function updateSettings( $newValues )
 		{
-			$newValues		= shortcode_atts( self::$defaultSettings, $newValues );
-			self::$settings	= shortcode_atts( self::$settings, $newValues );
-			
+			self::$settings	= self::validateFieldValues( $newValues );
 			update_option( WordPressPluginSkeleton::PREFIX . 'settings', self::$settings );
 		}
 		
@@ -289,7 +289,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		 */
 		public static function validateFieldValues( $settings )
 		{
-			$settings = shortcode_atts( self::$defaultSettings, $settings );
+			$settings = shortcode_atts( self::$settings, $settings );
 			
 			
 			/*
@@ -298,7 +298,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		
 			if( $settings[ 'basic' ][ 'field-example1' ] != 'valid data' )
 			{
-				add_settings_error( WordPressPluginSkeleton::PREFIX . 'settings', 'Example 1', 'Example 1 must have x and y properties.' );
+				self::$notices->enqueue( 'Example 1 must have x and y properties.', 'error' );
 				$settings[ 'basic' ][ 'field-example1' ] = self::$defaultSettings[ 'basic' ][ 'field-example1' ];
 			}
 			
