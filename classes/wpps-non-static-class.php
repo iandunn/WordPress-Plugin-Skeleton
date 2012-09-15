@@ -67,7 +67,7 @@ if( !class_exists( 'WPPSNonStaticClass' ) )
 			{
 				$this->$variable = $value;
 				
-				if( !$this->isValid() )
+				if( !$this->isValid( $variable ) )
 					throw new Exception( __METHOD__ . ' error: $'. $value .' is not valid.' );
 			}
 			else
@@ -98,15 +98,22 @@ if( !class_exists( 'WPPSNonStaticClass' ) )
 		 * Checks that the object is in a correct state
 		 * @mvc Model
 		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param string $property An individual property to check, or 'all' to check all of them
 		 * @return bool
 		 */
-		protected function isValid()
+		protected function isValid( $property = 'all' )
 		{
-			if( empty( $this->foo ) )
-				return false;
+			if( $property == 'foo' || $property == 'all' )
+			{
+				if( empty( $this->foo ) )
+					return false;
+			}
 			
-			if( !is_numeric( $this->bar ) )
-				return false;
+			if( $property == 'bar' || $property == 'all' )
+			{
+				if( !is_numeric( $this->bar ) )
+					return false;
+			}
 
 			return true;
 		}
