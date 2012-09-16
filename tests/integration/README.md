@@ -1,0 +1,1 @@
+# This is just a placeholder so Git will track this directory while it's empty. I plan on adding integration tests here in the future.

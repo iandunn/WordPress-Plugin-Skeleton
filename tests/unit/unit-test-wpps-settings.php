@@ -15,6 +15,11 @@ if( !class_exists( 'UnitTestWPPSSettings' ) )
 {
 	class UnitTestWPPSSettings extends UnitTestCase
 	{
+		public function __construct()
+		{
+			$this->WPPSSettings = WPPSSettings::getInstance();
+		}
+		
 		/*
 		 * validateSettings()
 		 */
@@ -31,7 +36,8 @@ if( !class_exists( 'UnitTestWPPSSettings' ) )
 				)
 			);
 			
-			$cleanSettings = WPPSSettings::validateSettings( $validSettings );
+			$cleanSettings = $this->WPPSSettings->validateSettings( $validSettings );
+		
 			$this->assertEqual( $validSettings[ 'basic' ][ 'field-example1' ], $cleanSettings[ 'basic' ][ 'field-example1' ] );
 			$this->assertEqual( $validSettings[ 'advanced' ][ 'field-example2' ], $cleanSettings[ 'advanced' ][ 'field-example2' ] );
 			
@@ -47,7 +53,7 @@ if( !class_exists( 'UnitTestWPPSSettings' ) )
 				)
 			);
 			
-			$cleanSettings = WPPSSettings::validateSettings( $invalidSettings );
+			$cleanSettings = $this->WPPSSettings->validateSettings( $invalidSettings );
 			$this->assertNotEqual( $invalidSettings[ 'basic' ][ 'field-example1' ], $cleanSettings[ 'basic' ][ 'field-example1' ] );
 			$this->assertNotEqual( $invalidSettings[ 'advanced' ][ 'field-example2' ], $cleanSettings[ 'advanced' ][ 'field-example2' ] );
 			

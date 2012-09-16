@@ -16,7 +16,7 @@ if( !class_exists( 'UnitTestWPPSNonStaticClass' ) )
 	class UnitTestWPPSNonStaticClass extends UnitTestCase
 	{
 		/*
-		 * validateFieldValues()
+		 * validateIsValid()
 		 */
 		public function testIsValid()
 		{

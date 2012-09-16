@@ -8,16 +8,17 @@
  * @author Ian Dunn <ian@iandunn.name>
  * @link http://wordpress.org/extend/plugins/simpletest-for-wordpress/
  */
-if( !class_exists( 'WPPSUnitTestSuite' ) )
+if( !class_exists( 'WPPSTestSuite' ) )
 {
-	class WPPSUnitTestSuite extends TestSuite
+	class WPPSTestSuite extends TestSuite
 	{
 		function __construct()
 		{
 			parent::__construct();
 	
-			$this->addFile( dirname( __FILE__ ) . '/unit-test-wpps-settings.php' );
-			$this->addFile( dirname( __FILE__ ) . '/unit-test-wpps-non-static-class.php' );
+			$this->addFile( dirname( __FILE__ ) . '/unit/unit-test-wpps-module.php' );
+			$this->addFile( dirname( __FILE__ ) . '/unit/unit-test-wpps-settings.php' );
+			$this->addFile( dirname( __FILE__ ) . '/unit/unit-test-wpps-non-static-class.php' );
 	   }
 		
 		/**
