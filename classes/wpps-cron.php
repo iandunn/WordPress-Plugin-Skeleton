@@ -10,31 +10,37 @@ if( !class_exists( 'WPPSCron' ) )
 	 * @package WordPressPluginSkeleton
 	 * @author Ian Dunn <ian@iandunn.name>
 	 */
-	class WPPSCron
+	class WPPSCron extends WPPSModule
 	{
-		protected static $notices;
+		protected static $readableProperties	= array();
+		protected static $writeableProperties	= array();
+		
+		/*
+		 * Magic methods
+		 */
 		
 		/**
-		 * Register callbacks for actions and filters
+		 * Constructor
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		public static function registerHookCallbacks()
+		protected function __construct()
 		{
-			// NOTE: Make sure you update the did_action() parameter in the corresponding callback method when changing the hooks here
-			add_action( 'init',													__CLASS__ . '::init' );
-			add_action( WordPressPluginSkeleton::PREFIX . 'cron_timed_jobs',	__CLASS__ . '::fireJobAtTime' );
-			add_action( WordPressPluginSkeleton::PREFIX . 'cron_example_job',	__CLASS__ . '::exampleJob' );
-			
-			add_filter( 'cron_schedules',										__CLASS__ . '::addCustomCronIntervals' );
+			$this->registerHookCallbacks();
 		}
+		
+		
+		/*
+		 * Static methods
+		 */
 		
 		/**
 		 * Prepares site to use the plugin during activation
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param bool $networkWide
 		 */
-		public static function activate()
+		public static function activate( $networkWide )
 		{
 			if( wp_next_scheduled( WordPressPluginSkeleton::PREFIX . 'cron_timed_jobs' ) === false )
 			{
@@ -64,37 +70,6 @@ if( !class_exists( 'WPPSCron' ) )
 		{
 			wp_clear_scheduled_hook( WordPressPluginSkeleton::PREFIX . 'timed_jobs' );
 			wp_clear_scheduled_hook( WordPressPluginSkeleton::PREFIX . 'example_job' );
-		}
-		
-		/**
-		 * Initializes variables
-		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
-		 */
-		public static function init()
-		{
-			if( did_action( 'init' ) !== 1 )
-				return;
-
-			self::$notices = IDAdminNotices::getSingleton();
-			if( WordPressPluginSkeleton::DEBUG_MODE )
-				self::$notices->debugMode = true;
-		}
-		
-		/**
-		 * Executes the logic of upgrading from specific older versions of the plugin to the current version
-		 * @mvc Model
-		 * @author Ian Dunn <ian@iandunn.name>
-		 * @param string $dbVersion
-		 */
-		public static function upgrade( $dbVersion )
-		{
-			/*
-			if( version_compare( $dbVersion, 'x.y.z', '<' ) )
-			{
-				// Do stuff
-			}
-			*/
 		}
 		
 		/**
@@ -159,7 +134,67 @@ if( !class_exists( 'WPPSCron' ) )
 			if( did_action( WordPressPluginSkeleton::PREFIX . 'cron_example_job' ) !== 1 )
 				return;
 			
-			self::$notices->enqueue( __METHOD__ . ' cron job fired.' );
+			WordPressPluginSkeleton::$notices->enqueue( __METHOD__ . ' cron job fired.' );
+		}
+		
+		
+		/*
+		 * Non-static methods
+		 */
+		 
+		/**
+		 * Register callbacks for actions and filters
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 */
+		public function registerHookCallbacks()
+		{
+			// NOTE: Make sure you update the did_action() parameter in the corresponding callback method when changing the hooks here
+			add_action( WordPressPluginSkeleton::PREFIX . 'cron_timed_jobs',	__CLASS__ . '::fireJobAtTime' );
+			add_action( WordPressPluginSkeleton::PREFIX . 'cron_example_job',	__CLASS__ . '::exampleJob' );
+			
+			add_action( 'init',													array( $this, 'init' ) );
+			
+			add_filter( 'cron_schedules',										__CLASS__ . '::addCustomCronIntervals' );
+		}
+		
+		/**
+		 * Initializes variables
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 */
+		public function init()
+		{
+			if( did_action( 'init' ) !== 1 )
+				return;
+		}
+		
+		/**
+		 * Executes the logic of upgrading from specific older versions of the plugin to the current version
+		 * @mvc Model
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param string $dbVersion
+		 */
+		public function upgrade( $dbVersion = 0 )
+		{
+			/*
+			if( version_compare( $dbVersion, 'x.y.z', '<' ) )
+			{
+				// Do stuff
+			}
+			*/
+		}
+
+		/**
+		 * Checks that the object is in a correct state
+		 * @mvc Model
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param string $property An individual property to check, or 'all' to check all of them
+		 * @return bool
+		 */
+		protected function isValid( $property = 'all' )
+		{
+			return true;
 		}
 	} // end WPPSCron
 }

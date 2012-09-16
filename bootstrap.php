@@ -14,8 +14,8 @@ if( $_SERVER[ 'SCRIPT_FILENAME' ] == __FILE__ )
 	die( 'Access denied.' );
 
 define( 'WPPS_NAME',					'WordPress Plugin Skeleton' );
-define( 'WPPS_REQUIRED_PHP_VERSION',	'5.2.3' );	// because of ClassName::MethodName callbacks -- http://php.net/manual/en/language.types.callable.php
-define( 'WPPS_REQUIRED_WP_VERSION',		'3.0' );	// because of custom post type support
+define( 'WPPS_REQUIRED_PHP_VERSION',	'5.3' );	// because of get_called_class()
+define( 'WPPS_REQUIRED_WP_VERSION',		'3.1' );	// because of esc_textarea()
 
 /**
  * Checks if the system requirements are met
@@ -25,7 +25,7 @@ define( 'WPPS_REQUIRED_WP_VERSION',		'3.0' );	// because of custom post type sup
 function wpps_requirementsMet()
 {
 	global $wp_version;
-	//require_once( ABSPATH .'/wp-admin/includes/plugin.php' );	// to get is_plugin_active() early
+	//require_once( ABSPATH .'/wp-admin/includes/plugin.php' );		// to get is_plugin_active() early
 	
 	if( version_compare( PHP_VERSION, WPPS_REQUIRED_PHP_VERSION, '<') )
 		return false;
@@ -59,15 +59,16 @@ function wpps_requirementsError()
 // Check requirements and load main class
 if( wpps_requirementsMet() )
 {
-	// Note: The program needs to be in a separate file so that PHP4 servers won't automatically parse it and crash
+	// Note: The main program needs to be in a separate file to avoid older PHP installations parsing it and crashing
 	
+	require_once( dirname( __FILE__ ) . '/classes/wpps-module.php' );
 	require_once( dirname( __FILE__ ) . '/classes/wordpress-plugin-skeleton.php' );
 
 	if( class_exists( 'WordPressPluginSkeleton' ) )
 	{
 		register_activation_hook( __FILE__, 'WordPressPluginSkeleton::activate' );
 		register_deactivation_hook( __FILE__, 'WordPressPluginSkeleton::deactivate' );
-		WordPressPluginSkeleton::registerHookCallbacks();
+		$wpps = WordPressPluginSkeleton::getInstance();
 	}
 }
 else

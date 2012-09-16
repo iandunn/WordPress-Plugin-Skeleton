@@ -10,40 +10,59 @@ if( !class_exists( 'WPPSSettings' ) )
 	 * @package WordPressPluginSkeleton
 	 * @author Ian Dunn <ian@iandunn.name>
 	 */
-	class WPPSSettings
+	class WPPSSettings extends WPPSModule
 	{
-		public static $settings;	// Note: this should be considered read-only. It won't be automatically updated during the script's execution when values change
-		protected static $notices, $defaultSettings;
+		protected $settings;												// Note: this should be considered read-only. It won't be automatically updated during the script's execution when values change
+		protected static $defaultSettings;
+		protected static $readableProperties	= array( 'settings' );
+		protected static $writeableProperties	= array( 'settings' );
 		const REQUIRED_CAPABILITY = 'administrator';
+		
+		
+		/*
+		 * General methods
+		 */
+		
+		/**
+		 * Constructor
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 */
+		protected function __construct()
+		{
+			$this->registerHookCallbacks();
+		}
 		
 		/**
 		 * Register callbacks for actions and filters
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		public static function registerHookCallbacks()
+		public function registerHookCallbacks()
 		{
 			// NOTE: Make sure you update the did_action() parameter in the corresponding callback method when changing the hooks here
-			add_action( 'init',							__CLASS__ . '::init' );
 			add_action( 'admin_menu',					__CLASS__ . '::registerSettingsPages' );
-			add_action( 'admin_init',					__CLASS__ . '::registerSettings' );
 			add_action( 'show_user_profile',			__CLASS__ . '::addUserFields' );
 			add_action( 'edit_user_profile',			__CLASS__ . '::addUserFields' );
 			add_action( 'personal_options_update',		__CLASS__ . '::saveUserFields' );
 			add_action( 'edit_user_profile_update',		__CLASS__ . '::saveUserFields' );
+			
+			add_action( 'init',							array( $this, 'init' ) );
+			add_action( 'admin_init',					array( $this, 'registerSettings' ) );
 			
 			add_filter(
 				'plugin_action_links_'. plugin_basename( dirname( __DIR__ ) ) .'/bootstrap.php',
 				__CLASS__ . '::addPluginActionLinks'
 			);
 		}
-		
+				
 		/**
 		 * Prepares site to use the plugin during activation
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param bool $networkWide
 		 */
-		public static function activate()
+		public static function activate( $networkWide )
 		{
 		}
 
@@ -61,18 +80,49 @@ if( !class_exists( 'WPPSSettings' ) )
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		public static function init()
+		public function init()
 		{
 			if( did_action( 'init' ) !== 1 )
 				return;
-
-			self::$notices = IDAdminNotices::getSingleton();
-			if( WordPressPluginSkeleton::DEBUG_MODE )
-				self::$notices->debugMode = true;
 			
 			self::$defaultSettings = self::getDefaultSettings();
-			self::$settings = self::getSettings();
+			$this->settings = self::getSettings();
 		}
+		
+		/**
+		 * Executes the logic of upgrading from specific older versions of the plugin to the current version
+		 * @mvc Model
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param string $dbVersion
+		 */
+		public function upgrade( $dbVersion = 0 )
+		{
+			/*
+			if( version_compare( $dbVersion, 'x.y.z', '<' ) )
+			{
+				// Do stuff
+			}
+			*/
+		}
+		
+		/**
+		 * Checks that the object is in a correct state
+		 * @mvc Model
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param string $property An individual property to check, or 'all' to check all of them
+		 * @return bool
+		 */
+		protected function isValid( $property = 'all' )
+		{
+			// validate settings?
+			
+			return true;
+		}
+		
+		
+		/*
+		 * Plugin Settings
+		 */
 		
 		/**
 		 * Establishes initial values for all settings
@@ -114,22 +164,6 @@ if( !class_exists( 'WPPSSettings' ) )
 		}
 		
 		/**
-		 * Executes the logic of upgrading from specific older versions of the plugin to the current version
-		 * @mvc Model
-		 * @author Ian Dunn <ian@iandunn.name>
-		 * @param string $dbVersion
-		 */
-		public static function upgrade( $dbVersion )
-		{
-			/*
-			if( version_compare( $dbVersion, 'x.y.z', '<' ) )
-			{
-				// Do stuff
-			}
-			*/
-		}
-		
-		/**
 		 * Updates settings outside of the Settings API or other subsystems
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
@@ -137,15 +171,12 @@ if( !class_exists( 'WPPSSettings' ) )
 		 */
 		public static function updateSettings( $newValues )
 		{
-			self::$settings	= self::validateSettings( $newValues );
-			update_option( WordPressPluginSkeleton::PREFIX . 'settings', self::$settings );
-		}
-		
-		
-		/*
-		 * Plugin Settings
-		 */
-		
+			// repalce w/ getting and extend to do update() 
+			
+			$this->settings	= self::validateSettings( $newValues );
+			update_option( WordPressPluginSkeleton::PREFIX . 'settings', $this->settings );
+		} 
+		 
 		/**
 		 * Adds links to the plugin's action link section on the Plugins page
 		 * @mvc Model
@@ -199,7 +230,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		 * @mvc Controller
 		 * @author Ian Dunn <ian.dunn@mpangodev.com>
 		 */
-		public static function registerSettings()
+		public function registerSettings()
 		{
 			if( did_action( 'admin_init' ) !== 1 )
 				return;
@@ -248,7 +279,7 @@ if( !class_exists( 'WPPSSettings' ) )
 			register_setting(
 				WordPressPluginSkeleton::PREFIX . 'settings',
 				WordPressPluginSkeleton::PREFIX . 'settings',
-				__CLASS__ . '::validateSettings'
+				array( $this, 'validateSettings' )
 			);
 		}
 
@@ -285,22 +316,22 @@ if( !class_exists( 'WPPSSettings' ) )
 		 * Validates submitted setting values before they get saved to the database
 		 * @mvc Model
 		 * @author Ian Dunn <ian.dunn@mpangodev.com>
-		 * @param array $settings
+		 * @param array $newSettings
 		 * @return array
 		 */
-		public static function validateSettings( $settings )
+		public function validateSettings( $newSettings )
 		{
-			$settings = shortcode_atts( self::$settings, $settings );
+			$newSettings = shortcode_atts( $this->settings, $newSettings );
 			
 			
 			/*
 			 * Basic Settings
 			 */
 		
-			if( $settings[ 'basic' ][ 'field-example1' ] != 'valid data' )
+			if( strcmp( $newSettings[ 'basic' ][ 'field-example1' ], 'valid data' ) !== 0 )
 			{
-				self::$notices->enqueue( 'Example 1 must have x and y properties.', 'error' );
-				$settings[ 'basic' ][ 'field-example1' ] = self::$defaultSettings[ 'basic' ][ 'field-example1' ];
+				WordPressPluginSkeleton::$notices->enqueue( 'Example 1 must equal "valid data"', 'error' );
+				$newSettings[ 'basic' ][ 'field-example1' ] = self::$defaultSettings[ 'basic' ][ 'field-example1' ];
 			}
 			
 			
@@ -308,10 +339,10 @@ if( !class_exists( 'WPPSSettings' ) )
 			 * Advanced Settings
 			 */
 			
-			$settings[ 'advanced' ][ 'field-example2' ] = absint( $settings[ 'advanced' ][ 'field-example2' ] );
+			$newSettings[ 'advanced' ][ 'field-example2' ] = absint( $newSettings[ 'advanced' ][ 'field-example2' ] );
 			
 			
-			return $settings;
+			return $newSettings;
 		}
 		
 		
@@ -364,7 +395,7 @@ if( !class_exists( 'WPPSSettings' ) )
 			if( $userFields[ WordPressPluginSkeleton::PREFIX . 'user-example-field1' ] == false )
 			{
 				$userFields[ WordPressPluginSkeleton::PREFIX . 'user-example-field1' ] = true;
-				self::$notices->enqueue( 'Example Field 1 should be true', 'error' );
+				WordPressPluginSkeleton::$notices->enqueue( 'Example Field 1 should be true', 'error' );
 			}
 			
 			if( !current_user_can( 'manage_options' ) )
@@ -374,7 +405,7 @@ if( !class_exists( 'WPPSSettings' ) )
 				if( $currentField2 != $userFields[ WordPressPluginSkeleton::PREFIX . 'user-example-field2' ] )
 				{
 					$userFields[ WordPressPluginSkeleton::PREFIX . 'user-example-field2' ] = $currentField2;
-					self::$notices->enqueue( 'Only administrators can change Example Field 2.', 'error' );
+					WordPressPluginSkeleton::$notices->enqueue( 'Only administrators can change Example Field 2.', 'error' );
 				}
 			}
 			

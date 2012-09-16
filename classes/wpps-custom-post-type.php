@@ -10,36 +10,43 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 	 * @package WordPressPluginSkeleton
 	 * @author Ian Dunn <ian@iandunn.name>
 	 */
-	class WPPSCustomPostType
+	class WPPSCustomPostType extends WPPSModule
 	{
-		// Declare variables and constants
-		protected static $notices;
+		protected static $readableProperties	= array();
+		protected static $writeableProperties	= array();
+		
 		const POST_TYPE_NAME	= 'WPPS Custom Post Type';
 		const POST_TYPE_SLUG	= 'wpps-cpt';
 		const TAG_NAME			= 'WPPS Custom Taxnomy';
 		const TAG_SLUG			= 'wpps-custom-tax';
 
+		
+		/*
+		 * Magic methods
+		 */
+		
 		/**
 		 * Constructor
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		public static function registerHookCallbacks()
+		protected function __construct()
 		{
-			// NOTE: Make sure you update the did_action() parameter in the corresponding callback method when changing the hooks here
-			add_action( 'init',			__CLASS__ . '::init' );
-			add_action( 'init',			__CLASS__ . '::createPostType' );
-			add_action( 'init',			__CLASS__ . '::createTaxonomies' );
-			add_action( 'admin_init',	__CLASS__ . '::addMetaBoxes' );
-			add_action( 'save_post',	__CLASS__ . '::savePost', 10, 2 );
+			$this->registerHookCallbacks();
 		}
+		
+		
+		/*
+		 * Static methods
+		 */
 		
 		/**
 		 * Prepares site to use the plugin during activation
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param bool $networkWide
 		 */
-		public static function activate()
+		public static function activate( $networkWide )
 		{
 			self::createPostType();
 			self::createTaxonomies();
@@ -52,37 +59,6 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 		 */
 		public static function deactivate()
 		{
-		}
-		
-		/**
-		 * Initializes variables
-		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
-		 */
-		public static function init()
-		{
-			if( did_action( 'init' ) !== 1 )
-				return;
-
-			self::$notices = IDAdminNotices::getSingleton();
-			if( WordPressPluginSkeleton::DEBUG_MODE )
-				self::$notices->debugMode = true;
-		}
-
-		/**
-		 * Executes the logic of upgrading from specific older versions of the plugin to the current version
-		 * @mvc Model
-		 * @author Ian Dunn <ian@iandunn.name>
-		 * @param string $dbVersion
-		 */
-		public static function upgrade( $dbVersion )
-		{
-			/*
-			if( version_compare( $dbVersion, 'x.y.z', '<' ) )
-			{
-				// Do stuff
-			}
-			*/
 		}
 		
 		/**
@@ -133,7 +109,7 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 				);
 				
 				if( is_wp_error( $postType ) )
-					self::$notices->enqueue( __METHOD__ . ' error: '. $postType->get_error_message(), 'error' );
+					WordPressPluginSkeleton::$notices->enqueue( __METHOD__ . ' error: '. $postType->get_error_message(), 'error' );
 			}
 		}
 
@@ -248,7 +224,67 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 			if( true )
 				update_post_meta( $postID, WordPressPluginSkeleton::PREFIX . 'example-box-field', $newValues[ WordPressPluginSkeleton::PREFIX . 'example-box-field' ] );
 			else
-				self::$notices->enqueue( 'Example of failing validation', 'error' );
+				WordPressPluginSkeleton::$notices->enqueue( 'Example of failing validation', 'error' );
+		}
+		
+		
+		/*
+		 * Non-static methods
+		 */
+		 
+		/**
+		 * Register callbacks for actions and filters
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 */
+		public function registerHookCallbacks()
+		{
+			// NOTE: Make sure you update the did_action() parameter in the corresponding callback method when changing the hooks here
+			add_action( 'init',			__CLASS__ . '::createPostType' );
+			add_action( 'init',			__CLASS__ . '::createTaxonomies' );
+			add_action( 'admin_init',	__CLASS__ . '::addMetaBoxes' );
+			add_action( 'save_post',	__CLASS__ . '::savePost', 10, 2 );
+			
+			add_action( 'init',			array( $this, 'init' ) );
+		}
+		
+		/**
+		 * Initializes variables
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 */
+		public function init()
+		{
+			if( did_action( 'init' ) !== 1 )
+				return;
+		}
+
+		/**
+		 * Executes the logic of upgrading from specific older versions of the plugin to the current version
+		 * @mvc Model
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param string $dbVersion
+		 */
+		public function upgrade( $dbVersion = 0 )
+		{
+			/*
+			if( version_compare( $dbVersion, 'x.y.z', '<' ) )
+			{
+				// Do stuff
+			}
+			*/
+		}
+		
+		/**
+		 * Checks that the object is in a correct state
+		 * @mvc Model
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param string $property An individual property to check, or 'all' to check all of them
+		 * @return bool
+		 */
+		protected function isValid( $property = 'all' )
+		{
+			return true;
 		}
 	} // end WPPSCustomPostType
 }

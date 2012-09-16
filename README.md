@@ -52,32 +52,41 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Refactor classes as extending abstract base module class
 		* non-abstract singleton, abstract activate/registerhookcallbacks, etc 
 		* http://scotty-t.com/2012/07/09/wp-you-oop/
-			probably do abstract registercallbacks() instead of init, or maybe do both
-			reqyures php5.3 if use late static binding
-			add construct/__get/__set
-			could remove the bit that makes sure registerhooks is only called once since it's a singleton now
-		* maybe rename WordPressPluginSkeleton to WPPSMainConrtoller or something like that
+			how are abstract variables handled?
 		* Some of the classes do have a few stateful variables, so maybe make all the classes singletons and have a $modules array in the main class w/ references to the objects?
 			* Static methods are great for methods that take input, return output and never affect a global state. Ones that always return same output given same input. But they should never be used if they affect a global state.
-	
-	* CPT architecture
-		base abstract class for cpts? or interfacts has registerpost type, taxonies, save
-		have a abstract WPPSModule class, and a WPPSCustomPostType base abstract class (or interface)
-		WPPSCustomPostTypeBase extends WPPSModule
-		individual cpts extend WPPSCustomPosttypeBase, or maybe extend wppsmodule and implement customposttypebase, or maybe use traits? but traits are more for things that would be used in multiple classes
-	
+		* check methods that should nolonger be static
+			* settings validatorfieldoptoins
+		* main controller activate to just the single activate stuff. change callback to 'maybenetworkactivate'
+			* same thing for upgrade? same situation in reverse
+			* or maybe just default params for both?
+			update phpdoc for upgrade/actiavet b/c of new var
+		* add block comments  between static/nonstatic method sections
+		* loop through active modules to activate/deactive/upgrade
+		* make readable/writableprops regular vars? making them static just makes them global/writable, so not really like being a constant
+		
 	* Is making WPPSSettings::$settings public the right way to share it across classes? Maybe use magic getters instead with readonly?
 		Yeah, just make it a protected var with w/ readable through __get()
+		have validatefieldvalues() take indiviaul attribute like isvalid does?
+		replace updatesettings() with __set().
+			if(property==settings) update_option(...)
+		unit test $foo->settings = array() and $foo->settings['field'] = 'string'
+		remove note about how it should be considered readonly? probably
+			
+	* CPT architecture
+		base abstract class for cpts that extends wppsmodule?
+		or just an interface for registerpost type, taxonies, save?
 		
 	readablepublicvars should really be a constant array, but php doesn't allow, so maybe make a static array. it'd be mutable, but best compromise?
+	
 	* Maybe make $notices public in main class, and have others call it, instead of each class creating its own reference
-		* maybe add adminnotice instantiatoin as part of base class
-		* or use getting to grab it from main controller class?
+		* maybe add adminnotice instantiatoin as part of base class - probably not
+		* or use __get to grab it from main controller class?
 			WordPressPluginSkeleton::$notices->enqueue() - er, no, 'cause it wouldn't be static
-			use dependency injection to pass instance of main contorller class to modules?
-				so then it'd be $this->main->notices->enqueue();
-				but then how can static methods enqueue notices?
-				you could say that would make them non static b/c they're affecting state, but they're affecting state of $notices object
+		* make sure both wppsmodule and nonstatic class are updated
+	
+	* Tag 0.2 and push tags to origin
+	
 	
 * High Priority
 	* Check existing forms for nonces, check_admin_referer();
@@ -135,19 +144,20 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Make sure all hook callbacks have all of their parameters declared, even if you don't typically use them
 	* Add a status icon for each of the plugin requirements in the requirements-not-met view, so the user can easily tell which are met and which aren't
 	* In page settings view, you should be able to grab the title from an API function instead of manually typing it
+	* Clear admin notices when tearing down unit tests so that they don't show up on the next normal page load
 	 
 	
 ## New Code Checklist
 
 * Security
-	* Input Validation
-	* Prepare any manual SQL queries
-	* Output Sanitization
-	* Nonces for all forms and AJAX requests
-	* current_user_can()
+	* Input validation for domain correctness and security.
+	* Pass any manual SQL queries through $wpdb->prepare().
+	* Output sanitization when sending untrusted data to browser. All data should be considered untrusted.
+	* Add/check nonces for all forms and AJAX requests.
+	* Make sure current user is authorized to perform the action with current_user_can().
 * Add filters
 * Write unit and integration tests
-* Throw/catch exceptions
+* Throw/catch exceptions when encountering invalid conditions.
 
 
 ## License

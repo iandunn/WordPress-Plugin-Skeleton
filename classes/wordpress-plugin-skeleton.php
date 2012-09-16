@@ -12,38 +12,45 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 	 * @package WordPressPluginSkeleton
 	 * @author Ian Dunn <ian@iandunn.name>
 	 */
-	class WordPressPluginSkeleton
+	class WordPressPluginSkeleton extends WPPSModule
 	{
-		// Declare variables and constants
-		protected static $callbacksRegistered, $notices;
-		const VERSION			= '0.2';
-		const PREFIX			= 'wpps_';
-		const DEBUG_MODE		= false;
-
+		public static $notices;									// Needs to be static so static methods can call enqueue notices. Needs to be public so other modules can enqueue notices.
+		protected static $readableProperties	= array();		// These should really be constants, but PHP doesn't allow class constants to be arrays
+		protected static $writeableProperties	= array();
+		protected $modules;										// maybe this should be static so that static methods can access it? but if they need to access it then they probably shouldn't be static in the first place. $notices is an exception b/c it's the state of an external class?
+		
+		const VERSION		= '0.2';
+		const PREFIX		= 'wpps_';
+		const DEBUG_MODE	= false;
+		
+		
+		/*
+		 * Magic methods
+		 */
+		
 		/**
-		 * Register callbacks for actions and filters
+		 * Constructor
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		public static function registerHookCallbacks()
+		protected function __construct()
 		{
-			if( self::$callbacksRegistered === true )
-				return;
-
-			// NOTE: Make sure you update the did_action() parameter in the corresponding callback method when changing the hooks here
-			add_action( 'init',						__CLASS__ . '::init' );
-			add_action( 'init',						__CLASS__ . '::upgrade', 11 );
-			add_action( 'wpmu_new_blog', 			__CLASS__ . '::activateNewSite' );
-			add_action( 'wp_enqueue_scripts',		__CLASS__ . '::loadResources' );
-			add_action( 'admin_enqueue_scripts',	__CLASS__ . '::loadResources' );
-						
-			WPPSCustomPostType::registerHookCallbacks();
-			WPPSCron::registerHookCallbacks();
-			WPPSSettings::registerHookCallbacks();
+			$this->registerHookCallbacks();
 			
-			self::$callbacksRegistered = true;
+			$this->modules = array(
+				'WPPSCustomPostType'	=> WPPSCustomPostType::getInstance(),
+				'WPPSCron'				=> WPPSCron::getInstance(),
+				'WPPSSettings'			=> WPPSSettings::getInstance()
+			);
+			
+			// @todo rearrange order of modules loading? settings has to be last? want it first?
 		}
 		
+		
+		/*
+		 * Static methods
+		 */
+
 		/**
 		 * Prepares sites to use the plugin during single or network-wide activation
 		 * @mvc Controller
@@ -66,16 +73,16 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 					foreach( $blogs as $b )
 					{
 						switch_to_blog( $b );
-						self::singleActivate();
+						self::singleActivate( $networkWide );
 					}
 
 					restore_current_blog();
 				}
 				else
-					self::singleActivate();
+					self::singleActivate( $networkWide );
 			}
 			else
-				self::singleActivate();
+				self::singleActivate( $networkWide );
 		}
 
 		/**
@@ -98,12 +105,17 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 		 * Prepares a single blog to use the plugin
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param bool $networkWide
 		 */
-		protected static function singleActivate()
+		protected static function singleActivate( $networkWide )
 		{
-			WPPSCustomPostType::activate();
-			WPPSCron::activate();
-			WPPSSettings::activate();
+			//foreach( $this->modules as $module )
+				//$module::activate( $networkWide );
+			
+			WPPSCustomPostType::activate( $networkWide );
+			WPPSCron::activate( $networkWide );
+			WPPSSettings::activate( $networkWide );
+			
 			flush_rewrite_rules();
 		}
 
@@ -114,57 +126,14 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 		 */
 		public static function deactivate()
 		{
+			//foreach( $this->modules as $module )
+				//$module::deactivate();
+				
 			WPPSCustomPostType::deactivate();
 			WPPSCron::deactivate();
 			WPPSSettings::deactivate();
+			
 			flush_rewrite_rules();
-		}
-		
-		/**
-		 * Initializes variables
-		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
-		 */
-		public static function init()
-		{
-			if( did_action( 'init' ) !== 1 )
-				return;
-
-			self::$notices = IDAdminNotices::getSingleton();
-			if( self::DEBUG_MODE )
-				self::$notices->debugMode = true;
-			
-			try
-			{
-				$nonStatic = new WPPSNonStaticClass( 'Non-static example', '42' );
-				//self::$notices->enqueue( $nonStatic->foo .' '. $nonStatic->bar );
-			}
-			catch( Exception $e )
-			{
-				self::$notices->enqueue( __METHOD__ . ' error: '. $e->getMessage(), 'error' );
-			}
-		}
-		
-		/**
-		 * Checks if the plugin was recently updated and upgrades if necessary
-		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
-		 */
-		public static function upgrade()
-		{
-			if( did_action( 'init' ) !== 1 )
-				return;
-			
-			if( version_compare( WPPSSettings::$settings[ 'db-version' ], self::VERSION, '==' ) )
-				return;
-			
-			WPPSCustomPostType::upgrade( WPPSSettings::$settings[ 'db-version' ] );
-			WPPSCron::upgrade( WPPSSettings::$settings[ 'db-version' ] );
-			WPPSSettings::upgrade( WPPSSettings::$settings[ 'db-version' ] );
-			
-			WPPSSettings::updateSettings( array( 'db-version' => self::VERSION ) );
-
-			self::clearCachingPlugins();
 		}
 		
 		/**
@@ -218,6 +187,86 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 				wp_enqueue_style( self::PREFIX . 'admin' );
 			else
 				wp_enqueue_script( self::PREFIX . 'wordpress-plugin-skeleton' );
+		}
+		
+		
+		/*
+		 * Non-static methods
+		 */
+		
+		/**
+		 * Register callbacks for actions and filters
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 */
+		public function registerHookCallbacks()
+		{
+			// NOTE: Make sure you update the did_action() parameter in the corresponding callback method when changing the hooks here
+			add_action( 'wpmu_new_blog', 			__CLASS__ . '::activateNewSite' );
+			add_action( 'wp_enqueue_scripts',		__CLASS__ . '::loadResources' );
+			add_action( 'admin_enqueue_scripts',	__CLASS__ . '::loadResources' );
+			
+			add_action( 'init',						array( $this, 'init' ) );
+			add_action( 'init',						array( $this, 'upgrade' ), 11 );
+		}
+		
+		/**
+		 * Initializes variables
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 */
+		public function init()
+		{
+			if( did_action( 'init' ) !== 1 )
+				return;
+
+			self::$notices = IDAdminNotices::getSingleton();
+			if( self::DEBUG_MODE )
+				self::$notices->debugMode = true;
+			
+			try
+			{
+				$nonStatic = new WPPSNonStaticClass( 'Non-static example', '42' );
+				//self::$notices->enqueue( $nonStatic->foo .' '. $nonStatic->bar );
+			}
+			catch( Exception $e )
+			{
+				self::$notices->enqueue( __METHOD__ . ' error: '. $e->getMessage(), 'error' );
+			}
+		}
+
+		/**
+		 * Checks if the plugin was recently updated and upgrades if necessary
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param int $dbVersion
+		 */
+		public function upgrade( $dbVersion = 0 )
+		{
+			if( did_action( 'init' ) !== 1 )
+				return;
+			
+			if( version_compare( $this->modules[ 'WPPSSettings' ]->settings[ 'db-version' ], self::VERSION, '==' ) )
+				return;
+			
+			foreach( $this->modules as $module )
+				$module->upgrade( $this->modules[ 'WPPSSettings' ]->settings[ 'db-version' ] );
+			
+			WPPSSettings::updateSettings( array( 'db-version' => self::VERSION ) );
+
+			self::clearCachingPlugins();
+		}
+		
+		/**
+		 * Checks that the object is in a correct state
+		 * @mvc Model
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param string $property An individual property to check, or 'all' to check all of them
+		 * @return bool
+		 */
+		protected function isValid( $property = 'all' )
+		{
+			return true;
 		}
 	} // end WordPressPluginSkeleton
 	
