@@ -22,15 +22,18 @@ if( !class_exists( 'UnitTestWPPSModule' ) )
 		{
 			// Two instances of the same module
 			$firstInstance = WPPSChildClass::getInstance();
+			$firstInstance->init();
 			$firstInstance->foo = 'first';
 			
 			$secondInstance = WPPSChildClass::getInstance();
+			$secondInstance->init();
 			$secondInstance->foo = 'second';
 			
 			$this->assertEqual( $firstInstance->foo, $secondInstance->foo );
 			
 			// Two different modules
 			$separateModule = WPPSAnotherChildClass::getInstance();
+			$separateModule->init();
 			$this->assertNotEqual( $secondInstance->foo, $separateModule->foo );
 		}
 		
@@ -40,6 +43,7 @@ if( !class_exists( 'UnitTestWPPSModule' ) )
 		public function testMagicGet()
 		{
 			$child = WPPSChildClass::getInstance();
+			$child->init();
 			
 			// Readable
 			$readableProperties = array( 'foo', 'bar' );
@@ -83,6 +87,7 @@ if( !class_exists( 'UnitTestWPPSModule' ) )
 		public function testMagicSet()
 		{
 			$child = WPPSChildClass::getInstance();
+			$child->init();
 			
 			// Writable
 			$writableProperties = array( 'foo' );

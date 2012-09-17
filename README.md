@@ -50,41 +50,22 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 
 * Next
 	* Refactor classes as extending abstract base module class
-		* non-abstract singleton, abstract activate/registerhookcallbacks, etc 
-		* http://scotty-t.com/2012/07/09/wp-you-oop/
-			how are abstract variables handled?
-		* Some of the classes do have a few stateful variables, so maybe make all the classes singletons and have a $modules array in the main class w/ references to the objects?
-			* Static methods are great for methods that take input, return output and never affect a global state. Ones that always return same output given same input. But they should never be used if they affect a global state.
-		* check methods that should nolonger be static
-			* settings validatorfieldoptoins
-		* main controller activate to just the single activate stuff. change callback to 'maybenetworkactivate'
-			* same thing for upgrade? same situation in reverse
-			* or maybe just default params for both?
-			update phpdoc for upgrade/actiavet b/c of new var
-		* add block comments  between static/nonstatic method sections
-		* loop through active modules to activate/deactive/upgrade
-		* make readable/writableprops regular vars? making them static just makes them global/writable, so not really like being a constant
+		* Static methods are great for methods that take input, return output and never affect a global state. Ones that always return same output given same input. But they should never be used if they affect a global state.
+			Scan each function in the modules to see if it should really be static		
+				* settings validatorfieldoptoins
+		update phpdoc for upgrade/actiavet b/c of new var
 		
 	* Is making WPPSSettings::$settings public the right way to share it across classes? Maybe use magic getters instead with readonly?
-		Yeah, just make it a protected var with w/ readable through __get()
-		have validatefieldvalues() take indiviaul attribute like isvalid does?
+		Yeah, just make it a protected var with w/ readable through __get().
+			main class can use $this->modules[settings]->settings
+			other modules can use $settings = settings::getinstance->settings
 		replace updatesettings() with __set().
 			if(property==settings) update_option(...)
 		unit test $foo->settings = array() and $foo->settings['field'] = 'string'
+		have validatefieldvalues() take indiviaul attribute like isvalid does?
 		remove note about how it should be considered readonly? probably
-			
-	* CPT architecture
-		base abstract class for cpts that extends wppsmodule?
-		or just an interface for registerpost type, taxonies, save?
-		
-	readablepublicvars should really be a constant array, but php doesn't allow, so maybe make a static array. it'd be mutable, but best compromise?
 	
-	* Maybe make $notices public in main class, and have others call it, instead of each class creating its own reference
-		* maybe add adminnotice instantiatoin as part of base class - probably not
-		* or use __get to grab it from main controller class?
-			WordPressPluginSkeleton::$notices->enqueue() - er, no, 'cause it wouldn't be static
-		* make sure both wppsmodule and nonstatic class are updated
-	
+	* Checkout master, merge abstract
 	* Tag 0.2 and push tags to origin
 	
 	
@@ -109,7 +90,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 		* AJAX. Not really its own class, so maybe just add to CPT
 		* Shortcodes. Not really its own class, so maybe just add to CPT
 		* Look at BGMP and other past plugins for ideas
-		* Widgets
+		* Widgets. Write an interface.
 	* Javascript
 		* Add AJAX calls
 			* Make sure use nonces
@@ -140,7 +121,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Better singular/plural handling for custom post type names
 	* Maybe use a single view file for all meta boxes (within a class), rather than multiple. Switch on the box id just like the callback does.
 	* Add underscore to custom post meta fields, so they don't show up in Custom Fields box? See http://net.tutsplus.com/tutorials/wordpress/creating-custom-fields-for-attachments-in-wordpress/
-	* Use API functions in WPPSCustomPostType::savePost() instead of accessing $post directly
+	* Use API functions in WPPSCPTExample::savePost() instead of accessing $post directly
 	* Make sure all hook callbacks have all of their parameters declared, even if you don't typically use them
 	* Add a status icon for each of the plugin requirements in the requirements-not-met view, so the user can easily tell which are met and which aren't
 	* In page settings view, you should be able to grab the title from an API function instead of manually typing it
@@ -158,6 +139,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 * Add filters
 * Write unit and integration tests
 * Throw/catch exceptions when encountering invalid conditions.
+* Use did_action() in action callbacks 
 
 
 ## License

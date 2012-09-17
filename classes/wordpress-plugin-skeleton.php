@@ -17,7 +17,7 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 		public static $notices;									// Needs to be static so static methods can call enqueue notices. Needs to be public so other modules can enqueue notices.
 		protected static $readableProperties	= array();		// These should really be constants, but PHP doesn't allow class constants to be arrays
 		protected static $writeableProperties	= array();
-		protected $modules;										// maybe this should be static so that static methods can access it? but if they need to access it then they probably shouldn't be static in the first place. $notices is an exception b/c it's the state of an external class?
+		protected $modules;
 		
 		const VERSION		= '0.2';
 		const PREFIX		= 'wpps_';
@@ -38,12 +38,10 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 			$this->registerHookCallbacks();
 			
 			$this->modules = array(
-				'WPPSCustomPostType'	=> WPPSCustomPostType::getInstance(),
-				'WPPSCron'				=> WPPSCron::getInstance(),
-				'WPPSSettings'			=> WPPSSettings::getInstance()
+				'WPPSSettings'		=> WPPSSettings::getInstance(),
+				'WPPSCPTExample'	=> WPPSCPTExample::getInstance(),
+				'WPPSCron'			=> WPPSCron::getInstance()
 			);
-			
-			// @todo rearrange order of modules loading? settings has to be last? want it first?
 		}
 		
 		
@@ -109,12 +107,8 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 		 */
 		protected static function singleActivate( $networkWide )
 		{
-			//foreach( $this->modules as $module )
-				//$module::activate( $networkWide );
-			
-			WPPSCustomPostType::activate( $networkWide );
-			WPPSCron::activate( $networkWide );
-			WPPSSettings::activate( $networkWide );
+			foreach( $this->modules as $module )
+				$module->activate( $networkWide );
 			
 			flush_rewrite_rules();
 		}
@@ -126,12 +120,8 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 		 */
 		public static function deactivate()
 		{
-			//foreach( $this->modules as $module )
-				//$module::deactivate();
-				
-			WPPSCustomPostType::deactivate();
-			WPPSCron::deactivate();
-			WPPSSettings::deactivate();
+			foreach( $this->modules as $module )
+				$module->deactivate();
 			
 			flush_rewrite_rules();
 		}
@@ -272,6 +262,7 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 	
 	require_once( dirname( __DIR__  ) . '/includes/IDAdminNotices/id-admin-notices.php' );
 	require_once( dirname( __FILE__ ) . '/wpps-custom-post-type.php' );
+	require_once( dirname( __FILE__ ) . '/wpps-cpt-example.php' );
 	require_once( dirname( __FILE__ ) . '/wpps-settings.php' );
 	require_once( dirname( __FILE__ ) . '/wpps-cron.php' );
 	require_once( dirname( __FILE__ ) . '/wpps-non-static-class.php' );

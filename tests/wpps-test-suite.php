@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Unit tests for the WPPSSettings class
+ * Test suite for unit and integration tests
  * Uses the SimpleTest For WordPress plugin
  * 
  * @package WordPressPluginSkeleton
@@ -19,7 +19,7 @@ if( !class_exists( 'WPPSTestSuite' ) )
 			$this->addFile( dirname( __FILE__ ) . '/unit/unit-test-wpps-module.php' );
 			$this->addFile( dirname( __FILE__ ) . '/unit/unit-test-wpps-settings.php' );
 			$this->addFile( dirname( __FILE__ ) . '/unit/unit-test-wpps-non-static-class.php' );
-	   }
+		}
 		
 		/**
 		 * Sets a protected or private method to be accessible

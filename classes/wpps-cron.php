@@ -116,7 +116,7 @@ if( !class_exists( 'WPPSCron' ) )
 			{
 				if( !get_transient( WordPressPluginSkeleton::PREFIX . 'cron_example_timed_job' ) )
 				{
-					//WPPSCustomPostType::exampleTimedJob();
+					//WPPSCPTExample::exampleTimedJob();
 					set_transient( WordPressPluginSkeleton::PREFIX . 'cron_example_timed_job', true, 60 * 60 * 6 );
 				}
 			}
@@ -152,7 +152,6 @@ if( !class_exists( 'WPPSCron' ) )
 			// NOTE: Make sure you update the did_action() parameter in the corresponding callback method when changing the hooks here
 			add_action( WordPressPluginSkeleton::PREFIX . 'cron_timed_jobs',	__CLASS__ . '::fireJobAtTime' );
 			add_action( WordPressPluginSkeleton::PREFIX . 'cron_example_job',	__CLASS__ . '::exampleJob' );
-			
 			add_action( 'init',													array( $this, 'init' ) );
 			
 			add_filter( 'cron_schedules',										__CLASS__ . '::addCustomCronIntervals' );

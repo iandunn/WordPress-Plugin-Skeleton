@@ -116,6 +116,8 @@ if( !class_exists( 'WPPSSettings' ) )
 		{
 			// validate settings?
 			
+			// have this run from __set()
+			
 			return true;
 		}
 		
@@ -171,7 +173,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		 */
 		public static function updateSettings( $newValues )
 		{
-			// repalce w/ getting and extend to do update() 
+			// repalce w/ __set() , and then extend it to call update_option() 
 			
 			$this->settings	= self::validateSettings( $newValues );
 			update_option( WordPressPluginSkeleton::PREFIX . 'settings', $this->settings );
@@ -248,7 +250,7 @@ if( !class_exists( 'WPPSSettings' ) )
 			add_settings_field(
 				WordPressPluginSkeleton::PREFIX . 'field-example1',
 				'Example Field 1',
-				__CLASS__ . '::markupFields',
+				array( $this, 'markupFields' ),
 				WordPressPluginSkeleton::PREFIX . 'settings',
 				WordPressPluginSkeleton::PREFIX . 'section-basic',
 				array( 'label_for' => WordPressPluginSkeleton::PREFIX . 'field-example1' )
@@ -268,7 +270,7 @@ if( !class_exists( 'WPPSSettings' ) )
 			add_settings_field(
 				WordPressPluginSkeleton::PREFIX . 'field-example2',
 				'Example Field 2',
-				__CLASS__ . '::markupFields',
+				array( $this, 'markupFields' ),
 				WordPressPluginSkeleton::PREFIX . 'settings',
 				WordPressPluginSkeleton::PREFIX . 'section-advanced',
 				array( 'label_for' => WordPressPluginSkeleton::PREFIX . 'field-example2' )
@@ -300,7 +302,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		 * @author Ian Dunn <ian.dunn@mpangodev.com>
 		 * @param array $field
 		 */
-		public static function markupFields( $field )
+		public function markupFields( $field )
 		{
 			switch( $field[ 'label_for' ] )
 			{

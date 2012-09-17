@@ -3,14 +3,14 @@
 if( $_SERVER[ 'SCRIPT_FILENAME' ] == __FILE__ )
 	die( 'Access denied.' );
 
-if( !class_exists( 'WPPSCustomPostType' ) )
+if( !class_exists( 'WPPSCPTExample' ) )
 {
 	/**
 	 * Creates a custom post type and associates taxonomies
 	 * @package WordPressPluginSkeleton
 	 * @author Ian Dunn <ian@iandunn.name>
 	 */
-	class WPPSCustomPostType extends WPPSModule
+	class WPPSCPTExample extends WPPSModule implements WPPSCustomPostType
 	{
 		protected static $readableProperties	= array();
 		protected static $writeableProperties	= array();
@@ -174,13 +174,13 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 			{
 				case WordPressPluginSkeleton::PREFIX . 'example-box':
 					$exampleBoxField = get_post_meta( $post->ID, WordPressPluginSkeleton::PREFIX . 'example-box-field', true );
-					require_once( dirname( __DIR__ ) . '/views/wpps-custom-post-type/metabox-example-box.php' );
+					require_once( dirname( __DIR__ ) . '/views/wpps-cpt-example/metabox-example-box.php' );
 				break;
 				
 				/*
 				case WordPressPluginSkeleton::PREFIX . 'some-other-box':
 					$someOtherField = get_post_meta( $post->ID, WordPressPluginSkeleton::PREFIX . 'some-other-field', true );
-					require_once( dirname( __DIR__ ) . '/views/wpps-custom-post-type/metabox-some-other-box.php' );
+					require_once( dirname( __DIR__ ) . '/views/wpps-cpt-example/metabox-some-other-box.php' );
 				break;
 				*/
 			}
@@ -286,7 +286,7 @@ if( !class_exists( 'WPPSCustomPostType' ) )
 		{
 			return true;
 		}
-	} // end WPPSCustomPostType
+	} // end WPPSCPTExample
 }
 
 ?>

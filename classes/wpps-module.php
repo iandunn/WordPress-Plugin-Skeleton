@@ -64,7 +64,7 @@ if( !class_exists( 'WPPSModule' ) )
 		 */
 		 
 		/**
-		 * Provides access to a single instance of the class using the singleton pattern
+		 * Provides access to a single instance of a module using the singleton pattern
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 * @return object

@@ -26,6 +26,7 @@ if( !class_exists( 'UnitTestWPPSSettings' ) )
 		public function testValidateSettings()
 		{
 			// Valid settings
+			$this->WPPSSettings->init();
 			$validSettings = array(
 				'basic'		=> array(
 					'field-example1'	=> 'valid data'
@@ -43,6 +44,7 @@ if( !class_exists( 'UnitTestWPPSSettings' ) )
 			
 			
 			// Invalid settings
+			$this->WPPSSettings->init();
 			$invalidSettings = array(
 				'basic'		=> array(
 					'field-example1'	=> 'invalid data'
@@ -60,8 +62,5 @@ if( !class_exists( 'UnitTestWPPSSettings' ) )
 		}
 	} // end UnitTestWPPSSettings
 }
-
-// Create any necessary stubs
-if( !function_exists( 'add_settings_error' ) ) { function add_settings_error() {} }
 
 ?>
