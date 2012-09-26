@@ -19,7 +19,7 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 		protected static $writeableProperties	= array();
 		protected $modules;
 		
-		const VERSION		= '0.2';
+		const VERSION		= '0.3';
 		const PREFIX		= 'wpps_';
 		const DEBUG_MODE	= false;
 		

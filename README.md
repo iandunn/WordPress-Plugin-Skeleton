@@ -49,34 +49,14 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 
 
 * Next / In Progress
-	* Test in multisite
-	* commit 'accessing settings through magic get/setters'
-	* Checkout master, merge abstract
-	* Tag 0.2 and push tags to origin
-	* post followup on php-49
-		if anyone's curious, after more research made these changes
-		converted all classes to singletons (except the non-static one, which is meant for stuff that doesn't interact w/ api)
-		created abstract "module" class that all other classes extend
-		created interface for custom post types
-		check out code on github if interested
-	
-* High Priority
 	* Check existing forms for nonces, check_admin_referer();
 	* Add data validation to user options
 		* Add domain-level validation (verify type, format, whitelist values, etc)
 	* Add validation/sanization everywhere, and nonces, current_user_can(), then add as feature
 	* Add filters to everything, then add as feature
 	
+* High Priority
 	* Provide 2 examples of everything to make architecture more clear
-	* Ask other devs for feedback on most things being static, general OO design, etc
-		* If it's good, add #note about the static methods
-			http://iandunn.name/designing-object-oriented-plugins-for-a-procedural-application/
-			* http://stackoverflow.com/questions/2470552/is-there-anything-wrong-with-a-class-with-all-static-methods
-			http://scotty-t.com/2012/07/09/wp-you-oop/
-			http://xplus3.net/2011/03/08/rethinking-object-oriented-wordpress-plugins/comment-page-1/#comment-2923
-	* Have all classes disabled by default, to make isntallation quicker
-		* Maybe make WordPressPluginSkeleton::activate/upgrade/etc loops that add all activated classes. So you only have to activate a module in one places, instead of uncommenting several lines.
-		* This could integrate w/ the main class singleton having an array of modules/classes
 	* Add more sample classes, then add to features
 		* AJAX. Not really its own class, so maybe just add to CPT
 		* Shortcodes. Not really its own class, so maybe just add to CPT
