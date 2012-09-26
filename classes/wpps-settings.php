@@ -12,7 +12,7 @@ if( !class_exists( 'WPPSSettings' ) )
 	 */
 	class WPPSSettings extends WPPSModule
 	{
-		protected $settings;												// Note: this should be considered read-only. It won't be automatically updated during the script's execution when values change
+		protected $settings;
 		protected static $defaultSettings;
 		protected static $readableProperties	= array( 'settings' );
 		protected static $writeableProperties	= array( 'settings' );
@@ -31,6 +31,26 @@ if( !class_exists( 'WPPSSettings' ) )
 		protected function __construct()
 		{
 			$this->registerHookCallbacks();
+		}
+		
+		/**
+		 * Public setter for protected variables
+		 * Updates settings outside of the Settings API or other subsystems
+		 * 
+		 * @mvc Model
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param string $variable
+		 * @param array $value This will be merged with WPPSSettings->settings, so it should mimic the structure of the WPPSSettings::$defaultSettings. It only needs the contain the values that will change, though. See WordPressPluginSkeleton->upgrade() for an example.
+		 */
+		public function __set( $variable, $value )
+		{
+			// Note: WPPSModule::__set() is automatically called before this
+			
+			if( $variable != 'settings' )
+				return;
+			
+			$this->settings	= self::validateSettings( $value );
+			update_option( WordPressPluginSkeleton::PREFIX . 'settings', $this->settings );
 		}
 		
 		/**
@@ -62,7 +82,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		 * @author Ian Dunn <ian@iandunn.name>
 		 * @param bool $networkWide
 		 */
-		public static function activate( $networkWide )
+		public function activate( $networkWide )
 		{
 		}
 
@@ -71,7 +91,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		public static function deactivate()
+		public function deactivate()
 		{
 		}
 		
@@ -114,9 +134,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		 */
 		protected function isValid( $property = 'all' )
 		{
-			// validate settings?
-			
-			// have this run from __set()
+			// Note: __set() calls validateSettings(), so settings are never invalid
 			
 			return true;
 		}
@@ -143,7 +161,7 @@ if( !class_exists( 'WPPSSettings' ) )
 			);
 			
 			return array(
-				'db-version'		=> 0, 
+				'db-version'		=> '0', 
 				'basic'				=> $basic,
 				'advanced'			=> $advanced
 			);
@@ -165,20 +183,6 @@ if( !class_exists( 'WPPSSettings' ) )
 			return $settings;
 		}
 		
-		/**
-		 * Updates settings outside of the Settings API or other subsystems
-		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
-		 * @param array $newValues An array of new values to be merged with WPPSSettings::$settings. 
-		 */
-		public static function updateSettings( $newValues )
-		{
-			// repalce w/ __set() , and then extend it to call update_option() 
-			
-			$this->settings	= self::validateSettings( $newValues );
-			update_option( WordPressPluginSkeleton::PREFIX . 'settings', $this->settings );
-		} 
-		 
 		/**
 		 * Adds links to the plugin's action link section on the Plugins page
 		 * @mvc Model
@@ -315,7 +319,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		}
 
 		/**
-		 * Validates submitted setting values before they get saved to the database
+		 * Validates submitted setting values before they get saved to the database. Invalid data will be overwritten with defaults.
 		 * @mvc Model
 		 * @author Ian Dunn <ian.dunn@mpangodev.com>
 		 * @param array $newSettings
@@ -324,6 +328,9 @@ if( !class_exists( 'WPPSSettings' ) )
 		public function validateSettings( $newSettings )
 		{
 			$newSettings = shortcode_atts( $this->settings, $newSettings );
+			
+			if( !is_string( $newSettings[ 'db-version' ] ) )
+				$newSettings[ 'db-version' ] = WordPressPluginSkeleton::VERSION;
 			
 			
 			/*

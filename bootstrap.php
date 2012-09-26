@@ -66,9 +66,9 @@ if( wpps_requirementsMet() )
 
 	if( class_exists( 'WordPressPluginSkeleton' ) )
 	{
-		register_activation_hook( __FILE__, 'WordPressPluginSkeleton::activate' );
-		register_deactivation_hook( __FILE__, 'WordPressPluginSkeleton::deactivate' );
 		$wpps = WordPressPluginSkeleton::getInstance();
+		register_activation_hook( __FILE__,		array( $wpps, 'activate' ) );
+		register_deactivation_hook( __FILE__,	array( $wpps, 'deactivate' ) );
 	}
 }
 else

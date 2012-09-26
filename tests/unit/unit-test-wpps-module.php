@@ -43,9 +43,9 @@ if( !class_exists( 'UnitTestWPPSModule' ) )
 		public function testMagicGet()
 		{
 			$child = WPPSChildClass::getInstance();
-			$child->init();
 			
 			// Readable
+			$child->init();
 			$readableProperties = array( 'foo', 'bar' );
 			
 			foreach( $readableProperties as $property )
@@ -87,9 +87,9 @@ if( !class_exists( 'UnitTestWPPSModule' ) )
 		public function testMagicSet()
 		{
 			$child = WPPSChildClass::getInstance();
-			$child->init();
 			
 			// Writable
+			$child->init();
 			$writableProperties = array( 'foo' );
 			
 			foreach( $writableProperties as $property )
@@ -142,11 +142,11 @@ if( !class_exists( 'WPPSChildClass' ) )
 			$this->init();
 		}
 		
-		public static function activate( $networkWide )
+		public function activate( $networkWide )
 		{
 		}
 				
-		public static function deactivate()
+		public function deactivate()
 		{
 		}
 		
@@ -188,11 +188,11 @@ if( !class_exists( 'WPPSAnotherChildClass' ) )
 		}
 		
 		
-		public static function activate( $networkWide )
+		public function activate( $networkWide )
 		{
 		}
 				
-		public static function deactivate()
+		public function deactivate()
 		{
 		}
 		

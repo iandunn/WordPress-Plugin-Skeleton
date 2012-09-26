@@ -41,27 +41,6 @@ if( !class_exists( 'WPPSCPTExample' ) )
 		 */
 		
 		/**
-		 * Prepares site to use the plugin during activation
-		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
-		 * @param bool $networkWide
-		 */
-		public static function activate( $networkWide )
-		{
-			self::createPostType();
-			self::createTaxonomies();
-		}
-
-		/**
-		 * Rolls back activation procedures when de-activating the plugin
-		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
-		 */
-		public static function deactivate()
-		{
-		}
-		
-		/**
 		 * Registers the custom post type
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
@@ -250,6 +229,27 @@ if( !class_exists( 'WPPSCPTExample' ) )
 			add_action( 'init',			array( $this, 'init' ) );
 		}
 		
+		/**
+		 * Prepares site to use the plugin during activation
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param bool $networkWide
+		 */
+		public function activate( $networkWide )
+		{
+			self::createPostType();
+			self::createTaxonomies();
+		}
+
+		/**
+		 * Rolls back activation procedures when de-activating the plugin
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 */
+		public function deactivate()
+		{
+		} 
+		 
 		/**
 		 * Initializes variables
 		 * @mvc Controller

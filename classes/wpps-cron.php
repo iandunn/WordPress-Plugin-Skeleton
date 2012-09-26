@@ -35,44 +35,6 @@ if( !class_exists( 'WPPSCron' ) )
 		 */
 		
 		/**
-		 * Prepares site to use the plugin during activation
-		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
-		 * @param bool $networkWide
-		 */
-		public static function activate( $networkWide )
-		{
-			if( wp_next_scheduled( WordPressPluginSkeleton::PREFIX . 'cron_timed_jobs' ) === false )
-			{
-				wp_schedule_event(
-					current_time( 'timestamp' ),
-					WordPressPluginSkeleton::PREFIX . 'ten_minutes',
-					WordPressPluginSkeleton::PREFIX . 'cron_timed_jobs'
-				);
-			}
-				
-			if( wp_next_scheduled( WordPressPluginSkeleton::PREFIX . 'cron_example_job' ) === false )
-			{
-				wp_schedule_event(
-					current_time( 'timestamp' ),
-					WordPressPluginSkeleton::PREFIX . 'example_interval',
-					WordPressPluginSkeleton::PREFIX . 'cron_example_job'
-				);
-			}
-		}
-
-		/**
-		 * Rolls back activation procedures when de-activating the plugin
-		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
-		 */
-		public static function deactivate()
-		{
-			wp_clear_scheduled_hook( WordPressPluginSkeleton::PREFIX . 'timed_jobs' );
-			wp_clear_scheduled_hook( WordPressPluginSkeleton::PREFIX . 'example_job' );
-		}
-		
-		/**
 		 * Adds custom intervals to the cron schedule.
 		 * @mvc Model
 		 * @author Ian Dunn <ian@iandunn.name>
@@ -155,6 +117,44 @@ if( !class_exists( 'WPPSCron' ) )
 			add_action( 'init',													array( $this, 'init' ) );
 			
 			add_filter( 'cron_schedules',										__CLASS__ . '::addCustomCronIntervals' );
+		}
+		
+		/**
+		 * Prepares site to use the plugin during activation
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param bool $networkWide
+		 */
+		public function activate( $networkWide )
+		{
+			if( wp_next_scheduled( WordPressPluginSkeleton::PREFIX . 'cron_timed_jobs' ) === false )
+			{
+				wp_schedule_event(
+					current_time( 'timestamp' ),
+					WordPressPluginSkeleton::PREFIX . 'ten_minutes',
+					WordPressPluginSkeleton::PREFIX . 'cron_timed_jobs'
+				);
+			}
+				
+			if( wp_next_scheduled( WordPressPluginSkeleton::PREFIX . 'cron_example_job' ) === false )
+			{
+				wp_schedule_event(
+					current_time( 'timestamp' ),
+					WordPressPluginSkeleton::PREFIX . 'example_interval',
+					WordPressPluginSkeleton::PREFIX . 'cron_example_job'
+				);
+			}
+		}
+
+		/**
+		 * Rolls back activation procedures when de-activating the plugin
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 */
+		public function deactivate()
+		{
+			wp_clear_scheduled_hook( WordPressPluginSkeleton::PREFIX . 'timed_jobs' );
+			wp_clear_scheduled_hook( WordPressPluginSkeleton::PREFIX . 'example_job' );
 		}
 		
 		/**

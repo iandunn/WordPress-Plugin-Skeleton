@@ -49,28 +49,8 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 
 
 * Next / In Progress
-	* Refactor classes as extending abstract base module class
-		* Static methods are great for methods that take input, return output and never affect a global state. Ones that always return same output given same input. But they should never be used if they affect a global state.
-			Scan each function in the modules to see if it should really be static		
-				* settings validatorfieldoptoins
-		update phpdoc for upgrade/actiavet b/c of new var
-		* activate/deactivte/singleactive have to be non-static b/c of calling modules
-			see sweatshop warning plugin for solution
-			activate new site pass networkwide
-			updatesettings non-static, but maybe going away anyway
-		* test activate/deactive
-		* foreach( $this->modules as $module ) should do "as &$module", or does that happen automatically? 
-		
-	* Is making WPPSSettings::$settings public the right way to share it across classes? Maybe use magic getters instead with readonly?
-		Yeah, just make it a protected var with w/ readable through __get().
-			main class can use $this->modules[settings]->settings
-			other modules can use $settings = settings::getinstance->settings
-		replace updatesettings() with __set().
-			if(property==settings) update_option(...)
-		unit test $foo->settings = array() and $foo->settings['field'] = 'string'
-		have validatefieldvalues() take indiviaul attribute like isvalid does?
-		remove note about how it should be considered readonly? probably
-	
+	* Test in multisite
+	* commit 'accessing settings through magic get/setters'
 	* Checkout master, merge abstract
 	* Tag 0.2 and push tags to origin
 	* post followup on php-49
@@ -131,6 +111,9 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Add BGMP release checklist? Entire TODO file?
 	* Look for @todo's and cleanup
 	* Update requirements warning language. Primary concern is more about PHP 5.3 rather than PHP 5.
+	* Write a shell script for renaming class names, variables, etc?
+	* Maybe there's a way WordPressPluginSkeleton->upgrade() can do settings[ 'db-version' ] = x instead of = array( 'db-version' => x );
+		* http://mwop.net/blog/131-Overloading-arrays-in-PHP-5.2.0.html
 	 
 * Low Priority
 	* Better singular/plural handling for custom post type names

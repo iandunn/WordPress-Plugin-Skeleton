@@ -94,16 +94,17 @@ if( !class_exists( 'WPPSModule' ) )
 		/**
 		 * Prepares sites to use the plugin during single or network-wide activation
 		 * @mvc Controller
+		 * @param bool $networkWide
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		abstract public static function activate( $networkWide );
+		abstract public function activate( $networkWide );
 
 		/**
 		 * Rolls back activation procedures when de-activating the plugin
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		abstract public static function deactivate();
+		abstract public function deactivate();
 		
 		/**
 		 * Register callbacks for actions and filters
@@ -123,6 +124,7 @@ if( !class_exists( 'WPPSModule' ) )
 		 * Checks if the plugin was recently updated and upgrades if necessary
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param string $dbVersion
 		 */
 		abstract public function upgrade( $dbVersion = 0 );
 				 

@@ -60,6 +60,27 @@ if( !class_exists( 'UnitTestWPPSSettings' ) )
 			$this->assertNotEqual( $invalidSettings[ 'advanced' ][ 'field-example2' ], $cleanSettings[ 'advanced' ][ 'field-example2' ] );
 			
 		}
+
+		/*
+		 * __set()
+		 */
+		public function testMagicSet()
+		{
+			// Test that fields are validated
+			$this->WPPSSettings->init();
+			$this->WPPSSettings->settings = array( 'db-version' => array() );
+			$this->assertEqual( $this->WPPSSettings->settings[ 'db-version' ], WordPressPluginSkeleton::VERSION );
+			
+			// Test that values gets written to database
+			$this->WPPSSettings->settings = array( 'db-version' => '5' );
+			$this->WPPSSettings->init();
+			$this->assertEqual( $this->WPPSSettings->settings[ 'db-version' ], '5' );
+			$this->WPPSSettings->settings = array( 'db-version' => WordPressPluginSkeleton::VERSION );
+			
+			// Test that setting deep values triggers error
+			$this->expectError( new PatternExpectation( '/Indirect modification of overloaded property/i' ) );
+   			$this->WPPSSettings->settings[ 'db-version' ] = WordPressPluginSkeleton::VERSION;
+		}
 	} // end UnitTestWPPSSettings
 }
 
