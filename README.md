@@ -39,21 +39,27 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 * Reset version number to 0.1
 * Find/replace class names/slugs
 * git mv files to match class slugs
-* Comment out references to classes that aren't needed.
+* Comment out references to classes that aren't needed now. Delete ones that will never be needed.
 * Rename generic comments, method names, etc to describe their specific implementations. 
-* If you're not using a custom post type or something else that updates the rewrite rules, you can remove the flush_rewrite_rules() call in WordPresPluginSkeleton::activate() and ::deactivate().
-* For unit testing, install [SimpleTest for WordPress](http://wordpress.org/extend/plugins/simpletest-for-wordpress/) and use a shortcode like this: [simpletest name="WordPress Plugin Skeleton Unit Test Suite" path="/wordpress-plugin-skeleton/tests/unit/wpps-unit-test-suite.php"]
+* If you're not using a custom post type or something else that updates the rewrite rules, you can comment out the flush_rewrite_rules() call in WordPresPluginSkeleton::activate() and ::deactivate().
+* For unit testing, install [SimpleTest for WordPress](http://wordpress.org/extend/plugins/simpletest-for-wordpress/) and use a shortcode like this: [simpletest name="WordPress Plugin Skeleton Unit Test Suite" path="/wordpress-plugin-skeleton/tests/wpps-test-suite.php"]
 
 
 ## TODO
 
 
-* Next
+* Next / In Progress
 	* Refactor classes as extending abstract base module class
 		* Static methods are great for methods that take input, return output and never affect a global state. Ones that always return same output given same input. But they should never be used if they affect a global state.
 			Scan each function in the modules to see if it should really be static		
 				* settings validatorfieldoptoins
 		update phpdoc for upgrade/actiavet b/c of new var
+		* activate/deactivte/singleactive have to be non-static b/c of calling modules
+			see sweatshop warning plugin for solution
+			activate new site pass networkwide
+			updatesettings non-static, but maybe going away anyway
+		* test activate/deactive
+		* foreach( $this->modules as $module ) should do "as &$module", or does that happen automatically? 
 		
 	* Is making WPPSSettings::$settings public the right way to share it across classes? Maybe use magic getters instead with readonly?
 		Yeah, just make it a protected var with w/ readable through __get().
@@ -67,7 +73,12 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	
 	* Checkout master, merge abstract
 	* Tag 0.2 and push tags to origin
-	
+	* post followup on php-49
+		if anyone's curious, after more research made these changes
+		converted all classes to singletons (except the non-static one, which is meant for stuff that doesn't interact w/ api)
+		created abstract "module" class that all other classes extend
+		created interface for custom post types
+		check out code on github if interested
 	
 * High Priority
 	* Check existing forms for nonces, check_admin_referer();
@@ -100,7 +111,10 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 		* Things like get_post_types() and check if it's present, is_post_type_hierarchical(), etc
 		* Ceck that cron jobs and intervals are registered, that settings pages/sections/fields are registered, etc
 		* Move test suite to main tests/ dir instead of in unit sub-sir 
-		* Fire cron job and test that it affected something 
+		* Fire cron job and test that it affected something
+		* activation/deactivation? 
+	* When replacing "WordPress Plugin Skeleton" on installation, it also replaces the "this was built on..." notice in bootstrap.
+		* Change bootstrap text to avoid - replace spaces with underscores?
 	
 * Medium Priority
 	* Look through current code for best practices to add to checklist
@@ -116,6 +130,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* BGMP addFeaturedImageSupport()
 	* Add BGMP release checklist? Entire TODO file?
 	* Look for @todo's and cleanup
+	* Update requirements warning language. Primary concern is more about PHP 5.3 rather than PHP 5.
 	 
 * Low Priority
 	* Better singular/plural handling for custom post type names
@@ -126,7 +141,8 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Add a status icon for each of the plugin requirements in the requirements-not-met view, so the user can easily tell which are met and which aren't
 	* In page settings view, you should be able to grab the title from an API function instead of manually typing it
 	* Clear admin notices when tearing down unit tests so that they don't show up on the next normal page load
-	 
+	* Add command to instructions to clear git log/history/commits etc, so that it starts fresh?
+	
 	
 ## New Code Checklist
 

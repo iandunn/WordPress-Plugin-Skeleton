@@ -174,16 +174,18 @@ if( !class_exists( 'WPPSCPTExample' ) )
 			{
 				case WordPressPluginSkeleton::PREFIX . 'example-box':
 					$exampleBoxField = get_post_meta( $post->ID, WordPressPluginSkeleton::PREFIX . 'example-box-field', true );
-					require_once( dirname( __DIR__ ) . '/views/wpps-cpt-example/metabox-example-box.php' );
+					$view = 'wpps-cpt-example/metabox-example-box.php';
 				break;
 				
 				/*
 				case WordPressPluginSkeleton::PREFIX . 'some-other-box':
 					$someOtherField = get_post_meta( $post->ID, WordPressPluginSkeleton::PREFIX . 'some-other-field', true );
-					require_once( dirname( __DIR__ ) . '/views/wpps-cpt-example/metabox-some-other-box.php' );
+				 	$view = 'wpps-cpt-example/metabox-another-box.php';
 				break;
 				*/
 			}
+			
+			require_once( dirname( __DIR__ ) . '/views/' . $view );
 		}
 
 		/**

@@ -8,7 +8,7 @@ Author: Ian Dunn
 Author URI: http://iandunn.name
 */
 
-/* This plugin was built on top of WordPress Plugin Skeleton by Ian Dunn. See https://github.com/iandunn/WordPress-Plugin-Skeleton for details. */
+/* This plugin was built on top of WordPress-Plugin-Skeleton by Ian Dunn. See https://github.com/iandunn/WordPress-Plugin-Skeleton for details. */
 
 if( $_SERVER[ 'SCRIPT_FILENAME' ] == __FILE__ )
 	die( 'Access denied.' );
@@ -27,10 +27,10 @@ function wpps_requirementsMet()
 	global $wp_version;
 	//require_once( ABSPATH .'/wp-admin/includes/plugin.php' );		// to get is_plugin_active() early
 	
-	if( version_compare( PHP_VERSION, WPPS_REQUIRED_PHP_VERSION, '<') )
+	if( version_compare( PHP_VERSION, WPPS_REQUIRED_PHP_VERSION, '<' ) )
 		return false;
 	
-	if( version_compare( $wp_version, WPPS_REQUIRED_WP_VERSION, "<") )
+	if( version_compare( $wp_version, WPPS_REQUIRED_WP_VERSION, '<' ) )
 		return false;
 
 	//if( !is_plugin_active( 'plugin-directory/plugin-file.php' ) )
