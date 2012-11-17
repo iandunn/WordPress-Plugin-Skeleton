@@ -58,7 +58,6 @@ if( !class_exists( 'UnitTestWPPSSettings' ) )
 			$cleanSettings = $this->WPPSSettings->validateSettings( $invalidSettings );
 			$this->assertNotEqual( $invalidSettings[ 'basic' ][ 'field-example1' ], $cleanSettings[ 'basic' ][ 'field-example1' ] );
 			$this->assertNotEqual( $invalidSettings[ 'advanced' ][ 'field-example2' ], $cleanSettings[ 'advanced' ][ 'field-example2' ] );
-			
 		}
 
 		/*

@@ -41,9 +41,9 @@ function wpps_wrapper( $ )
 		 */
 		exampleHandler : function( event )
 		{
-			event.preventDefault();
-			
 			alert( $( this ).attr( 'href' ) );
+			
+			event.preventDefault();
 		}
 	}; // end wpps
 	

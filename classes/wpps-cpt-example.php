@@ -6,7 +6,7 @@ if( $_SERVER[ 'SCRIPT_FILENAME' ] == __FILE__ )
 if( !class_exists( 'WPPSCPTExample' ) )
 {
 	/**
-	 * Creates a custom post type and associates taxonomies
+	 * Creates a custom post type and associated taxonomies
 	 * @package WordPressPluginSkeleton
 	 * @author Ian Dunn <ian@iandunn.name>
 	 */
@@ -70,16 +70,16 @@ if( !class_exists( 'WPPSCPTExample' ) )
 				);
 
 				$postTypeParams = array(
-					'labels'			=> $labels,
-					'singular_label'	=> self::POST_TYPE_NAME,
-					'public'			=> true,
-					'menu_position'		=> 20,
-					'hierarchical'		=> true,
-					'capability_type'	=> 'post',
-					'has_archive'		=> true,
-					'rewrite'			=> array( 'slug' => self::POST_TYPE_SLUG, 'with_front' => false ),
-					'query_var'			=> true,
-					'supports'			=> array( 'title', 'editor', 'author', 'thumbnail', 'revisions' )
+					'labels'				=> $labels,
+					'singular_label'		=> self::POST_TYPE_NAME,
+					'public'				=> true,
+					'menu_position'			=> 20,
+					'hierarchical'			=> true,
+					'capability_type'		=> 'post',
+					'has_archive'			=> true,
+					'rewrite'				=> array( 'slug' => self::POST_TYPE_SLUG, 'with_front' => false ),
+					'query_var'				=> true,
+					'supports'				=> array( 'title', 'editor', 'author', 'thumbnail', 'revisions' )
 				);
 
 				$postType = register_post_type(

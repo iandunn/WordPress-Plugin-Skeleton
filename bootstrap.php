@@ -3,12 +3,16 @@
 Plugin Name: WordPress Plugin Skeleton
 Plugin URI: https://github.com/iandunn/WordPress-Plugin-Skeleton
 Description: The skeleton for an object-oriented/MVC WordPress plugin
-Version: 0.3
+Version: 0.4a
 Author: Ian Dunn
 Author URI: http://iandunn.name
 */
 
-/* This plugin was built on top of WordPress-Plugin-Skeleton by Ian Dunn. See https://github.com/iandunn/WordPress-Plugin-Skeleton for details. */
+/* 
+ * This plugin was built on top of WordPress-Plugin-Skeleton by Ian Dunn.
+ * See https://github.com/iandunn/WordPress-Plugin-Skeleton for details.
+ */
+
 
 if( $_SERVER[ 'SCRIPT_FILENAME' ] == __FILE__ )
 	die( 'Access denied.' );
@@ -57,10 +61,9 @@ function wpps_requirementsError()
 }
 
 // Check requirements and load main class
+// The main program needs to be in a separate file that only gets loaded if the plugin requirements are met. Otherwise older PHP installations could crash when trying to parse it.
 if( wpps_requirementsMet() )
 {
-	// Note: The main program needs to be in a separate file to avoid older PHP installations parsing it and crashing
-	
 	require_once( dirname( __FILE__ ) . '/classes/wpps-module.php' );
 	require_once( dirname( __FILE__ ) . '/classes/wordpress-plugin-skeleton.php' );
 

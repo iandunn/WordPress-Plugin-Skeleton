@@ -6,6 +6,8 @@
 		<?php settings_fields( WordPressPluginSkeleton::PREFIX . 'settings' ); ?>
 		<?php do_settings_sections( WordPressPluginSkeleton::PREFIX . 'settings' ); ?>
 
-		<p class="submit"><input type="submit" name="submit" id="submit" class="button-primary" value="<?php esc_attr_e( 'Save Changes' ); ?>"  /></p>
+		<p class="submit">
+			<input type="submit" name="submit" id="submit" class="button-primary" value="<?php esc_attr_e( 'Save Changes' ); ?>"  />
+		</p>
 	</form>
 </div> <!-- .wrap -->

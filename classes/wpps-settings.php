@@ -201,7 +201,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		/**
 		 * Adds pages to the Admin Panel menu
 		 * @mvc Controller
-		 * @author Ian Dunn <ian.dunn@mpangodev.com>
+		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		public static function registerSettingsPages()
 		{
@@ -221,7 +221,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		/**
 		 * Creates the markup for the Settings page
 		 * @mvc Controller
-		 * @author Ian Dunn <ian.dunn@mpangodev.com>
+		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		public static function markupSettingsPage()
 		{
@@ -234,7 +234,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		/**
 		 * Registers settings sections, fields and settings
 		 * @mvc Controller
-		 * @author Ian Dunn <ian.dunn@mpangodev.com>
+		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		public function registerSettings()
 		{
@@ -292,7 +292,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		/**
 		 * Adds the section introduction text to the Settings page
 		 * @mvc Controller
-		 * @author Ian Dunn <ian.dunn@mpangodev.com>
+		 * @author Ian Dunn <ian@iandunn.name>
 		 * @param array $section
 		 */
 		public static function markupSectionHeaders( $section )
@@ -303,7 +303,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		/**
 		 * Adds the map-width field to the Settings page
 		 * @mvc Controller
-		 * @author Ian Dunn <ian.dunn@mpangodev.com>
+		 * @author Ian Dunn <ian@iandunn.name>
 		 * @param array $field
 		 */
 		public function markupFields( $field )
@@ -321,7 +321,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		/**
 		 * Validates submitted setting values before they get saved to the database. Invalid data will be overwritten with defaults.
 		 * @mvc Model
-		 * @author Ian Dunn <ian.dunn@mpangodev.com>
+		 * @author Ian Dunn <ian@iandunn.name>
 		 * @param array $newSettings
 		 * @return array
 		 */
@@ -394,7 +394,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		/**
 		 * Validates submitted user field values before they get saved to the database
 		 * @mvc Model
-		 * @author Ian Dunn <ian.dunn@mpangodev.com>
+		 * @author Ian Dunn <ian@iandunn.name>
 		 * @param int $userID
 		 * @param array $userFields
 		 * @return array

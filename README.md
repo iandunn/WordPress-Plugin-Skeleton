@@ -7,7 +7,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 
 * Minimal, clean and organized
 * Object-oriented
-* Uses [the Model-View-Controller pattern](http://www.codinghorror.com/blog/2008/05/understanding-model-view-controller.html)
+* Implements the [Model-View-Controller](http://book.cakephp.org/2.0/en/cakephp-overview/understanding-model-view-controller.html) pattern
 * Sample classes
 	* Custom post type and taxonomies
 	* Plugin settings
@@ -31,6 +31,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 * cd /var/www/vhosts/example.com/content/plugins
 * git clone https://github.com/iandunn/WordPress-Plugin-Skeleton.git plugin-slug
 * cd plugin-slug
+* git checkout [latest stable tag]
 * git submodule init
 * git submodule update
 * git remote rm origin
@@ -49,17 +50,55 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 
 
 * Next / In Progress
+	* check all functions for proper mvc separation
+		make sure controllers aren't definiing data, only calling it from models
+			ctp lable/params should be in model or maybe just in init
+			same for tax params
+			
+		make sure models aren't including views, only controllers do that
+		make sure views aren't calling models (or API), that the controller provides data it for them?
+		
+		
+		fireJobAtTime seems a bit of model and a bit of conrtoller. maybe leans more towards controller?
+		settings __set looks more like a controller
+		getSettings more of a model?
+		
+		move images,css to views dir?
+			maybe js too?
+			even if that's technically correct, maybe leave in root b/c it's more practical?
+			
+
+	
+	* oop
+		* modules are tightly coupled? try to loosen?
+		* make module::instances protected, so that all the modules can access each other?
+			* or should it be private? they can use ::getinstance instead
+		* make $readableProperties aprt of module, and inherit? 
+		* rename non-static-class to something else? 
+			difference is that it's not a module.
+			doesn't interact w/ api, would just be on it's own.
+		* cpt should be inheritence instead of interface?
+			 
+	
+	* Shortcodes for mvc presentation. Not really its own class, so maybe just add to CPT
+		* add to feature list
 	* Check existing forms for nonces, check_admin_referer();
 	* Add data validation to user options
 		* Add domain-level validation (verify type, format, whitelist values, etc)
 	* Add validation/sanization everywhere, and nonces, current_user_can(), then add as feature
 	* Add filters to everything, then add as feature
+	* Make WPPSCustomPostType an abstract class instead of interface? It would extend WPPSModule
+		* but then the cpt class couldn't define activate() etc? well, it would extend it
+		* example just sets up a var to define $labels, etc ?
+	* move trash/untrash return stuff in cpt save() to abstract class instead of interface? 
 	
 * High Priority
+	* Change models to return a WP_Error instead of false or null, so that controllers can get a detailed error message
+		* Models shouldn't ever add notices, only return error to controller so it can add notice
+		* Throw exception if encounter unexpected condition, but return WP_Error if just need to return early
 	* Provide 2 examples of everything to make architecture more clear
 	* Add more sample classes, then add to features
 		* AJAX. Not really its own class, so maybe just add to CPT
-		* Shortcodes. Not really its own class, so maybe just add to CPT
 		* Look at BGMP and other past plugins for ideas
 		* Widgets. Write an interface.
 	* Javascript
@@ -75,6 +114,9 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 		* activation/deactivation? 
 	* When replacing "WordPress Plugin Skeleton" on installation, it also replaces the "this was built on..." notice in bootstrap.
 		* Change bootstrap text to avoid - replace spaces with underscores?
+	* Write shell script to rename 
+		* Ship as .txt file, so user has to manually rename to .sh and execute
+		* Output warning to delete script after finished
 	
 * Medium Priority
 	* Look through current code for best practices to add to checklist
@@ -94,6 +136,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Write a shell script for renaming class names, variables, etc?
 	* Maybe there's a way WordPressPluginSkeleton->upgrade() can do settings[ 'db-version' ] = x instead of = array( 'db-version' => x );
 		* http://mwop.net/blog/131-Overloading-arrays-in-PHP-5.2.0.html
+	* Add uninstall.php
 	 
 * Low Priority
 	* Better singular/plural handling for custom post type names
@@ -105,14 +148,20 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* In page settings view, you should be able to grab the title from an API function instead of manually typing it
 	* Clear admin notices when tearing down unit tests so that they don't show up on the next normal page load
 	* Add command to instructions to clear git log/history/commits etc, so that it starts fresh?
-	
+	* Use {$new_status}_{$post->post_type} instead of save_post in CPTs ?
+		* Otherwise run into problem where save_post only fires if a core field is changed?
+	* Refactor the conditionals at the begining of CPTExample::savePost() so they can be reused?
+	* Break CPT TAG_NAME into TAG_NAME_SINGULAR and TAG_NAME_PLURAL
+	* validateSettigns() - force db-version to equal self::db-version? no reason why it should ever be set to anything else?
 	
 ## New Code Checklist
 
 * Security
 	* Input validation for domain correctness and security.
+	* Output sanitization when sending untrusted data to browser.
+		* All data should be considered untrusted.
+		* Escape hardcoded data to future-proof.
 	* Pass any manual SQL queries through $wpdb->prepare().
-	* Output sanitization when sending untrusted data to browser. All data should be considered untrusted.
 	* Add/check nonces for all forms and AJAX requests.
 	* Make sure current user is authorized to perform the action with current_user_can().
 * Add filters

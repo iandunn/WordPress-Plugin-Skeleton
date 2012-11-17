@@ -7,6 +7,8 @@ if( !class_exists( 'WPPSCron' ) )
 {
 	/**
 	 * Handles cron jobs and intervals
+	 * Note: Because WP-Cron only fires hooks when HTTP requests are made, make sure that an external monitoring service pings the site regularly to ensure hooks are fired frequently
+	 * 
 	 * @package WordPressPluginSkeleton
 	 * @author Ian Dunn <ian@iandunn.name>
 	 */
@@ -95,6 +97,8 @@ if( !class_exists( 'WPPSCron' ) )
 		{
 			if( did_action( WordPressPluginSkeleton::PREFIX . 'cron_example_job' ) !== 1 )
 				return;
+			
+			// Do stuff
 			
 			WordPressPluginSkeleton::$notices->enqueue( __METHOD__ . ' cron job fired.' );
 		}
