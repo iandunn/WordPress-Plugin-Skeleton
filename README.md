@@ -69,9 +69,10 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 		* make module::instances protected, so that all the modules can access each other?
 			* or should it be private? they can use ::getinstance instead
 		* make $readableProperties aprt of module, and inherit? 
-		* rename non-static-class to something else? 
-			* difference is that it's not a module.
+		* rename instance-class to something else? 
+			* difference is that it's not a module, more of a standalone thing to instantiate multiple objects
 			* doesn't interact w/ api, would just be on it's own.
+			* maybe make a base module for singleton modules and one for instance claseses? or just ditch singleton completely and then this could inherit current module? 
 		* cpt should be inheritence instead of interface?
 	* Check existing forms for nonces, check_admin_referer();
 	* Add data validation to user options

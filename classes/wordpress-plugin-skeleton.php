@@ -104,7 +104,7 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 
 
 		/*
-		 * Non-static methods
+		 * Instance methods
 		 */
 		
 		/**
@@ -216,8 +216,8 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 			
 			try
 			{
-				$nonStatic = new WPPSNonStaticClass( 'Non-static example', '42' );
-				//self::$notices->enqueue( $nonStatic->foo .' '. $nonStatic->bar );
+				$instanceExample = new WPPSInstanceClass( 'Instance example', '42' );
+				//self::$notices->enqueue( $instanceExample->foo .' '. $instanceExample->bar );
 			}
 			catch( Exception $e )
 			{
@@ -264,7 +264,7 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 	require_once( dirname( __FILE__ ) . '/wpps-cpt-example.php' );
 	require_once( dirname( __FILE__ ) . '/wpps-settings.php' );
 	require_once( dirname( __FILE__ ) . '/wpps-cron.php' );
-	require_once( dirname( __FILE__ ) . '/wpps-non-static-class.php' );
+	require_once( dirname( __FILE__ ) . '/wpps-instance-class.php' );
 }
 
 ?>

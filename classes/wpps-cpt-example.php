@@ -284,7 +284,7 @@ if( !class_exists( 'WPPSCPTExample' ) )
 		
 		
 		/*
-		 * Non-static methods
+		 * Instance methods
 		 */
 		 
 		/**

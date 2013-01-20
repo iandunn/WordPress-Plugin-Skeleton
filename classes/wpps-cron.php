@@ -105,7 +105,7 @@ if( !class_exists( 'WPPSCron' ) )
 		
 		
 		/*
-		 * Non-static methods
+		 * Instance methods
 		 */
 		 
 		/**

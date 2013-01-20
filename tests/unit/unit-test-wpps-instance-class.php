@@ -1,19 +1,19 @@
 <?php
 
 require_once( WP_PLUGIN_DIR . '/simpletest-for-wordpress/WpSimpleTest.php' );
-require_once( dirname( dirname( __DIR__ ) ) . '/classes/wpps-non-static-class.php' );
+require_once( dirname( dirname( __DIR__ ) ) . '/classes/wpps-instance-class.php' );
 
 /**
- * Unit tests for WPPSNonStaticClass
+ * Unit tests for WPPSInstanceClass
  * Uses the SimpleTest For WordPress plugin
  * 
  * @package WordPressPluginSkeleton
  * @author Ian Dunn <ian@iandunn.name>
  * @link http://wordpress.org/extend/plugins/simpletest-for-wordpress/
  */
-if( !class_exists( 'UnitTestWPPSNonStaticClass' ) )
+if( !class_exists( 'UnitTestWPPSInstanceClass' ) )
 {
-	class UnitTestWPPSNonStaticClass extends UnitTestCase
+	class UnitTestWPPSInstanceClass extends UnitTestCase
 	{
 		/*
 		 * validateIsValid()
@@ -31,7 +31,7 @@ if( !class_exists( 'UnitTestWPPSNonStaticClass' ) )
 			{
 				try
 				{
-					$valid = new WPPSNonStaticClass( $pair[ 0 ], $pair[ 1 ] );
+					$valid = new WPPSInstanceClass( $pair[ 0 ], $pair[ 1 ] );
 					$this->pass();
 					
 					$valid->foo = $pair[ 0 ];
@@ -56,7 +56,7 @@ if( !class_exists( 'UnitTestWPPSNonStaticClass' ) )
 			{
 				try
 				{
-					$invalid = new WPPSNonStaticClass( $pair[ 0 ], $pair[ 1 ] );
+					$invalid = new WPPSInstanceClass( $pair[ 0 ], $pair[ 1 ] );
 					$this->fail( 'Expected an exception from ('. $pair[ 0 ] .', '. $pair[ 1 ] .').' );
 				}
 				

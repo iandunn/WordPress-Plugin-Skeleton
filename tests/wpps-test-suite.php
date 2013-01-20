@@ -18,7 +18,7 @@ if( !class_exists( 'WPPSTestSuite' ) )
 	
 			$this->addFile( dirname( __FILE__ ) . '/unit/unit-test-wpps-module.php' );
 			$this->addFile( dirname( __FILE__ ) . '/unit/unit-test-wpps-settings.php' );
-			$this->addFile( dirname( __FILE__ ) . '/unit/unit-test-wpps-non-static-class.php' );
+			$this->addFile( dirname( __FILE__ ) . '/unit/unit-test-wpps-instance-class.php' );
 		}
 		
 		/**

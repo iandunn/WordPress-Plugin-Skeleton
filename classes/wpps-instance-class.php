@@ -3,14 +3,14 @@
 if( $_SERVER[ 'SCRIPT_FILENAME' ] == __FILE__ )
 	die( 'Access denied.' );
 
-if( !class_exists( 'WPPSNonStaticClass' ) )
+if( !class_exists( 'WPPSInstanceClass' ) )
 {
 	/**
-	 * Example of a non-static class
+	 * Example of an instance class
 	 * @package WordPressPluginSkeleton
 	 * @author Ian Dunn <ian@iandunn.name>
 	 */
-	class WPPSNonStaticClass
+	class WPPSInstanceClass
 	{
 		protected $foo, $bar;
 		protected $readableProtectedVars, $writableProtectedVars;
@@ -91,7 +91,7 @@ if( !class_exists( 'WPPSNonStaticClass' ) )
 
 
 		/*
-	  	 * Non-static methods
+	  	 * Instance methods
 		 */
 
 		/**
@@ -119,18 +119,18 @@ if( !class_exists( 'WPPSNonStaticClass' ) )
 		}
 
 		/**
-		 * Does non-static stuff
+		 * Does instance stuff
 		 * @mvc Model
 		 * @author Ian Dunn <ian@iandunn.name>
 		 * @return bool
 		 */
-		public function doNonStaticStuff()
+		public function doInstanceStuff()
 		{
-			// do non-static stuff
+			// do instance stuff
 			
 			return true;
 		}
-	} // end WPPSNonStaticClass
+	} // end WPPSInstanceClass
 }
 
 ?>
