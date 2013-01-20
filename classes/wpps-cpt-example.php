@@ -52,44 +52,53 @@ if( !class_exists( 'WPPSCPTExample' ) )
 
 			if( !post_type_exists( self::POST_TYPE_SLUG ) )
 			{
-				$labels = array
-				(
-					'name'					=> self::POST_TYPE_NAME . 's',
-					'singular_name'			=> self::POST_TYPE_NAME,
-					'add_new'				=> 'Add New',
-					'add_new_item'			=> 'Add New '. self::POST_TYPE_NAME,
-					'edit'					=> 'Edit',
-					'edit_item'				=> 'Edit '. self::POST_TYPE_NAME,
-					'new_item'				=> 'New '. self::POST_TYPE_NAME,
-					'view'					=> 'View '. self::POST_TYPE_NAME . 's',
-					'view_item'				=> 'View '. self::POST_TYPE_NAME,
-					'search_items'			=> 'Search '. self::POST_TYPE_NAME . 's',
-					'not_found'				=> 'No '. self::POST_TYPE_NAME .'s found',
-					'not_found_in_trash'	=> 'No '. self::POST_TYPE_NAME .'s found in Trash',
-					'parent'				=> 'Parent '. self::POST_TYPE_NAME
-				);
-
-				$postTypeParams = array(
-					'labels'				=> $labels,
-					'singular_label'		=> self::POST_TYPE_NAME,
-					'public'				=> true,
-					'menu_position'			=> 20,
-					'hierarchical'			=> true,
-					'capability_type'		=> 'post',
-					'has_archive'			=> true,
-					'rewrite'				=> array( 'slug' => self::POST_TYPE_SLUG, 'with_front' => false ),
-					'query_var'				=> true,
-					'supports'				=> array( 'title', 'editor', 'author', 'thumbnail', 'revisions' )
-				);
-
-				$postType = register_post_type(
-					self::POST_TYPE_SLUG,
-					apply_filters( WordPressPluginSkeleton::PREFIX . 'post-type-params', $postTypeParams )
-				);
+				$postTypeParams = self::getPostTypeParams();
+				$postType = register_post_type( self::POST_TYPE_SLUG, $postTypeParams );
 				
 				if( is_wp_error( $postType ) )
 					WordPressPluginSkeleton::$notices->enqueue( __METHOD__ . ' error: '. $postType->get_error_message(), 'error' );
 			}
+		}
+
+		/**
+		 * Defines the parameters for the custom post type
+		 * @mvc Model
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @return array
+		 */
+		protected static function getPostTypeParams()
+		{
+			$labels = array
+			(
+				'name'					=> self::POST_TYPE_NAME . 's',
+				'singular_name'			=> self::POST_TYPE_NAME,
+				'add_new'				=> 'Add New',
+				'add_new_item'			=> 'Add New '. self::POST_TYPE_NAME,
+				'edit'					=> 'Edit',
+				'edit_item'				=> 'Edit '. self::POST_TYPE_NAME,
+				'new_item'				=> 'New '. self::POST_TYPE_NAME,
+				'view'					=> 'View '. self::POST_TYPE_NAME . 's',
+				'view_item'				=> 'View '. self::POST_TYPE_NAME,
+				'search_items'			=> 'Search '. self::POST_TYPE_NAME . 's',
+				'not_found'				=> 'No '. self::POST_TYPE_NAME .'s found',
+				'not_found_in_trash'	=> 'No '. self::POST_TYPE_NAME .'s found in Trash',
+				'parent'				=> 'Parent '. self::POST_TYPE_NAME
+			);
+
+			$postTypeParams = array(
+				'labels'				=> $labels,
+				'singular_label'		=> self::POST_TYPE_NAME,
+				'public'				=> true,
+				'menu_position'			=> 20,
+				'hierarchical'			=> true,
+				'capability_type'		=> 'post',
+				'has_archive'			=> true,
+				'rewrite'				=> array( 'slug' => self::POST_TYPE_SLUG, 'with_front' => false ),
+				'query_var'				=> true,
+				'supports'				=> array( 'title', 'editor', 'author', 'thumbnail', 'revisions' )
+			);
+			
+			return apply_filters( WordPressPluginSkeleton::PREFIX . 'post-type-params', $postTypeParams );
 		}
 
 		/**
@@ -104,22 +113,30 @@ if( !class_exists( 'WPPSCPTExample' ) )
 
 			if( !taxonomy_exists( self::TAG_SLUG ) )
 			{
-				$taxParams = array(
-					'label'					=> self::TAG_NAME,
-					'labels'				=> array( 'name' => self::TAG_NAME, 'singular_name' => self::TAG_NAME ),
-					'hierarchical'			=> true,
-					'rewrite'				=> array( 'slug' => self::TAG_SLUG ),
-					'update_count_callback'	=> '_update_post_term_count'
-				);
-
-				register_taxonomy(
-					self::TAG_SLUG,
-					self::POST_TYPE_SLUG,
-					apply_filters( WordPressPluginSkeleton::PREFIX . 'tag-taxonomy-params', $taxParams )
-				);
+				$tagTaxonomyParams = self::getTagTaxonomyParams();
+				register_taxonomy( self::TAG_SLUG, self::POST_TYPE_SLUG, $tagTaxonomyParams );
 			}
 		}
 		
+		/**
+		 * Defines the parameters for the custom taxonomy
+		 * @mvc Model
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @return array
+		 */
+		protected static function getTagTaxonomyParams()
+		{
+			$tagTaxonomyParams = array(
+				'label'					=> self::TAG_NAME,
+				'labels'				=> array( 'name' => self::TAG_NAME, 'singular_name' => self::TAG_NAME ),
+				'hierarchical'			=> true,
+				'rewrite'				=> array( 'slug' => self::TAG_SLUG ),
+				'update_count_callback'	=> '_update_post_term_count'
+			);
+			
+			return apply_filters( WordPressPluginSkeleton::PREFIX . 'tag-taxonomy-params', $tagTaxonomyParams );
+		}
+
 		/**
 		 * Adds meta boxes for the custom post type
 		 * @mvc Controller
@@ -164,7 +181,11 @@ if( !class_exists( 'WPPSCPTExample' ) )
 				*/
 			}
 			
-			require_once( dirname( __DIR__ ) . '/views/' . $view );
+			$view = dirname( __DIR__ ) . '/views/' . $view;
+			if( is_file( $view ) )
+				require_once( $view );
+			else
+				throw new Exception( __METHOD__ . " error: ". $view ." doesn't exist." );
 		}
 
 		/**
@@ -177,11 +198,12 @@ if( !class_exists( 'WPPSCPTExample' ) )
 		public static function savePost( $postID, $revision )
 		{
 			global $post;
+			$ignoredActions = array( 'trash', 'untrash', 'restore' );
 			
 			if( did_action( 'save_post' ) !== 1 )
 				return;
-
-			if( isset( $_GET[ 'action' ] ) && ( $_GET[ 'action' ] == 'trash' || $_GET[ 'action' ] == 'untrash' ) )
+			
+			if( isset( $_GET[ 'action' ] ) && in_array( $_GET[ 'action' ], $ignoredActions ) )
 				return;
 
 			if(	!$post || $post->post_type != self::POST_TYPE_SLUG || !current_user_can( 'edit_posts', $postID ) )
@@ -208,6 +230,58 @@ if( !class_exists( 'WPPSCPTExample' ) )
 				WordPressPluginSkeleton::$notices->enqueue( 'Example of failing validation', 'error' );
 		}
 		
+		/**
+		 * Defines the [wpps-cpt-shortcode] shortcode
+		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param array $attributes
+		 * return string
+		 */
+		public static function cptShortcodeExample( $attributes ) 
+		{
+			$attributes = apply_filters( WordPressPluginSkeleton::PREFIX . 'cpt-shortcode-example-attributes', $attributes );
+			$attributes = self::validateCPTShortcodeExampleAttributes( $attributes );
+			
+			ob_start();
+			require_once( dirname( __DIR__ ) . '/views/wpps-cpt-example/shortcode-cpt-shortcode-example.php' );
+			$output = ob_get_clean();
+			
+			return apply_filters( WordPressPluginSkeleton::PREFIX . 'cpt-shortcode-example', $output );
+		}
+		
+		/**
+		 * Validates the attributes for the [cpt-shortcode-example] shortcode
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param array $attributes
+		 * return array
+		 */
+		protected static function validateCPTShortcodeExampleAttributes( $attributes )
+		{
+			$defaults = self::getDefaultCPTShortcodeExampleAttributes();
+			$attributes = shortcode_atts( $defaults, $attributes );
+			
+			if( $attributes[ 'foo' ] != 'valid data' )
+				$attributes[ 'foo' ] = $defaults[ 'foo' ];
+			
+			return apply_filters( WordPressPluginSkeleton::PREFIX . 'validate-cpt-shortcode-example-attributes', $attributes );
+		}
+
+		/**
+		 * Defines the default arguments for the [cpt-shortcode-example] shortcode
+		 * @author Ian Dunn <ian@iandunn.name>
+		 * @param array
+		 * @return array
+		 */
+		protected static function getDefaultCPTShortcodeExampleAttributes()
+		{
+			$attributes = array(
+				'foo'	=> 'bar',
+				'bar'	=> 'foo'
+			);
+			
+			return apply_filters( WordPressPluginSkeleton::PREFIX . 'default-cpt-shortcode-example-attributes', $attributes );
+		}
+		
 		
 		/*
 		 * Non-static methods
@@ -221,12 +295,14 @@ if( !class_exists( 'WPPSCPTExample' ) )
 		public function registerHookCallbacks()
 		{
 			// NOTE: Make sure you update the did_action() parameter in the corresponding callback method when changing the hooks here
-			add_action( 'init',			__CLASS__ . '::createPostType' );
-			add_action( 'init',			__CLASS__ . '::createTaxonomies' );
-			add_action( 'admin_init',	__CLASS__ . '::addMetaBoxes' );
-			add_action( 'save_post',	__CLASS__ . '::savePost', 10, 2 );
+			add_action( 'init',						__CLASS__ . '::createPostType' );
+			add_action( 'init',						__CLASS__ . '::createTaxonomies' );
+			add_action( 'admin_init',				__CLASS__ . '::addMetaBoxes' );
+			add_action( 'save_post',				__CLASS__ . '::savePost', 10, 2 );
 			
-			add_action( 'init',			array( $this, 'init' ) );
+			add_action( 'init',						array( $this, 'init' ) );
+			
+			add_shortcode( 'cpt-shortcode-example',	__CLASS__ . '::cptShortcodeExample' );
 		}
 		
 		/**

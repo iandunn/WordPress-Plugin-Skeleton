@@ -6,18 +6,22 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 ## Features
 
 * Minimal, clean and organized
-* Object-oriented
-* Implements the [Model-View-Controller](http://book.cakephp.org/2.0/en/cakephp-overview/understanding-model-view-controller.html) pattern
-* Sample classes
+* Designed with object-oriented principles
+* Implements the Model-View-Controller pattern
+* Includes basic classes for:
 	* Custom post type and taxonomies
-	* Plugin settings
+	* A settings page
 	* Extra user profile fields
 	* WP-Cron jobs
-* Unit testing
-* Single and network-wide activation
-* Upgrade routine
-* CSS/JavaScript enqueing
-* JavaScript event handlers
+* Includes examples of common functionality
+	* Single and network-wide activation
+	* Upgrade routine
+	* Shortcodes
+	* CSS/JavaScript enqueing
+	* Input validation, output sanitization
+	* Custom hooks for extensibility
+	* JavaScript event handlers
+	* A test suite for unit testing with SimpleTest
 
 
 ## Notes
@@ -50,47 +54,35 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 
 
 * Next / In Progress
-	* check all functions for proper mvc separation
-		make sure controllers aren't definiing data, only calling it from models
-			ctp lable/params should be in model or maybe just in init
-			same for tax params
-			
-		make sure models aren't including views, only controllers do that
-		make sure views aren't calling models (or API), that the controller provides data it for them?
-		
-		
-		fireJobAtTime seems a bit of model and a bit of conrtoller. maybe leans more towards controller?
-		settings __set looks more like a controller
-		getSettings more of a model?
-		
-		move images,css to views dir?
-			maybe js too?
-			even if that's technically correct, maybe leave in root b/c it's more practical?
-			
-
-	
-	* oop
+	* Add shortcodes example 
+		* added, now write unit tests
+	* MVC refinement
+		* check all functions for proper mvc separation
+			* make sure controllers aren't definiing data, only calling it from models
+			* make sure models aren't including views, only controllers do that
+			* make sure views aren't calling models (or API), that the controller provides data it for them?
+		* maybe move images,css to views dir because they're part of view
+			* maybe js too?
+			* even if that's technically correct, maybe leave in root b/c it's more practical?
+	* OOP refinement
 		* modules are tightly coupled? try to loosen?
 		* make module::instances protected, so that all the modules can access each other?
 			* or should it be private? they can use ::getinstance instead
 		* make $readableProperties aprt of module, and inherit? 
 		* rename non-static-class to something else? 
-			difference is that it's not a module.
-			doesn't interact w/ api, would just be on it's own.
+			* difference is that it's not a module.
+			* doesn't interact w/ api, would just be on it's own.
 		* cpt should be inheritence instead of interface?
-			 
-	
-	* Shortcodes for mvc presentation. Not really its own class, so maybe just add to CPT
-		* add to feature list
 	* Check existing forms for nonces, check_admin_referer();
 	* Add data validation to user options
 		* Add domain-level validation (verify type, format, whitelist values, etc)
-	* Add validation/sanization everywhere, and nonces, current_user_can(), then add as feature
-	* Add filters to everything, then add as feature
+	* Add validation/sanization everywhere, and nonces, current_user_can()
+	* Add filters to everything
 	* Make WPPSCustomPostType an abstract class instead of interface? It would extend WPPSModule
 		* but then the cpt class couldn't define activate() etc? well, it would extend it
 		* example just sets up a var to define $labels, etc ?
-	* move trash/untrash return stuff in cpt save() to abstract class instead of interface? 
+	* Move trash/untrash return checks in cpt save() to abstract class instead of interface? 
+	
 	
 * High Priority
 	* Change models to return a WP_Error instead of false or null, so that controllers can get a detailed error message
@@ -117,6 +109,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Write shell script to rename 
 		* Ship as .txt file, so user has to manually rename to .sh and execute
 		* Output warning to delete script after finished
+	* Add do_action( WordPressPluginSkeleton::PREFIX . 'descriptive-name-before|after' ); to views so other devs can hook into them
 	
 * Medium Priority
 	* Look through current code for best practices to add to checklist
@@ -137,6 +130,12 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Maybe there's a way WordPressPluginSkeleton->upgrade() can do settings[ 'db-version' ] = x instead of = array( 'db-version' => x );
 		* http://mwop.net/blog/131-Overloading-arrays-in-PHP-5.2.0.html
 	* Add uninstall.php
+	* Definte constants during init hook callback and only if they haven't already been defined, so they can be overridden easily
+		* http://willnorris.com/2009/06/wordpress-plugin-pet-peeve-3-not-being-extensible
+	* Singleton unnecessary for front controller? http://stackoverflow.com/questions/4595964/who-needs-singletons/4596323#4596323
+	* cpt - support restore revisions. bug when restoring?
+	* change js/css to be for individual modules rather than whole plugin
+		* more modular and organized. could result in lots of http requests, but can concatinate/minify at runtime w/ other plugins
 	 
 * Low Priority
 	* Better singular/plural handling for custom post type names
@@ -153,6 +152,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Refactor the conditionals at the begining of CPTExample::savePost() so they can be reused?
 	* Break CPT TAG_NAME into TAG_NAME_SINGULAR and TAG_NAME_PLURAL
 	* validateSettigns() - force db-version to equal self::db-version? no reason why it should ever be set to anything else?
+	* Consider if it'd be useful to add any custom wp-cli commands, or extensions to Debug Bar or Debug This
 	
 ## New Code Checklist
 

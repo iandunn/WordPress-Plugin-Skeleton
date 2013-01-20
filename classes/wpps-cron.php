@@ -65,7 +65,7 @@ if( !class_exists( 'WPPSCron' ) )
 		
 		/**
 		 * Fires a cron job at a specific time of day, rather than on an interval
-		 * @mvc Model
+		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		public static function fireJobAtTime()

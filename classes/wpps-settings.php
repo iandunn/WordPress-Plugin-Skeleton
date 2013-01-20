@@ -37,7 +37,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		 * Public setter for protected variables
 		 * Updates settings outside of the Settings API or other subsystems
 		 * 
-		 * @mvc Model
+		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 * @param string $variable
 		 * @param array $value This will be merged with WPPSSettings->settings, so it should mimic the structure of the WPPSSettings::$defaultSettings. It only needs the contain the values that will change, though. See WordPressPluginSkeleton->upgrade() for an example.
@@ -169,7 +169,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		
 		/**
 		 * Retrieves all of the settings from the database
-		 * @mvc Controller
+		 * @mvc Model
 		 * @author Ian Dunn <ian@iandunn.name>
 		 * @return array
 		 */
