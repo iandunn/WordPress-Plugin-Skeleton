@@ -195,7 +195,7 @@ if( !class_exists( 'WPPSSettings' ) )
 			array_unshift( $links, '<a href="http://wordpress.org/extend/plugins/wordpress-plugin-skeleton/faq/">Help</a>' );
 			array_unshift( $links, '<a href="options-general.php?page='. WordPressPluginSkeleton::PREFIX . 'settings">Settings</a>' );
 			
-			return $links; 
+			return $links;
 		}
 		
 		/**
@@ -301,7 +301,7 @@ if( !class_exists( 'WPPSSettings' ) )
 		}
 
 		/**
-		 * Adds the map-width field to the Settings page
+		 * Delivers the markup for settings fields
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 * @param array $field
@@ -371,7 +371,7 @@ if( !class_exists( 'WPPSSettings' ) )
 			if( did_action( 'show_user_profile' ) !== 1 && did_action( 'edit_user_profile' ) !== 1 )
 				return;
 			
-			require_once( dirname( __DIR__ ) .'/views/wpps-settings/user-fields.php' );
+			require_once( dirname( __DIR__ ) . '/views/wpps-settings/user-fields.php' );
 		}
 
 		/**

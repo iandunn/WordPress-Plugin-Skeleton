@@ -259,7 +259,7 @@ if( !class_exists( 'WordPressPluginSkeleton' ) )
 		}
 	} // end WordPressPluginSkeleton
 	
-	require_once( dirname( __DIR__  ) . '/includes/IDAdminNotices/id-admin-notices.php' );
+	require_once( dirname( __DIR__ ) . '/includes/IDAdminNotices/id-admin-notices.php' );
 	require_once( dirname( __FILE__ ) . '/wpps-custom-post-type.php' );
 	require_once( dirname( __FILE__ ) . '/wpps-cpt-example.php' );
 	require_once( dirname( __FILE__ ) . '/wpps-settings.php' );

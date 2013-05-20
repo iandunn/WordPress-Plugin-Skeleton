@@ -28,16 +28,15 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 
 * I decided to not internationalize the skeleton because most of my clients don't need it and having to put all regular text in PHP strings annoys me. If you're distributing the plugin, though, then you should internationalize it.
 * I prefer having controllers and models in the same class/file, so I use an unofficial @mvc tag in the phpDoc comments to mentally keep track of which methods are controllers and which are models. 
+* I gave a presentation at the Seattle WordPress Developers Meetup about the principles behind the design of this plugin. You can [view the slides](http://iandunn.name/wp-oop-mvc/) if you're interested.
 
 
 ## Installation
 
 * cd /var/www/vhosts/example.com/content/plugins
-* git clone https://github.com/iandunn/WordPress-Plugin-Skeleton.git plugin-slug
+* git clone --recursive https://github.com/iandunn/WordPress-Plugin-Skeleton.git plugin-slug
 * cd plugin-slug
 * git checkout [latest stable tag]
-* git submodule init
-* git submodule update
 * git remote rm origin
 * git rm README.md
 * Update bootstrap.php headers
@@ -55,7 +54,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 
 * Next / In Progress
 	* Add shortcodes example 
-		* added, now write unit tests
+		* added, but need to write unit tests
 	* MVC refinement
 		* check all functions for proper mvc separation
 			* make sure controllers aren't definiing data, only calling it from models
@@ -71,6 +70,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 		* make $readableProperties aprt of module, and inherit? 
 		* rename instance-class to something else? 
 			* difference is that it's not a module, more of a standalone thing to instantiate multiple objects
+			* only for pure business logic classes that don't interact w/ api? and/or ones that use active record pattern?
 			* doesn't interact w/ api, would just be on it's own.
 			* maybe make a base module for singleton modules and one for instance claseses? or just ditch singleton completely and then this could inherit current module? 
 		* cpt should be inheritence instead of interface?
@@ -86,6 +86,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	
 	
 * High Priority
+	* Add current_user_can checks to metaboxes?
 	* Change models to return a WP_Error instead of false or null, so that controllers can get a detailed error message
 		* Models shouldn't ever add notices, only return error to controller so it can add notice
 		* Throw exception if encounter unexpected condition, but return WP_Error if just need to return early
@@ -111,6 +112,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 		* Ship as .txt file, so user has to manually rename to .sh and execute
 		* Output warning to delete script after finished
 	* Add do_action( WordPressPluginSkeleton::PREFIX . 'descriptive-name-before|after' ); to views so other devs can hook into them
+	* Capabilities requirements should use an actual capability instead of a role. Check constants, etc.
 	
 * Medium Priority
 	* Look through current code for best practices to add to checklist
@@ -134,9 +136,16 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Definte constants during init hook callback and only if they haven't already been defined, so they can be overridden easily
 		* http://willnorris.com/2009/06/wordpress-plugin-pet-peeve-3-not-being-extensible
 	* Singleton unnecessary for front controller? http://stackoverflow.com/questions/4595964/who-needs-singletons/4596323#4596323
+		* maybe not http://eamann.com/tech/the-case-for-singletons/. could setup reset method on singleton to clear it for testing
 	* cpt - support restore revisions. bug when restoring?
 	* change js/css to be for individual modules rather than whole plugin
 		* more modular and organized. could result in lots of http requests, but can concatinate/minify at runtime w/ other plugins
+		* js - main module calls all the individaul module's init(). main module has jquery(document).ready(), rest are agnostic  
+	* autoload the classes directory?
+	* metaboxes - use get_post_custom() like bgmpvg plugin to save on sql queries. also setup getDefaultMetaFields() like it does
+	* convert vars, etc to underscores instead of camelcase
+	* replace 60 * 60 with DAY_IN_SECONDS, etc
+	 
 	 
 * Low Priority
 	* Better singular/plural handling for custom post type names
@@ -154,6 +163,8 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Break CPT TAG_NAME into TAG_NAME_SINGULAR and TAG_NAME_PLURAL
 	* validateSettigns() - force db-version to equal self::db-version? no reason why it should ever be set to anything else?
 	* Consider if it'd be useful to add any custom wp-cli commands, or extensions to Debug Bar or Debug This
+	* First time activation, valdiateSettings() adds admin notices. b/c settings don't exist in db yet? need to be primed? 
+	* current_user_can doesn't accept a post_id argument, but trying to pass one in some places
 	
 ## New Code Checklist
 
@@ -165,6 +176,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Pass any manual SQL queries through $wpdb->prepare().
 	* Add/check nonces for all forms and AJAX requests.
 	* Make sure current user is authorized to perform the action with current_user_can().
+	* If added any kind of custom auth scheme, try to think how you could get around it, then protect against those methods.
 * Add filters
 * Write unit and integration tests
 * Throw/catch exceptions when encountering invalid conditions.
