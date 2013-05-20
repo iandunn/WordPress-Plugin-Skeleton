@@ -224,10 +224,13 @@ if( !class_exists( 'WPPSCPTExample' ) )
 		 */
 		protected static function saveCustomFields( $postID, $newValues )
 		{
-			if( true )
-				update_post_meta( $postID, WordPressPluginSkeleton::PREFIX . 'example-box-field', $newValues[ WordPressPluginSkeleton::PREFIX . 'example-box-field' ] );
-			else
-				WordPressPluginSkeleton::$notices->enqueue( 'Example of failing validation', 'error' );
+			if( isset( $newValues[ WordPressPluginSkeleton::PREFIX . 'example-box-field' ] ) )
+			{
+				if( true )	// some business logic check
+					update_post_meta( $postID, WordPressPluginSkeleton::PREFIX . 'example-box-field', $newValues[ WordPressPluginSkeleton::PREFIX . 'example-box-field' ] );
+				else
+					WordPressPluginSkeleton::$notices->enqueue( 'Example of failing validation', 'error' );
+			}
 		}
 		
 		/**
