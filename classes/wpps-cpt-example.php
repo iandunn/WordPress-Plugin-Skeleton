@@ -178,7 +178,7 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 			if ( is_file( $view ) ) {
 				require_once( $view );
 			} else {
-				throw new Exception( __METHOD__ . " error: " . $view . " doesn't exist." );
+				echo __METHOD__ . " error: " . $view . " doesn't exist.";
 			}
 		}
 

@@ -53,11 +53,6 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 
 
 * Next / In Progress
-	markup_meta_boxes throws uncaught exception
-	action/filter names to _
-	remove did_action checks()? just as likely to break soething as to fix?
-	change esc_attr_e() to echo esc_attr()
-
 	* Add shortcodes example 
 		* added, but need to write unit tests
 	* MVC refinement
@@ -153,6 +148,9 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* immediately save options to db when they change to avoid concurrency issues?
 	* maybe create wrapper for loading views. take rel path or maybe even pass in __CLASS__, handle output buffering when needed
 	* swtich cpt save to use if ( wp_is_post_autosave( $post_id ) || wp_is_post_revision( $post_id ) )
+	* Remove did_action checks()? just as likely to break soething as to fix?
+	* Rename action/filter names to _ instead of -
+	* Change esc_attr_e() to echo esc_attr()
 	 
 	 
 * Low Priority
