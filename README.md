@@ -53,9 +53,6 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 
 
 * Next / In Progress
-	activate_new_site - $network_wide undefined, just set to true
-	wwps->modules should be public
-	w3cache remove reference
 	bootstrap assign $wpps to $GLOBALS
 	markup_meta_boxes throws uncaught exception
 	action/filter names to _

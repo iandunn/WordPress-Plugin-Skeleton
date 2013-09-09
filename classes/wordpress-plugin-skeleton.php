@@ -91,7 +91,7 @@ if ( ! class_exists( 'WordPressPluginSkeleton' ) ) {
 
 			// W3 Total Cache
 			if ( class_exists( 'W3_Plugin_TotalCacheAdmin' ) ) {
-				$w3_total_cache =& w3_instance( 'W3_Plugin_TotalCacheAdmin' );
+				$w3_total_cache = w3_instance( 'W3_Plugin_TotalCacheAdmin' );
 
 				if ( method_exists( $w3_total_cache, 'flush_all' ) ) {
 					$w3_total_cache->flush_all();
