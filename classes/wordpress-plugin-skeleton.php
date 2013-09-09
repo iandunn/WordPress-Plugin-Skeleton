@@ -149,7 +149,7 @@ if ( ! class_exists( 'WordPressPluginSkeleton' ) ) {
 			}
 
 			switch_to_blog( $blog_id );
-			$this->single_activate( $network_wide );
+			$this->single_activate( true );
 			restore_current_blog();
 		}
 
