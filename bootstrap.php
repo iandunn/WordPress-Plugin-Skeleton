@@ -71,9 +71,9 @@ if ( wpps_requirements_met() ) {
 	require_once( dirname( __FILE__ ) . '/classes/wordpress-plugin-skeleton.php' );
 
 	if ( class_exists( 'WordPressPluginSkeleton' ) ) {
-		$wpps = WordPressPluginSkeleton::get_instance();
-		register_activation_hook(   __FILE__, array( $wpps, 'activate' ) );
-		register_deactivation_hook( __FILE__, array( $wpps, 'deactivate' ) );
+		$GLOBALS['wpps'] = WordPressPluginSkeleton::get_instance();
+		register_activation_hook(   __FILE__, array( $GLOBALS['wpps'], 'activate' ) );
+		register_deactivation_hook( __FILE__, array( $GLOBALS['wpps'], 'deactivate' ) );
 	}
 } else {
 	add_action( 'admin_notices', 'wpps_requirements_error' );

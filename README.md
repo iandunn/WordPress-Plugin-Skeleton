@@ -53,7 +53,6 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 
 
 * Next / In Progress
-	bootstrap assign $wpps to $GLOBALS
 	markup_meta_boxes throws uncaught exception
 	action/filter names to _
 	remove did_action checks()? just as likely to break soething as to fix?
