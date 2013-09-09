@@ -1,54 +1,55 @@
 <?php
 
-if( $_SERVER[ 'SCRIPT_FILENAME' ] == __FILE__ )
+if ( $_SERVER['SCRIPT_FILENAME'] == __FILE__ )
 	die( 'Access denied.' );
 
-if( !interface_exists( 'WPPSCustomPostType' ) )
-{
+if ( ! interface_exists( 'WPPSCustomPostType' ) ) {
 	/**
 	 * Defines interface for custom post type classes
 	 * @package WordPressPluginSkeleton
 	 * @author Ian Dunn <ian@iandunn.name>
 	 */
-	interface WPPSCustomPostType
-	{
+	interface WPPSCustomPostType {
 		/**
 		 * Registers the custom post type
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		public static function createPostType();
+		public static function create_post_type();
 
 		/**
 		 * Registers the category taxonomy
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		public static function createTaxonomies();
-		
+		public static function create_taxonomies();
+
 		/**
 		 * Adds meta boxes for the custom post type
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		public static function addMetaBoxes();
+		public static function add_meta_boxes();
 
 		/**
 		 * Builds the markup for all meta boxes
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
+		 *
 		 * @param object $post
-		 * @param array $box
+		 * @param array  $box
 		 */
-		public static function markupMetaBoxes( $post, $box );
+		public static function markup_meta_boxes( $post, $box );
 
 		/**
 		 * Saves values of the the custom post type's extra fields
 		 * @mvc Controller
-		 * @param int $postID
+		 *
+		 * @param int    $post_id
 		 * @param object $post
+		 *
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		public static function savePost( $postID, $revision );
+		public static function save_post( $post_id, $revision );
 	} // end WPPSCustomPostType
 }

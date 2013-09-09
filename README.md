@@ -53,6 +53,15 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 
 
 * Next / In Progress
+	activate_new_site - $network_wide undefined, just set to true
+	wwps->modules should be public
+	w3cache remove reference
+	bootstrap assign $wpps to $GLOBALS
+	markup_meta_boxes throws uncaught exception
+	action/filter names to _
+	remove did_action checks()? just as likely to break soething as to fix?
+	change esc_attr_e() to echo esc_attr()
+
 	* Add shortcodes example 
 		* added, but need to write unit tests
 	* MVC refinement
@@ -66,8 +75,8 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* OOP refinement
 		* modules are tightly coupled? try to loosen?
 		* make module::instances protected, so that all the modules can access each other?
-			* or should it be private? they can use ::getinstance instead
-		* make $readableProperties aprt of module, and inherit? 
+			* or should it be private? they can use ::get_instance instead
+		* make $readable_properties aprt of module, and inherit?
 		* rename instance-class to something else? 
 			* difference is that it's not a module, more of a standalone thing to instantiate multiple objects
 			* only for pure business logic classes that don't interact w/ api? and/or ones that use active record pattern?
@@ -145,13 +154,16 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* metaboxes - use get_post_custom() like bgmpvg plugin to save on sql queries. also setup getDefaultMetaFields() like it does
 	* convert vars, etc to underscores instead of camelcase
 	* replace 60 * 60 with DAY_IN_SECONDS, etc
+	* immediately save options to db when they change to avoid concurrency issues?
+	* maybe create wrapper for loading views. take rel path or maybe even pass in __CLASS__, handle output buffering when needed
+	* swtich cpt save to use if ( wp_is_post_autosave( $post_id ) || wp_is_post_revision( $post_id ) )
 	 
 	 
 * Low Priority
 	* Better singular/plural handling for custom post type names
 	* Maybe use a single view file for all meta boxes (within a class), rather than multiple. Switch on the box id just like the callback does.
 	* Add underscore to custom post meta fields, so they don't show up in Custom Fields box? See http://net.tutsplus.com/tutorials/wordpress/creating-custom-fields-for-attachments-in-wordpress/
-	* Use API functions in WPPSCPTExample::savePost() instead of accessing $post directly
+	* Use API functions in WPPSCPTExample::save_post() instead of accessing $post directly
 	* Make sure all hook callbacks have all of their parameters declared, even if you don't typically use them
 	* Add a status icon for each of the plugin requirements in the requirements-not-met view, so the user can easily tell which are met and which aren't
 	* In page settings view, you should be able to grab the title from an API function instead of manually typing it
@@ -159,7 +171,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Add command to instructions to clear git log/history/commits etc, so that it starts fresh?
 	* Use {$new_status}_{$post->post_type} instead of save_post in CPTs ?
 		* Otherwise run into problem where save_post only fires if a core field is changed?
-	* Refactor the conditionals at the begining of CPTExample::savePost() so they can be reused?
+	* Refactor the conditionals at the begining of CPTExample::save_post() so they can be reused?
 	* Break CPT TAG_NAME into TAG_NAME_SINGULAR and TAG_NAME_PLURAL
 	* validateSettigns() - force db-version to equal self::db-version? no reason why it should ever be set to anything else?
 	* Consider if it'd be useful to add any custom wp-cli commands, or extensions to Debug Bar or Debug This

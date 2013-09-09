@@ -6,120 +6,95 @@ require_once( dirname( dirname( __DIR__ ) ) . '/classes/wpps-module.php' );
 /**
  * Unit tests for the WPPSModule class
  * Uses the SimpleTest For WordPress plugin
- * 
+ *
  * @package WordPressPluginSkeleton
  * @author Ian Dunn <ian@iandunn.name>
- * @link http://wordpress.org/extend/plugins/simpletest-for-wordpress/
+ * @link    http://wordpress.org/extend/plugins/simpletest-for-wordpress/
  */
-if( !class_exists( 'UnitTestWPPSModule' ) )
-{
-	class UnitTestWPPSModule extends UnitTestCase
-	{
+if ( ! class_exists( 'UnitTestWPPSModule' ) ) {
+	class UnitTestWPPSModule extends UnitTestCase {
 		/*
-		 * getInstance()
+		 * get_instance()
 		 */
-		public function testGetInstance()
-		{
+		public function test_get_instance() {
 			// Two instances of the same module
-			$firstInstance = WPPSChildClass::getInstance();
-			$firstInstance->init();
-			$firstInstance->foo = 'first';
-			
-			$secondInstance = WPPSChildClass::getInstance();
-			$secondInstance->init();
-			$secondInstance->foo = 'second';
-			
-			$this->assertEqual( $firstInstance->foo, $secondInstance->foo );
-			
+			$first_instance = WPPSChildClass::get_instance();
+			$first_instance->init();
+			$first_instance->foo = 'first';
+
+			$second_instance = WPPSChildClass::get_instance();
+			$second_instance->init();
+			$second_instance->foo = 'second';
+
+			$this->assertEqual( $first_instance->foo, $second_instance->foo );
+
 			// Two different modules
-			$separateModule = WPPSAnotherChildClass::getInstance();
-			$separateModule->init();
-			$this->assertNotEqual( $secondInstance->foo, $separateModule->foo );
+			$separate_module = WPPSAnotherChildClass::get_instance();
+			$separate_module->init();
+			$this->assertNotEqual( $second_instance->foo, $separate_module->foo );
 		}
-		
+
 		/*
 		 * __get()
 		 */
-		public function testMagicGet()
-		{
-			$child = WPPSChildClass::getInstance();
-			
+		public function test_magic_get() {
+			$child = WPPSChildClass::get_instance();
+
 			// Readable
 			$child->init();
-			$readableProperties = array( 'foo', 'bar' );
-			
-			foreach( $readableProperties as $property )
-			{
-				try
-				{
+			$readable_properties = array( 'foo', 'bar' );
+
+			foreach ( $readable_properties as $property ) {
+				try {
 					$value = $child->$property;
 					$this->pass();
-				}
-	
-				catch( Exception $e )
-				{
-					$this->fail( 'Unexpected exception from '. $property .'. '. $e->getMessage() );
+				} catch ( Exception $e ) {
+					$this->fail( 'Unexpected exception from ' . $property . '. ' . $e->getMessage() );
 				}
 			}
-			
+
 			// Not readable
 			$child->init();
-			$unreadableProperties = array( 'charlie', 'nonexistant' );
-			
-			foreach( $unreadableProperties as $property )
-			{
-				try
-				{
+			$unreadable_properties = array( 'charlie', 'nonexistant' );
+
+			foreach ( $unreadable_properties as $property ) {
+				try {
 					$value = $child->$property;
-					$this->fail( 'Expected an exception from '. $property .'.' );
-				}
-				
-				catch( Exception $e )
-				{
+					$this->fail( 'Expected an exception from ' . $property . '.' );
+				} catch ( Exception $e ) {
 					$this->pass();
 				}
 			}
 		}
-		
+
 		/*
 		 * __set()
 		 */
-		public function testMagicSet()
-		{
-			$child = WPPSChildClass::getInstance();
-			
+		public function test_magic_set() {
+			$child = WPPSChildClass::get_instance();
+
 			// Writable
 			$child->init();
-			$writableProperties = array( 'foo' );
-			
-			foreach( $writableProperties as $property )
-			{
-				try
-				{
+			$writable_properties = array( 'foo' );
+
+			foreach ( $writable_properties as $property ) {
+				try {
 					$child->$property = 'test';
 					$this->pass();
-				}
-	
-				catch( Exception $e )
-				{
-					$this->fail( 'Unexpected exception from '. $property .'. '. $e->getMessage() );
+				} catch ( Exception $e ) {
+					$this->fail( 'Unexpected exception from ' . $property . '. ' . $e->getMessage() );
 				}
 			}
-			
+
 			// Not writeable
 			$child->init();
-			$unwritableProperties = array( 'charlie', 'nonexistant' );
-			
-			foreach( $unwritableProperties as $property )
-			{
-				try
-				{
+			$unwritable_properties = array( 'charlie', 'nonexistant' );
+
+			foreach ( $unwritable_properties as $property ) {
+				try {
 					$child->$property = 'test';
-					$this->fail( 'Expected an exception from '. $property .'.' );
-				}
-				
-				catch( Exception $e )
-				{
+					$this->fail( 'Expected an exception from ' . $property . '.' );
+				} catch ( Exception $e ) {
 					$this->pass();
 				}
 			}
@@ -128,91 +103,72 @@ if( !class_exists( 'UnitTestWPPSModule' ) )
 }
 
 // Mock up a child class
-if( !class_exists( 'WPPSChildClass' ) )
-{
-	class WPPSChildClass extends WPPSModule
-	{
+if ( ! class_exists( 'WPPSChildClass' ) ) {
+	class WPPSChildClass extends WPPSModule {
 		protected $foo, $bar, $charlie;
-		protected static $readableProperties = array( 'foo', 'bar' );
-		protected static $writeableProperties = array( 'foo' );
-		
-		// exampel of extending get/set to add extra logic
-		protected function __construct()
-		{
+		protected static $readable_properties = array( 'foo', 'bar' );
+		protected static $writeable_properties = array( 'foo' );
+
+		// example of extending get/set to add extra logic
+		protected function __construct() {
 			$this->init();
 		}
-		
-		public function activate( $networkWide )
-		{
+
+		public function activate( $network_wide ) {
 		}
-				
-		public function deactivate()
-		{
+
+		public function deactivate() {
 		}
-		
-		public function registerHookCallbacks()
-		{
+
+		public function register_hook_callbacks() {
 		}
-		
-		public function init()
-		{
-			$this->foo		= 'initial foo';
-			$this->bar		= 'initial bar';
-			$this->charlie	= 'initial charlie';
+
+		public function init() {
+			$this->foo     = 'initial foo';
+			$this->bar     = 'initial bar';
+			$this->charlie = 'initial charlie';
 		}
-		
-		public function upgrade( $dbVersion = 0 )
-		{
+
+		public function upgrade( $db_version = 0 ) {
 		}
-		
-		protected function isValid( $property = 'all' )
-		{
+
+		protected function is_valid( $property = 'all' ) {
 			return true;
 		}
 	}
 }
 
 // Mock up a child class
-if( !class_exists( 'WPPSAnotherChildClass' ) )
-{
-	class WPPSAnotherChildClass extends WPPSModule
-	{
+if ( ! class_exists( 'WPPSAnotherChildClass' ) ) {
+	class WPPSAnotherChildClass extends WPPSModule {
 		protected $delta, $echo, $foo;
-		protected static $readableProperties = array( 'delta', 'foo' );
-		protected static $writeableProperties = array( 'foo' );
-		
-		// exampel of extending get/set to add extra logic
-		protected function __construct()
-		{
+		protected static $readable_properties = array( 'delta', 'foo' );
+		protected static $writeable_properties = array( 'foo' );
+
+		// example of extending get/set to add extra logic
+		protected function __construct() {
 			$this->init();
 		}
-		
-		
-		public function activate( $networkWide )
-		{
+
+		public function activate( $network_wide ) {
 		}
-				
-		public function deactivate()
-		{
+
+		public function deactivate() {
 		}
-		
-		public function registerHookCallbacks()
-		{
+
+		public function register_hook_callbacks() {
 		}
-		
-		public function init()
-		{
-			$this->delta	= 'initial delta';
-			$this->echo		= 'initial echo';
-			$this->foo		= 'initial foo';
+
+		public function init() {
+			$this->delta = 'initial delta';
+			$this->echo  = 'initial echo';
+			$this->foo   = 'initial foo';
 		}
-		
-		public function upgrade( $dbVersion = 0 )
-		{
+
+		public function upgrade( $db_version = 0 ) {
 		}
-		
-		protected function isValid( $property = 'all' )
-		{
+
+		protected function is_valid( $property = 'all' ) {
 			return false;
 		}
 	}

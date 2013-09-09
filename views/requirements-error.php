@@ -1,8 +1,10 @@
 <p><?php echo WPPS_NAME; ?> error: Your environment doesn't meet all of the system requirements listed below.</p>
 
 <ul class="ul-disc">
-	<li><strong>PHP <?php echo WPPS_REQUIRED_PHP_VERSION; ?>+</strong> <em>(You're running version <?php echo PHP_VERSION; ?>)</em></li>
-	<li><strong>WordPress <?php echo WPPS_REQUIRED_WP_VERSION; ?>+</strong> <em>(You're running version <?php echo esc_html( $wp_version ); ?>)</em></li>
+	<li><strong>PHP <?php echo WPPS_REQUIRED_PHP_VERSION; ?>+</strong>
+		<em>(You're running version <?php echo PHP_VERSION; ?>)</em></li>
+	<li><strong>WordPress <?php echo WPPS_REQUIRED_WP_VERSION; ?>+</strong>
+		<em>(You're running version <?php echo esc_html( $wp_version ); ?>)</em></li>
 	<?php //<li><strong>Plugin XYZ</strong> activated</em></li> ?>
 </ul>
 

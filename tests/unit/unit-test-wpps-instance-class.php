@@ -6,62 +6,49 @@ require_once( dirname( dirname( __DIR__ ) ) . '/classes/wpps-instance-class.php'
 /**
  * Unit tests for WPPSInstanceClass
  * Uses the SimpleTest For WordPress plugin
- * 
+ *
  * @package WordPressPluginSkeleton
  * @author Ian Dunn <ian@iandunn.name>
- * @link http://wordpress.org/extend/plugins/simpletest-for-wordpress/
+ * @link    http://wordpress.org/extend/plugins/simpletest-for-wordpress/
  */
-if( !class_exists( 'UnitTestWPPSInstanceClass' ) )
-{
-	class UnitTestWPPSInstanceClass extends UnitTestCase
-	{
+if ( ! class_exists( 'UnitTestWPPSInstanceClass' ) ) {
+	class UnitTestWPPSInstanceClass extends UnitTestCase {
 		/*
-		 * validateIsValid()
+		 * validate_is_valid()
 		 */
-		public function testIsValid()
-		{
+		public function test_is_valid() {
 			// Valid
-			$validDataSet = array(
+			$valid_data_set = array(
 				array( 'KUOW', 94.9 ),
 				array( array( 'x' ), '1e4' ),
 				array( new GenericObject(), 5 ),
 			);
-			
-			foreach( $validDataSet as $pair )
-			{
-				try
-				{
-					$valid = new WPPSInstanceClass( $pair[ 0 ], $pair[ 1 ] );
+
+			foreach ( $valid_data_set as $pair ) {
+				try {
+					$valid = new WPPSInstanceClass( $pair[0], $pair[1] );
 					$this->pass();
-					
-					$valid->foo = $pair[ 0 ];
+
+					$valid->foo = $pair[0];
 					$this->pass();
-				}
-	
-				catch( Exception $e )
-				{
-					$this->fail( 'Unexpected exception from ('. $pair[ 0 ] .', '. $pair[ 1 ] .'). '. $e->getMessage() );
+				} catch ( Exception $e ) {
+					$this->fail( 'Unexpected exception from (' . $pair[0] . ', ' . $pair[1] . '). ' . $e->getMessage() );
 				}
 			}
-			
-			
+
+
 			// Invalid
-			$invalidDataSet = array(
+			$invalid_data_set = array(
 				array( array(), 'a' ),
 				array( 'hello', new GenericObject() ),
 				array( '', 5 ),
 			);
-			
-			foreach( $invalidDataSet as $pair )
-			{
-				try
-				{
-					$invalid = new WPPSInstanceClass( $pair[ 0 ], $pair[ 1 ] );
-					$this->fail( 'Expected an exception from ('. $pair[ 0 ] .', '. $pair[ 1 ] .').' );
-				}
-				
-				catch( Exception $e )
-				{
+
+			foreach ( $invalid_data_set as $pair ) {
+				try {
+					$invalid = new WPPSInstanceClass( $pair[0], $pair[1] );
+					$this->fail( 'Expected an exception from (' . $pair[0] . ', ' . $pair[1] . ').' );
+				} catch ( Exception $e ) {
 					$this->pass();
 				}
 			}
@@ -69,12 +56,9 @@ if( !class_exists( 'UnitTestWPPSInstanceClass' ) )
 	} // end UnitTestWPPSSettings
 }
 
-if( !class_exists( 'GenericObject' ) )
-{
-	class GenericObject
-	{
-		public function __toString()
-		{
+if ( ! class_exists( 'GenericObject' ) ) {
+	class GenericObject {
+		public function __toString() {
 			return __CLASS__;
 		}
 	} // end GenericObject

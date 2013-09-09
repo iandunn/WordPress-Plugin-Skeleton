@@ -1,21 +1,19 @@
 <?php
 
-if( $_SERVER[ 'SCRIPT_FILENAME' ] == __FILE__ )
+if ( $_SERVER['SCRIPT_FILENAME'] == __FILE__ )
 	die( 'Access denied.' );
 
-if( !class_exists( 'WPPSInstanceClass' ) )
-{
+if ( ! class_exists( 'WPPSInstanceClass' ) ) {
 	/**
 	 * Example of an instance class
 	 * @package WordPressPluginSkeleton
 	 * @author Ian Dunn <ian@iandunn.name>
 	 */
-	class WPPSInstanceClass
-	{
+	class WPPSInstanceClass {
 		protected $foo, $bar;
-		protected $readableProtectedVars, $writableProtectedVars;
-		const FOO	= 'foo';
-		const BAR	= 'bar';
+		protected $readable_protected_vars, $writeable_protected_vars;
+		const FOO = 'foo';
+		const BAR = 'bar';
 
 
 		/*
@@ -27,51 +25,52 @@ if( !class_exists( 'WPPSInstanceClass' ) )
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		public function __construct( $foo, $bar )
-		{
-			$this->foo						= $foo;
-			$this->bar						= $bar;
+		public function __construct( $foo, $bar ) {
+			$this->foo = $foo;
+			$this->bar = $bar;
 
-			$this->readableProtectedVars	= array( 'foo', 'bar' );
-			$this->writableProtectedVars	= array( 'foo' );
+			$this->readable_protected_vars = array( 'foo', 'bar' );
+			$this->writeable_protected_vars = array( 'foo' );
 
-			if( !$this->isValid() )
+			if ( ! $this->is_valid() ) {
 				throw new Exception( __METHOD__ . " error: constructor input was invalid." );
+			}
 		}
 
 		/**
 		 * Public getter for protected variables
 		 * @mvc Model
 		 * @author Ian Dunn <ian@iandunn.name>
+		 *
 		 * @param string $variable
 		 * @return mixed
 		 */
-		public function __get( $variable )
-		{
-			if( in_array( $variable, $this->readableProtectedVars ) )
+		public function __get( $variable ) {
+			if ( in_array( $variable, $this->readable_protected_vars ) ) {
 				return $this->$variable;
-			else
-				throw new Exception( __METHOD__ . " error: $". $variable ." doesn't exist or isn't readable." );
+			} else {
+				throw new Exception( __METHOD__ . " error: $" . $variable . " doesn't exist or isn't readable." );
+			}
 		}
 
 		/**
 		 * Public setter for protected variables
 		 * @mvc Model
 		 * @author Ian Dunn <ian@iandunn.name>
+		 *
 		 * @param string $variable
-		 * @param mixed $value
+		 * @param mixed  $value
 		 */
-		public function __set( $variable, $value )
-		{
-			if( in_array( $variable, $this->writableProtectedVars ) )
-			{
+		public function __set( $variable, $value ) {
+			if ( in_array( $variable, $this->writeable_protected_vars ) ) {
 				$this->$variable = $value;
-				
-				if( !$this->isValid( $variable ) )
-					throw new Exception( __METHOD__ . ' error: $'. $value .' is not valid.' );
+
+				if ( ! $this->is_valid( $variable ) ) {
+					throw new Exception( __METHOD__ . ' error: $' . $value . ' is not valid.' );
+				}
+			} else {
+				throw new Exception( __METHOD__ . " error: $" . $variable . " doesn't exist or isn't writable." );
 			}
-			else
-				throw new Exception( __METHOD__ . " error: $". $variable ." doesn't exist or isn't writable." );
 		}
 
 
@@ -84,8 +83,7 @@ if( !class_exists( 'WPPSInstanceClass' ) )
 		 * @mvc Controller
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
-		public static function doStaticStuff()
-		{
+		public static function do_static_stuff() {
 			// Do static stuff
 		}
 
@@ -98,21 +96,22 @@ if( !class_exists( 'WPPSInstanceClass' ) )
 		 * Checks that the object is in a correct state
 		 * @mvc Model
 		 * @author Ian Dunn <ian@iandunn.name>
+		 *
 		 * @param string $property An individual property to check, or 'all' to check all of them
+		 *
 		 * @return bool
 		 */
-		protected function isValid( $property = 'all' )
-		{
-			if( $property == 'foo' || $property == 'all' )
-			{
-				if( empty( $this->foo ) )
+		protected function is_valid( $property = 'all' ) {
+			if ( 'foo' == $property || 'all' == $property ) {
+				if ( empty( $this->foo ) ) {
 					return false;
+				}
 			}
-			
-			if( $property == 'bar' || $property == 'all' )
-			{
-				if( !is_numeric( $this->bar ) )
+
+			if ( 'bar' == $property || 'all' == $property ) {
+				if ( ! is_numeric( $this->bar ) ) {
 					return false;
+				}
 			}
 
 			return true;
@@ -124,10 +123,9 @@ if( !class_exists( 'WPPSInstanceClass' ) )
 		 * @author Ian Dunn <ian@iandunn.name>
 		 * @return bool
 		 */
-		public function doInstanceStuff()
-		{
+		public function do_instance_stuff() {
 			// do instance stuff
-			
+
 			return true;
 		}
 	} // end WPPSInstanceClass
