@@ -202,7 +202,7 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 				return;
 			}
 
-			if ( ! $post || $post->post_type != self::POST_TYPE_SLUG || ! current_user_can( 'edit_posts', $post_id ) ) {
+			if ( ! $post || $post->post_type != self::POST_TYPE_SLUG || ! current_user_can( 'edit_post', $post_id ) ) {
 				return;
 			}
 
