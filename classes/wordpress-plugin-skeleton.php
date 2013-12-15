@@ -52,8 +52,9 @@ if ( ! class_exists( 'WordPressPluginSkeleton' ) ) {
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		public static function load_resources() {
-			if ( did_action( 'wp_enqueue_scripts' ) !== 1 && did_action( 'admin_enqueue_scripts' ) !== 1 )
+			if ( did_action( 'wp_enqueue_scripts' ) !== 1 && did_action( 'admin_enqueue_scripts' ) !== 1 ) {
 				return;
+			}
 
 			wp_register_script(
 				self::PREFIX . 'wordpress-plugin-skeleton',
