@@ -5,7 +5,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 
 ## Features
 
-* Minimal, clean and organized
+* Clean and organized
 * Designed with object-oriented principles
 * Implements the Model-View-Controller pattern
 * Includes basic classes for:
@@ -28,7 +28,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 
 * I decided to not internationalize the skeleton because most of my clients don't need it and having to put all regular text in PHP strings annoys me. If you're distributing the plugin, though, then you should internationalize it.
 * I prefer having controllers and models in the same class/file, so I use an unofficial @mvc tag in the phpDoc comments to mentally keep track of which methods are controllers and which are models. 
-* I gave a presentation at the Seattle WordPress Developers Meetup about the principles behind the design of this plugin. You can [view the slides](http://iandunn.name/wp-oop-mvc/) if you're interested.
+* If you want to learn more about the principles behind the design of this plugin, I gave [a presentation on OOP at WordCamp Seattle 2013](http://iandunn.name/content/presentations/wp-oop-mvc/oop.php), and [another on MVC at WordCamp Columbus 2013](http://iandunn.name/content/presentations/wp-oop-mvc/mvc.php).
 
 
 ## Installation
@@ -36,7 +36,6 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 * cd /var/www/vhosts/example.com/content/plugins
 * git clone --recursive https://github.com/iandunn/WordPress-Plugin-Skeleton.git plugin-slug
 * cd plugin-slug
-* git checkout [latest stable tag]
 * git remote rm origin
 * git rm README.md
 * Update bootstrap.php headers
@@ -57,13 +56,12 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 		* All data should be considered untrusted.
 		* Escape hardcoded data to future-proof.
 	* Pass any manual SQL queries through $wpdb->prepare().
-	* Add/check nonces for all forms and AJAX requests.
+	* Add/check nonces for logged in users when submitting forms and AJAX requests.
 	* Make sure current user is authorized to perform the action with current_user_can().
 	* If added any kind of custom auth scheme, try to think how you could get around it, then protect against those methods.
-* Add filters
+* Add custom actions and filters
 * Write unit and integration tests
 * Throw/catch exceptions when encountering invalid conditions.
-* Use did_action() in action callbacks 
 
 
 ## License
