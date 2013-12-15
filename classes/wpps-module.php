@@ -93,10 +93,9 @@ if ( ! class_exists( 'WPPSModule' ) ) {
 		/**
 		 * Prepares sites to use the plugin during single or network-wide activation
 		 * @mvc Controller
+		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @param bool $network_wide
-		 *
-		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		abstract public function activate( $network_wide );
 
@@ -136,7 +135,6 @@ if ( ! class_exists( 'WPPSModule' ) ) {
 		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @param string $property An individual property to check, or 'all' to check all of them
-		 *
 		 * @return bool
 		 */
 		abstract protected function is_valid( $property = 'all' );
