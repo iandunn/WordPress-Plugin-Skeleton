@@ -1,4 +1,10 @@
 * Next / In Progress
+	* Reorganize static/instance methods so that they're in normal/logical/pseudo-chronological order, rather than being grouped together
+		* don't separate hook callbacks based on static/non-static
+		* reomve isvalid and a few others?
+	* Bootstrap admin notice broken. don't include idadminontices, see tagregator for better way
+	* Add filter around $modules
+
 	* Add shortcodes example
 		* added, but need to write unit tests
 	* MVC refinement
@@ -97,6 +103,8 @@
 	* Remove did_action checks()? just as likely to break soething as to fix?
 	* Rename action/filter names to _ instead of -
 	* Change esc_attr_e() to echo esc_attr()
+	* Use submit_button()
+	* nest conditions instead of returning early. better for debugging / single point of return
 
 
 * Low Priority
