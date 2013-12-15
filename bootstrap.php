@@ -52,14 +52,8 @@ function wpps_requirements_met() {
  */
 function wpps_requirements_error() {
 	global $wp_version;
-	$class = 'error';
-
-	ob_start();
+	
 	require_once( dirname( __FILE__ ) . '/views/requirements-error.php' );
-	$message = ob_get_contents();
-	ob_end_clean();
-
-	require( dirname( __FILE__ ) . '/includes/IDAdminNotices/v-admin-notice.php' );
 }
 
 /*

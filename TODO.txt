@@ -2,7 +2,6 @@
 	* Reorganize static/instance methods so that they're in normal/logical/pseudo-chronological order, rather than being grouped together
 		* don't separate hook callbacks based on static/non-static
 		* reomve isvalid and a few others?
-	* Bootstrap admin notice broken. don't include idadminontices, see tagregator for better way
 	* Add filter around $modules
 
 	* Add shortcodes example
