@@ -4,6 +4,10 @@
 		* reomve isvalid and a few others?
 	* Add filter around $modules
 
+	* add nonces for metaboxes
+		* http://wp.tutsplus.com/tutorials/creative-coding/capabilities-and-nonces/
+	* instead of checking if $_SERVER['SCRIPT_FILENAME'] == __FILE__, check if a constant like ABSINT defined
+		* those two won't always match, and hard to rely on other ones too. absint is more reliable method
 	* Add shortcodes example
 		* added, but need to write unit tests
 	* MVC refinement
@@ -104,6 +108,7 @@
 	* Change esc_attr_e() to echo esc_attr()
 	* Use submit_button()
 	* nest conditions instead of returning early. better for debugging / single point of return
+	* logging system to help detect errors. display to users so they can copy/paste log to plugin dev to help troubleshoot. warn about disclosing sensitive info, though, "don't post in public forums"
 
 
 * Low Priority
