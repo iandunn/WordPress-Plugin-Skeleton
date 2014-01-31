@@ -220,7 +220,7 @@ if ( ! class_exists( 'WPPSSettings' ) ) {
 		 */
 		public static function markup_settings_page() {
 			if ( current_user_can( self::REQUIRED_CAPABILITY ) ) {
-				require_once( dirname( __DIR__ ) . '/views/wpps-settings/page-settings.php' );
+				echo self::render_template( 'wpps-settings/page-settings.php' );
 			} else {
 				wp_die( 'Access denied.' );
 			}
@@ -292,7 +292,7 @@ if ( ! class_exists( 'WPPSSettings' ) ) {
 		 * @param array $section
 		 */
 		public static function markup_section_headers( $section ) {
-			require( dirname( __DIR__ ) . '/views/wpps-settings/page-settings-section-headers.php' );
+			echo self::render_template( 'wpps-settings/page-settings-section-headers.php', array( 'section' => $section ), 'always' );
 		}
 
 		/**
@@ -309,7 +309,7 @@ if ( ! class_exists( 'WPPSSettings' ) ) {
 					break;
 			}
 
-			require( dirname( __DIR__ ) . '/views/wpps-settings/page-settings-fields.php' );
+			echo self::render_template( 'wpps-settings/page-settings-fields.php', array( 'settings' => $this->settings, 'field' => $field ), 'always' );
 		}
 
 		/**
@@ -365,7 +365,7 @@ if ( ! class_exists( 'WPPSSettings' ) ) {
 				return;
 			}
 
-			require_once( dirname( __DIR__ ) . '/views/wpps-settings/user-fields.php' );
+			echo self::render_template( 'wpps-settings/user-fields.php', array( 'user' => $user ) );
 		}
 
 		/**

@@ -160,26 +160,23 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 		 * @param array  $box
 		 */
 		public static function markup_meta_boxes( $post, $box ) {
+			$variables = array();
+			
 			switch ( $box['id'] ) {
 				case WordPressPluginSkeleton::PREFIX . 'example-box':
-					$exampleBoxField = get_post_meta( $post->ID, WordPressPluginSkeleton::PREFIX . 'example-box-field', true );
-					$view            = 'wpps-cpt-example/metabox-example-box.php';
+					$variables['exampleBoxField'] = get_post_meta( $post->ID, WordPressPluginSkeleton::PREFIX . 'example-box-field', true );
+					$view                         = 'wpps-cpt-example/metabox-example-box.php';
 					break;
 
 				/*
 				case WordPressPluginSkeleton::PREFIX . 'some-other-box':
-					$someOtherField = get_post_meta( $post->ID, WordPressPluginSkeleton::PREFIX . 'some-other-field', true );
-				 	$view           = 'wpps-cpt-example/metabox-another-box.php';
+					$variables['someOtherField'] = get_post_meta( $post->ID, WordPressPluginSkeleton::PREFIX . 'some-other-field', true );
+				 	$view                        = 'wpps-cpt-example/metabox-another-box.php';
 				break;
 				*/
 			}
-
-			$view = dirname( __DIR__ ) . '/views/' . $view;
-			if ( is_file( $view ) ) {
-				require_once( $view );
-			} else {
-				echo __METHOD__ . " error: " . $view . " doesn't exist.";
-			}
+			
+			echo self::render_template( $view, $variables );
 		}
 
 		/**
@@ -243,11 +240,7 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 			$attributes = apply_filters( WordPressPluginSkeleton::PREFIX . 'cpt-shortcode-example-attributes', $attributes );
 			$attributes = self::validate_cpt_shortcode_example_attributes( $attributes );
 
-			ob_start();
-			require_once( dirname( __DIR__ ) . '/views/wpps-cpt-example/shortcode-cpt-shortcode-example.php' );
-			$output = ob_get_clean();
-
-			return apply_filters( WordPressPluginSkeleton::PREFIX . 'cpt-shortcode-example', $output );
+			return self::render_template( 'wpps-cpt-example/shortcode-cpt-shortcode-example.php', array( 'attributes' => $attributes ) );
 		}
 
 		/**

@@ -78,7 +78,48 @@ if ( ! class_exists( 'WPPSModule' ) ) {
 			return self::$instances[ $module ];
 		}
 
+		/**
+		 * Render a template
+		 * 
+		 * Allows parent/child themes to override the markup by placing the a file named basename( $default_template_path ) in their root folder,
+		 * and also allows plugins or themes to override the markup by a filter. Themes might prefer that method if they place their templates
+		 * in sub-directories to avoid cluttering the root folder. In both cases, the theme/plugin will have access to the variables so they can
+		 * fully customize the output.
+		 * 
+		 * @param  string $default_template_path The path to the template, relative to the plugin's `views` folder
+		 * @param  array  $variables             An array of variables to bring pass into the template scope, indexed with the variable name so it can be extract()-ed
+		 * @param  string $require               'once' to use require_once() | 'always' to use require()
+		 * @return string
+		 */
+		protected static function render_template( $default_template_path, $variables = array(), $require = 'once' ) {
+			$template_path = locate_template( basename( $default_template_path ) );
+			if ( ! $template_path ) {
+				$template_path = dirname( __DIR__ ) . '/views/' . $default_template_path;
+			}
+			$template_path = apply_filters( WordPressPluginSkeleton::PREFIX . 'template_path', $template_path );
+			
+			if ( is_file( $template_path ) ) {
+				extract( $variables );
+				ob_start();
+				
+				if ( 'always' == $require ) {
+					require( $template_path );
+				} else {
+					require_once( $template_path );
+				}
+				
+				$template_content = apply_filters( WordPressPluginSkeleton::PREFIX . 'template_content', ob_get_clean(), $default_template_path, $template_path, $variables );
+			} else {
+				$template_content = false;
+			}
+			
+			return $template_content;
+			
+			// todo unit tests
+			// todo final testing before commit
+		}
 
+		
 		/*
 		 * Abstract methods
 		 */
