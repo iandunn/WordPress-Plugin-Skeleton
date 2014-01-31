@@ -109,6 +109,7 @@
 	* Use submit_button()
 	* nest conditions instead of returning early. better for debugging / single point of return
 	* logging system to help detect errors. display to users so they can copy/paste log to plugin dev to help troubleshoot. warn about disclosing sensitive info, though, "don't post in public forums"
+	* unit tests for render_template()
 
 
 * Low Priority

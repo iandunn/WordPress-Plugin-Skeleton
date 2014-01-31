@@ -114,9 +114,6 @@ if ( ! class_exists( 'WPPSModule' ) ) {
 			}
 			
 			return $template_content;
-			
-			// todo unit tests
-			// todo final testing before commit
 		}
 
 		
