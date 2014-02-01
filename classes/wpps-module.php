@@ -87,7 +87,7 @@ if ( ! class_exists( 'WPPSModule' ) ) {
 		 * fully customize the output.
 		 * 
 		 * @param  string $default_template_path The path to the template, relative to the plugin's `views` folder
-		 * @param  array  $variables             An array of variables to bring pass into the template scope, indexed with the variable name so it can be extract()-ed
+		 * @param  array  $variables             An array of variables to pass into the template's scope, indexed with the variable name so that it can be extract()-ed
 		 * @param  string $require               'once' to use require_once() | 'always' to use require()
 		 * @return string
 		 */
