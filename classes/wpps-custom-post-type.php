@@ -51,5 +51,15 @@ if ( ! interface_exists( 'WPPSCustomPostType' ) ) {
 		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		public static function save_post( $post_id, $revision );
+
+		/**
+		 * Determines whether a meta key should be considered public or not
+		 * 
+		 * @param bool $protected
+		 * @param string $meta_key
+		 * @param mixed $meta_type
+		 * @return bool
+		 */
+		public static function is_protected_meta( $protected, $meta_key, $meta_type );
 	} // end WPPSCustomPostType
 }

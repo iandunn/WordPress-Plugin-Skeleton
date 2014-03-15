@@ -179,8 +179,32 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 					$view = false;
 					break;
 			}
-			
+
 			echo self::render_template( $view, $variables );
+		}
+
+		/**
+		 * Determines whether a meta key should be considered private or not
+		 *
+		 * @param bool $protected
+		 * @param string $meta_key
+		 * @param mixed $meta_type
+		 * @return bool
+		 */
+		public static function is_protected_meta( $protected, $meta_key, $meta_type ) {
+			switch( $meta_key ) {
+				case WordPressPluginSkeleton::PREFIX . 'example-box':
+				case WordPressPluginSkeleton::PREFIX . 'example-box2':
+					$protected = true;
+					break;
+
+				case WordPressPluginSkeleton::PREFIX . 'some-other-box':
+				case WordPressPluginSkeleton::PREFIX . 'some-other-box2':
+					$protected = false;
+					break;
+			}
+
+			return $protected;
 		}
 
 		/**
@@ -295,6 +319,7 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 			add_action( 'init',                     __CLASS__ . '::create_taxonomies' );
 			add_action( 'admin_init',               __CLASS__ . '::add_meta_boxes' );
 			add_action( 'save_post',                __CLASS__ . '::save_post', 10, 2 );
+			add_filter( 'is_protected_meta',        __CLASS__ . '::is_protected_meta', 10, 3 );
 
 			add_action( 'init',                     array( $this, 'init' ) );
 
