@@ -4,17 +4,16 @@ require_once( WP_PLUGIN_DIR . '/simpletest-for-wordpress/WpSimpleTest.php' );
 require_once( dirname( dirname( __DIR__ ) ) . '/classes/wpps-settings.php' );
 
 /**
- * Unit tests for the WPPSSettings class
+ * Unit tests for the WPPS_Settings class
+ *
  * Uses the SimpleTest For WordPress plugin
  *
- * @package WordPressPluginSkeleton
- * @author Ian Dunn <ian@iandunn.name>
- * @link    http://wordpress.org/extend/plugins/simpletest-for-wordpress/
+ * @link http://wordpress.org/extend/plugins/simpletest-for-wordpress/
  */
-if ( ! class_exists( 'UnitTestWPPSSettings' ) ) {
-	class UnitTestWPPSSettings extends UnitTestCase {
+if ( ! class_exists( 'UnitTestWPPS_Settings' ) ) {
+	class UnitTestWPPS_Settings extends UnitTestCase {
 		public function __construct() {
-			$this->WPPSSettings = WPPSSettings::get_instance();
+			$this->WPPS_Settings = WPPS_Settings::get_instance();
 		}
 
 		/*
@@ -22,7 +21,7 @@ if ( ! class_exists( 'UnitTestWPPSSettings' ) ) {
 		 */
 		public function test_validate_settings() {
 			// Valid settings
-			$this->WPPSSettings->init();
+			$this->WPPS_Settings->init();
 			$valid_settings = array(
 				'basic'    => array(
 					'field-example1' => 'valid data'
@@ -33,14 +32,14 @@ if ( ! class_exists( 'UnitTestWPPSSettings' ) ) {
 				)
 			);
 
-			$clean_settings = $this->WPPSSettings->validate_settings( $valid_settings );
+			$clean_settings = $this->WPPS_Settings->validate_settings( $valid_settings );
 
 			$this->assertEqual( $valid_settings['basic']['field-example1'], $clean_settings['basic']['field-example1'] );
 			$this->assertEqual( $valid_settings['advanced']['field-example2'], $clean_settings['advanced']['field-example2'] );
 
 
 			// Invalid settings
-			$this->WPPSSettings->init();
+			$this->WPPS_Settings->init();
 			$invalid_settings = array(
 				'basic'    => array(
 					'field-example1' => 'invalid data'
@@ -51,7 +50,7 @@ if ( ! class_exists( 'UnitTestWPPSSettings' ) ) {
 				)
 			);
 
-			$clean_settings = $this->WPPSSettings->validate_settings( $invalid_settings );
+			$clean_settings = $this->WPPS_Settings->validate_settings( $invalid_settings );
 			$this->assertNotEqual( $invalid_settings['basic']['field-example1'], $clean_settings['basic']['field-example1'] );
 			$this->assertNotEqual( $invalid_settings['advanced']['field-example2'], $clean_settings['advanced']['field-example2'] );
 		}
@@ -61,21 +60,21 @@ if ( ! class_exists( 'UnitTestWPPSSettings' ) ) {
 		 */
 		public function test_magic_set() {
 			// Test that fields are validated
-			$this->WPPSSettings->init();
-			$this->WPPSSettings->settings = array( 'db-version' => array() );
-			$this->assertEqual( $this->WPPSSettings->settings['db-version'], WordPressPluginSkeleton::VERSION );
+			$this->WPPS_Settings->init();
+			$this->WPPS_Settings->settings = array( 'db-version' => array() );
+			$this->assertEqual( $this->WPPS_Settings->settings['db-version'], WordPress_Plugin_Skeleton::VERSION );
 
 			// Test that values gets written to database
-			$this->WPPSSettings->settings = array( 'db-version' => '5' );
-			$this->WPPSSettings->init();
-			$this->assertEqual( $this->WPPSSettings->settings['db-version'], '5' );
-			$this->WPPSSettings->settings = array( 'db-version' => WordPressPluginSkeleton::VERSION );
+			$this->WPPS_Settings->settings = array( 'db-version' => '5' );
+			$this->WPPS_Settings->init();
+			$this->assertEqual( $this->WPPS_Settings->settings['db-version'], '5' );
+			$this->WPPS_Settings->settings = array( 'db-version' => WordPress_Plugin_Skeleton::VERSION );
 
 			// Test that setting deep values triggers error
 			$this->expectError( new PatternExpectation( '/Indirect modification of overloaded property/i' ) );
-			$this->WPPSSettings->settings['db-version'] = WordPressPluginSkeleton::VERSION;
+			$this->WPPS_Settings->settings['db-version'] = WordPress_Plugin_Skeleton::VERSION;
 		}
-	} // end UnitTestWPPSSettings
+	} // end UnitTestWPPS_Settings
 }
 
 ?>

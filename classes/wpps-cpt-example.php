@@ -1,15 +1,11 @@
 <?php
 
-if ( $_SERVER['SCRIPT_FILENAME'] == __FILE__ )
-	die( 'Access denied.' );
+if ( ! class_exists( 'WPPS_CPT_Example' ) ) {
 
-if ( ! class_exists( 'WPPSCPTExample' ) ) {
 	/**
 	 * Creates a custom post type and associated taxonomies
-	 * @package WordPressPluginSkeleton
-	 * @author Ian Dunn <ian@iandunn.name>
 	 */
-	class WPPSCPTExample extends WPPSModule implements WPPSCustomPostType {
+	class WPPS_CPT_Example extends WPPS_Module implements WPPS_Custom_Post_Type {
 		protected static $readable_properties  = array();
 		protected static $writeable_properties = array();
 
@@ -25,8 +21,8 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 
 		/**
 		 * Constructor
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		protected function __construct() {
 			$this->register_hook_callbacks();
@@ -39,28 +35,24 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 
 		/**
 		 * Registers the custom post type
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		public static function create_post_type() {
-			if ( did_action( 'init' ) !== 1 ) {
-				return;
-			}
-
 			if ( ! post_type_exists( self::POST_TYPE_SLUG ) ) {
 				$post_type_params = self::get_post_type_params();
 				$post_type        = register_post_type( self::POST_TYPE_SLUG, $post_type_params );
 
 				if ( is_wp_error( $post_type ) ) {
-					WordPressPluginSkeleton::$notices->enqueue( __METHOD__ . ' error: ' . $post_type->get_error_message(), 'error' );
+					WordPress_Plugin_Skeleton::$notices->enqueue( __METHOD__ . ' error: ' . $post_type->get_error_message(), 'error' );
 				}
 			}
 		}
 
 		/**
 		 * Defines the parameters for the custom post type
+		 *
 		 * @mvc Model
-		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @return array
 		 */
@@ -99,19 +91,15 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 				'supports'             => array( 'title', 'editor', 'author', 'thumbnail', 'revisions' )
 			);
 
-			return apply_filters( WordPressPluginSkeleton::PREFIX . 'post-type-params', $post_type_params );
+			return apply_filters( 'wpps_post-type-params', $post_type_params );
 		}
 
 		/**
 		 * Registers the category taxonomy
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		public static function create_taxonomies() {
-			if ( did_action( 'init' ) !== 1 ) {
-				return;
-			}
-
 			if ( ! taxonomy_exists( self::TAG_SLUG ) ) {
 				$tag_taxonomy_params = self::get_tag_taxonomy_params();
 				register_taxonomy( self::TAG_SLUG, self::POST_TYPE_SLUG, $tag_taxonomy_params );
@@ -120,8 +108,8 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 
 		/**
 		 * Defines the parameters for the custom taxonomy
+		 *
 		 * @mvc Model
-		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @return array
 		 */
@@ -134,20 +122,17 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 				'update_count_callback' => '_update_post_term_count'
 			);
 
-			return apply_filters( WordPressPluginSkeleton::PREFIX . 'tag-taxonomy-params', $tag_taxonomy_params );
+			return apply_filters( 'wpps_tag-taxonomy-params', $tag_taxonomy_params );
 		}
 
 		/**
 		 * Adds meta boxes for the custom post type
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		public static function add_meta_boxes() {
-			if ( did_action( 'admin_init' ) !== 1 )
-				return;
-
 			add_meta_box(
-				WordPressPluginSkeleton::PREFIX . 'example-box',
+				'wpps_example-box',
 				'Example Box',
 				__CLASS__ . '::markup_meta_boxes',
 				self::POST_TYPE_SLUG,
@@ -158,8 +143,8 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 
 		/**
 		 * Builds the markup for all meta boxes
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @param object $post
 		 * @param array  $box
@@ -168,14 +153,14 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 			$variables = array();
 
 			switch ( $box['id'] ) {
-				case WordPressPluginSkeleton::PREFIX . 'example-box':
-					$variables['exampleBoxField'] = get_post_meta( $post->ID, WordPressPluginSkeleton::PREFIX . 'example-box-field', true );
+				case 'wpps_example-box':
+					$variables['exampleBoxField'] = get_post_meta( $post->ID, 'wpps_example-box-field', true );
 					$view                         = 'wpps-cpt-example/metabox-example-box.php';
 					break;
 
 				/*
-				case WordPressPluginSkeleton::PREFIX . 'some-other-box':
-					$variables['someOtherField'] = get_post_meta( $post->ID, WordPressPluginSkeleton::PREFIX . 'some-other-field', true );
+				case 'wpps_some-other-box':
+					$variables['someOtherField'] = get_post_meta( $post->ID, 'wpps_some-other-field', true );
 				 	$view                        = 'wpps-cpt-example/metabox-another-box.php';
 					break;
 				*/
@@ -191,6 +176,8 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 		/**
 		 * Determines whether a meta key should be considered private or not
 		 *
+		 * @mvc Model
+		 *
 		 * @param bool $protected
 		 * @param string $meta_key
 		 * @param mixed $meta_type
@@ -198,13 +185,13 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 		 */
 		public static function is_protected_meta( $protected, $meta_key, $meta_type ) {
 			switch( $meta_key ) {
-				case WordPressPluginSkeleton::PREFIX . 'example-box':
-				case WordPressPluginSkeleton::PREFIX . 'example-box2':
+				case 'wpps_example-box':
+				case 'wpps_example-box2':
 					$protected = true;
 					break;
 
-				case WordPressPluginSkeleton::PREFIX . 'some-other-box':
-				case WordPressPluginSkeleton::PREFIX . 'some-other-box2':
+				case 'wpps_some-other-box':
+				case 'wpps_some-other-box2':
 					$protected = false;
 					break;
 			}
@@ -214,8 +201,8 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 
 		/**
 		 * Saves values of the the custom post type's extra fields
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @param int    $post_id
 		 * @param object $post
@@ -223,10 +210,6 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 		public static function save_post( $post_id, $revision ) {
 			global $post;
 			$ignored_actions = array( 'trash', 'untrash', 'restore' );
-
-			if ( did_action( 'save_post' ) !== 1 ) {
-				return;
-			}
 
 			if ( isset( $_GET['action'] ) && in_array( $_GET['action'], $ignored_actions ) ) {
 				return;
@@ -245,32 +228,32 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 
 		/**
 		 * Validates and saves values of the the custom post type's extra fields
+		 *
 		 * @mvc Model
-		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @param int   $post_id
 		 * @param array $new_values
 		 */
 		protected static function save_custom_fields( $post_id, $new_values ) {
-			if ( isset( $new_values[ WordPressPluginSkeleton::PREFIX . 'example-box-field' ] ) ) {
+			if ( isset( $new_values[ 'wpps_example-box-field' ] ) ) {
 				if ( true ) { // some business logic check
-					update_post_meta( $post_id, WordPressPluginSkeleton::PREFIX . 'example-box-field', $new_values[ WordPressPluginSkeleton::PREFIX . 'example-box-field' ] );
+					update_post_meta( $post_id, 'wpps_example-box-field', $new_values[ 'wpps_example-box-field' ] );
 				} else {
-					WordPressPluginSkeleton::$notices->enqueue( 'Example of failing validation', 'error' );
+					WordPress_Plugin_Skeleton::$notices->enqueue( 'Example of failing validation', 'error' );
 				}
 			}
 		}
 
 		/**
 		 * Defines the [wpps-cpt-shortcode] shortcode
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @param array $attributes
 		 * return string
 		 */
 		public static function cpt_shortcode_example( $attributes ) {
-			$attributes = apply_filters( WordPressPluginSkeleton::PREFIX . 'cpt-shortcode-example-attributes', $attributes );
+			$attributes = apply_filters( 'wpps_cpt-shortcode-example-attributes', $attributes );
 			$attributes = self::validate_cpt_shortcode_example_attributes( $attributes );
 
 			return self::render_template( 'wpps-cpt-example/shortcode-cpt-shortcode-example.php', array( 'attributes' => $attributes ) );
@@ -278,7 +261,8 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 
 		/**
 		 * Validates the attributes for the [cpt-shortcode-example] shortcode
-		 * @author Ian Dunn <ian@iandunn.name>
+		 *
+		 * @mvc Model
 		 *
 		 * @param array $attributes
 		 * return array
@@ -287,15 +271,17 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 			$defaults   = self::get_default_cpt_shortcode_example_attributes();
 			$attributes = shortcode_atts( $defaults, $attributes );
 
-			if ( $attributes['foo'] != 'valid data' )
+			if ( $attributes['foo'] != 'valid data' ) {
 				$attributes['foo'] = $defaults['foo'];
+			}
 
-			return apply_filters( WordPressPluginSkeleton::PREFIX . 'validate-cpt-shortcode-example-attributes', $attributes );
+			return apply_filters( 'wpps_validate-cpt-shortcode-example-attributes', $attributes );
 		}
 
 		/**
 		 * Defines the default arguments for the [cpt-shortcode-example] shortcode
-		 * @author Ian Dunn <ian@iandunn.name>
+		 *
+		 * @mvc Model
 		 *
 		 * @return array
 		 */
@@ -305,7 +291,7 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 				'bar' => 'foo'
 			);
 
-			return apply_filters( WordPressPluginSkeleton::PREFIX . 'default-cpt-shortcode-example-attributes', $attributes );
+			return apply_filters( 'wpps_default-cpt-shortcode-example-attributes', $attributes );
 		}
 
 
@@ -315,11 +301,10 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 
 		/**
 		 * Register callbacks for actions and filters
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		public function register_hook_callbacks() {
-			// NOTE: Make sure you update the did_action() parameter in the corresponding callback method when changing the hooks here
 			add_action( 'init',                     __CLASS__ . '::create_post_type' );
 			add_action( 'init',                     __CLASS__ . '::create_taxonomies' );
 			add_action( 'save_post',                __CLASS__ . '::save_post', 10, 2 );
@@ -332,8 +317,8 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 
 		/**
 		 * Prepares site to use the plugin during activation
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @param bool $network_wide
 		 */
@@ -344,27 +329,24 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 
 		/**
 		 * Rolls back activation procedures when de-activating the plugin
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		public function deactivate() {
 		}
 
 		/**
 		 * Initializes variables
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		public function init() {
-			if ( did_action( 'init' ) !== 1 ) {
-				return;
-			}
 		}
 
 		/**
 		 * Executes the logic of upgrading from specific older versions of the plugin to the current version
+		 *
 		 * @mvc Model
-		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @param string $db_version
 		 */
@@ -379,8 +361,8 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 
 		/**
 		 * Checks that the object is in a correct state
+		 *
 		 * @mvc Model
-		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @param string $property An individual property to check, or 'all' to check all of them
 		 *
@@ -389,7 +371,5 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 		protected function is_valid( $property = 'all' ) {
 			return true;
 		}
-	} // end WPPSCPTExample
+	} // end WPPS_CPT_Example
 }
-
-?>

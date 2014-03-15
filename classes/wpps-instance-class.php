@@ -1,15 +1,11 @@
 <?php
 
-if ( $_SERVER['SCRIPT_FILENAME'] == __FILE__ )
-	die( 'Access denied.' );
+if ( ! class_exists( 'WPPS_Instance_Class' ) ) {
 
-if ( ! class_exists( 'WPPSInstanceClass' ) ) {
 	/**
 	 * Example of an instance class
-	 * @package WordPressPluginSkeleton
-	 * @author Ian Dunn <ian@iandunn.name>
 	 */
-	class WPPSInstanceClass {
+	class WPPS_Instance_Class {
 		protected $foo, $bar;
 		protected $readable_protected_vars, $writeable_protected_vars;
 		const FOO = 'foo';
@@ -22,8 +18,8 @@ if ( ! class_exists( 'WPPSInstanceClass' ) ) {
 
 		/**
 		 * Constructor
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		public function __construct( $foo, $bar ) {
 			$this->foo = $foo;
@@ -39,8 +35,8 @@ if ( ! class_exists( 'WPPSInstanceClass' ) ) {
 
 		/**
 		 * Public getter for protected variables
+		 *
 		 * @mvc Model
-		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @param string $variable
 		 * @return mixed
@@ -55,8 +51,8 @@ if ( ! class_exists( 'WPPSInstanceClass' ) ) {
 
 		/**
 		 * Public setter for protected variables
+		 *
 		 * @mvc Model
-		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @param string $variable
 		 * @param mixed  $value
@@ -80,8 +76,8 @@ if ( ! class_exists( 'WPPSInstanceClass' ) ) {
 
 		/**
 		 * Does static stuff
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		public static function do_static_stuff() {
 			// Do static stuff
@@ -94,11 +90,10 @@ if ( ! class_exists( 'WPPSInstanceClass' ) ) {
 
 		/**
 		 * Checks that the object is in a correct state
+		 *
 		 * @mvc Model
-		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @param string $property An individual property to check, or 'all' to check all of them
-		 *
 		 * @return bool
 		 */
 		protected function is_valid( $property = 'all' ) {
@@ -119,8 +114,9 @@ if ( ! class_exists( 'WPPSInstanceClass' ) ) {
 
 		/**
 		 * Does instance stuff
+		 *
 		 * @mvc Model
-		 * @author Ian Dunn <ian@iandunn.name>
+		 *
 		 * @return bool
 		 */
 		public function do_instance_stuff() {
@@ -128,7 +124,5 @@ if ( ! class_exists( 'WPPSInstanceClass' ) ) {
 
 			return true;
 		}
-	} // end WPPSInstanceClass
+	} // end WPPS_Instance_Class
 }
-
-?>

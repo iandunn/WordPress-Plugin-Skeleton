@@ -2,11 +2,10 @@
 
 /**
  * Test suite for unit and integration tests
+ *
  * Uses the SimpleTest For WordPress plugin
  *
- * @package WordPressPluginSkeleton
- * @author Ian Dunn <ian@iandunn.name>
- * @link    http://wordpress.org/extend/plugins/simpletest-for-wordpress/
+ * @link http://wordpress.org/extend/plugins/simpletest-for-wordpress/
  */
 if ( ! class_exists( 'WPPSTestSuite' ) ) {
 	class WPPSTestSuite extends TestSuite {

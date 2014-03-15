@@ -1,15 +1,11 @@
 <?php
 
-if ( $_SERVER['SCRIPT_FILENAME'] == __FILE__ )
-	die( 'Access denied.' );
+if ( ! class_exists( 'WPPS_Module' ) ) {
 
-if ( ! class_exists( 'WPPSModule' ) ) {
 	/**
 	 * Abstract class to define/implement base methods for all module classes
-	 * @package WordPressPluginSkeleton
-	 * @author Ian Dunn <ian@iandunn.name>
 	 */
-	abstract class WPPSModule {
+	abstract class WPPS_Module {
 		private static $instances = array();
 
 
@@ -19,8 +15,8 @@ if ( ! class_exists( 'WPPSModule' ) ) {
 
 		/**
 		 * Public getter for protected variables
+		 *
 		 * @mvc Model
-		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @param string $variable
 		 * @return mixed
@@ -37,8 +33,8 @@ if ( ! class_exists( 'WPPSModule' ) ) {
 
 		/**
 		 * Public setter for protected variables
+		 *
 		 * @mvc Model
-		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @param string $variable
 		 * @param mixed  $value
@@ -64,8 +60,9 @@ if ( ! class_exists( 'WPPSModule' ) ) {
 
 		/**
 		 * Provides access to a single instance of a module using the singleton pattern
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
+		 *
 		 * @return object
 		 */
 		public static function get_instance() {
@@ -86,6 +83,8 @@ if ( ! class_exists( 'WPPSModule' ) ) {
 		 * in sub-directories to avoid cluttering the root folder. In both cases, the theme/plugin will have access to the variables so they can
 		 * fully customize the output.
 		 *
+		 * @mvc @model
+		 *
 		 * @param  string $default_template_path The path to the template, relative to the plugin's `views` folder
 		 * @param  array  $variables             An array of variables to pass into the template's scope, indexed with the variable name so that it can be extract()-ed
 		 * @param  string $require               'once' to use require_once() | 'always' to use require()
@@ -96,7 +95,7 @@ if ( ! class_exists( 'WPPSModule' ) ) {
 			if ( ! $template_path ) {
 				$template_path = dirname( __DIR__ ) . '/views/' . $default_template_path;
 			}
-			$template_path = apply_filters( WordPressPluginSkeleton::PREFIX . 'template_path', $template_path );
+			$template_path = apply_filters( 'wpps_template_path', $template_path );
 
 			if ( is_file( $template_path ) ) {
 				extract( $variables );
@@ -108,7 +107,7 @@ if ( ! class_exists( 'WPPSModule' ) ) {
 					require_once( $template_path );
 				}
 
-				$template_content = apply_filters( WordPressPluginSkeleton::PREFIX . 'template_content', ob_get_clean(), $default_template_path, $template_path, $variables );
+				$template_content = apply_filters( 'wpps_template_content', ob_get_clean(), $default_template_path, $template_path, $variables );
 			} else {
 				$template_content = '';
 			}
@@ -123,15 +122,15 @@ if ( ! class_exists( 'WPPSModule' ) ) {
 
 		/**
 		 * Constructor
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		abstract protected function __construct();
 
 		/**
 		 * Prepares sites to use the plugin during single or network-wide activation
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @param bool $network_wide
 		 */
@@ -139,29 +138,29 @@ if ( ! class_exists( 'WPPSModule' ) ) {
 
 		/**
 		 * Rolls back activation procedures when de-activating the plugin
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		abstract public function deactivate();
 
 		/**
 		 * Register callbacks for actions and filters
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		abstract public function register_hook_callbacks();
 
 		/**
 		 * Initializes variables
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		abstract public function init();
 
 		/**
 		 * Checks if the plugin was recently updated and upgrades if necessary
+		 *
 		 * @mvc Controller
-		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @param string $db_version
 		 */
@@ -169,14 +168,12 @@ if ( ! class_exists( 'WPPSModule' ) ) {
 
 		/**
 		 * Checks that the object is in a correct state
+		 *
 		 * @mvc Model
-		 * @author Ian Dunn <ian@iandunn.name>
 		 *
 		 * @param string $property An individual property to check, or 'all' to check all of them
 		 * @return bool
 		 */
 		abstract protected function is_valid( $property = 'all' );
-	} // end WPPSModule
+	} // end WPPS_Module
 }
-
-?>

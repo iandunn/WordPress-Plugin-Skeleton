@@ -13,16 +13,17 @@ Author URI:  http://iandunn.name
  * See https://github.com/iandunn/WordPress-Plugin-Skeleton for details.
  */
 
-if ( $_SERVER['SCRIPT_FILENAME'] == __FILE__ )
+if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Access denied.' );
+}
 
 define( 'WPPS_NAME',                 'WordPress Plugin Skeleton' );
-define( 'WPPS_REQUIRED_PHP_VERSION', '5.3' ); // because of get_called_class()
-define( 'WPPS_REQUIRED_WP_VERSION',  '3.1' ); // because of esc_textarea()
+define( 'WPPS_REQUIRED_PHP_VERSION', '5.3' );                          // because of get_called_class()
+define( 'WPPS_REQUIRED_WP_VERSION',  '3.1' );                          // because of esc_textarea()
 
 /**
  * Checks if the system requirements are met
- * @author Ian Dunn <ian@iandunn.name>
+ *
  * @return bool True if system requirements are met, false if not
  */
 function wpps_requirements_met() {
@@ -48,7 +49,6 @@ function wpps_requirements_met() {
 
 /**
  * Prints an error that the system requirements weren't met.
- * @author Ian Dunn <ian@iandunn.name>
  */
 function wpps_requirements_error() {
 	global $wp_version;
@@ -61,16 +61,20 @@ function wpps_requirements_error() {
  * The main program needs to be in a separate file that only gets loaded if the plugin requirements are met. Otherwise older PHP installations could crash when trying to parse it.
  */
 if ( wpps_requirements_met() ) {
-	require_once( dirname( __FILE__ ) . '/classes/wpps-module.php' );
-	require_once( dirname( __FILE__ ) . '/classes/wordpress-plugin-skeleton.php' );
+	require_once( __DIR__ . '/classes/wpps-module.php' );
+	require_once( __DIR__ . '/classes/wordpress-plugin-skeleton.php' );
+	require_once( __DIR__ . '/includes/IDAdminNotices/id-admin-notices.php' );
+	require_once( __DIR__ . '/classes/wpps-custom-post-type.php' );
+	require_once( __DIR__ . '/classes/wpps-cpt-example.php' );
+	require_once( __DIR__ . '/classes/wpps-settings.php' );
+	require_once( __DIR__ . '/classes/wpps-cron.php' );
+	require_once( __DIR__ . '/classes/wpps-instance-class.php' );
 
-	if ( class_exists( 'WordPressPluginSkeleton' ) ) {
-		$GLOBALS['wpps'] = WordPressPluginSkeleton::get_instance();
+	if ( class_exists( 'WordPress_Plugin_Skeleton' ) ) {
+		$GLOBALS['wpps'] = WordPress_Plugin_Skeleton::get_instance();
 		register_activation_hook(   __FILE__, array( $GLOBALS['wpps'], 'activate' ) );
 		register_deactivation_hook( __FILE__, array( $GLOBALS['wpps'], 'deactivate' ) );
 	}
 } else {
 	add_action( 'admin_notices', 'wpps_requirements_error' );
 }
-
-?>

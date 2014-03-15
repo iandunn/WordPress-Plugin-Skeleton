@@ -1,21 +1,14 @@
 /**
- * @package WordPress Plugin Skeleton
- * @author Ian Dunn <ian@iandunn.name>
- */
-
-
-/**
  * Wrapper function to safely use $
- * @author Ian Dunn <ian@iandunn.name>
  */
 function wppsWrapper( $ ) {
 	var wpps = {
+
 		/**
 		 * Main entry point
-		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		init: function () {
-			wpps.prefix = 'wpps_';
+			wpps.prefix      = 'wpps_';
 			wpps.templateURL = $( '#template-url' ).val();
 			wpps.ajaxPostURL = $( '#ajax-post-url' ).val();
 
@@ -24,7 +17,6 @@ function wppsWrapper( $ ) {
 
 		/**
 		 * Registers event handlers
-		 * @author Ian Dunn <ian@iandunn.name>
 		 */
 		registerEventHandlers: function () {
 			$( '#example-container' ).children( 'a' ).click( wpps.exampleHandler );
@@ -32,7 +24,7 @@ function wppsWrapper( $ ) {
 
 		/**
 		 * Example event handler
-		 * @author Ian Dunn <ian@iandunn.name>
+		 *
 		 * @param object event
 		 */
 		exampleHandler: function ( event ) {
@@ -44,6 +36,6 @@ function wppsWrapper( $ ) {
 
 	$( document ).ready( wpps.init );
 
-} // end wpps_wrapper()
+} // end wppsWrapper()
 
 wppsWrapper( jQuery );

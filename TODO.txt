@@ -34,7 +34,7 @@
 		* Add domain-level validation (verify type, format, whitelist values, etc)
 	* Add validation/sanization everywhere, and nonces, current_user_can()
 	* Add filters to everything
-	* Make WPPSCustomPostType an abstract class instead of interface? It would extend WPPSModule
+	* Make WPPS_Custom_Post_Type an abstract class instead of interface? It would extend WPPS_Module
 		* but then the cpt class couldn't define activate() etc? well, it would extend it
 		* example just sets up a var to define $labels, etc ?
 	* Move trash/untrash return checks in cpt save() to abstract class instead of interface?
@@ -66,12 +66,12 @@
 	* Write shell script to rename
 		* Ship as .txt file, so user has to manually rename to .sh and execute
 		* Output warning to delete script after finished
-	* Add do_action( WordPressPluginSkeleton::PREFIX . 'descriptive-name-before|after' ); to views so other devs can hook into them
+	* Add do_action( 'wpps_descriptive-name-before|after' ); to views so other devs can hook into them
 	* Capabilities requirements should use an actual capability instead of a role. Check constants, etc.
 
 * Medium Priority
 	* Look through current code for best practices to add to checklist
-	* Bug - notices inside WordPressPluginSkeleton::init() never get cleared when viewing cpt page, but they mostly do on dashboard
+	* Bug - notices inside WordPress_Plugin_Skeleton::init() never get cleared when viewing cpt page, but they mostly do on dashboard
 	* Support for conditionally loading js/css
 	* Add to notes section for any non-standard things or anything that needs explaining
 	* Add exceptions. Add try/catch blocks to all hook callbooks, but nowhere else. Let them bubble up to first callback.
@@ -85,7 +85,7 @@
 	* Look for @todo's and cleanup
 	* Update requirements warning language. Primary concern is more about PHP 5.3 rather than PHP 5.
 	* Write a shell script for renaming class names, variables, etc?
-	* Maybe there's a way WordPressPluginSkeleton->upgrade() can do settings[ 'db-version' ] = x instead of = array( 'db-version' => x );
+	* Maybe there's a way WordPress_Plugin_Skeleton->upgrade() can do settings[ 'db-version' ] = x instead of = array( 'db-version' => x );
 		* http://mwop.net/blog/131-Overloading-arrays-in-PHP-5.2.0.html
 	* Add uninstall.php
 	* Definte constants during init hook callback and only if they haven't already been defined, so they can be overridden easily
@@ -103,7 +103,6 @@
 	* immediately save options to db when they change to avoid concurrency issues?
 	* maybe create wrapper for loading views. take rel path or maybe even pass in __CLASS__, handle output buffering when needed
 	* swtich cpt save to use if ( wp_is_post_autosave( $post_id ) || wp_is_post_revision( $post_id ) )
-	* Remove did_action checks()? just as likely to break soething as to fix?
 	* Rename action/filter names to _ instead of -
 	* Change esc_attr_e() to echo esc_attr()
 	* Use submit_button()
@@ -116,7 +115,7 @@
 	* Better singular/plural handling for custom post type names
 	* Maybe use a single view file for all meta boxes (within a class), rather than multiple. Switch on the box id just like the callback does.
 	* Add underscore to custom post meta fields, so they don't show up in Custom Fields box? See http://net.tutsplus.com/tutorials/wordpress/creating-custom-fields-for-attachments-in-wordpress/
-	* Use API functions in WPPSCPTExample::save_post() instead of accessing $post directly
+	* Use API functions in WPPS_CPT_Example::save_post() instead of accessing $post directly
 	* Make sure all hook callbacks have all of their parameters declared, even if you don't typically use them
 	* Add a status icon for each of the plugin requirements in the requirements-not-met view, so the user can easily tell which are met and which aren't
 	* In page settings view, you should be able to grab the title from an API function instead of manually typing it

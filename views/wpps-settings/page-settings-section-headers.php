@@ -1,8 +1,8 @@
-<?php if ( WordPressPluginSkeleton::PREFIX . 'section-basic' == $section['id'] ) : ?>
+<?php if ( 'wpps_section-basic' == $section['id'] ) : ?>
 
 	<p>Example section introduction.</p>
 
-<?php elseif ( WordPressPluginSkeleton::PREFIX . 'section-advanced' == $section['id'] ) : ?>
+<?php elseif ( 'wpps_section-advanced' == $section['id'] ) : ?>
 
 	<p>Another example section introduction.</p>
 
