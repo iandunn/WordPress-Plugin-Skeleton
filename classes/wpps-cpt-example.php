@@ -172,7 +172,7 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 				case WordPressPluginSkeleton::PREFIX . 'some-other-box':
 					$variables['someOtherField'] = get_post_meta( $post->ID, WordPressPluginSkeleton::PREFIX . 'some-other-field', true );
 				 	$view                        = 'wpps-cpt-example/metabox-another-box.php';
-				break;
+					break;
 				*/
 			}
 			
