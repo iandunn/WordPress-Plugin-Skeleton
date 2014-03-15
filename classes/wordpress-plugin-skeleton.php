@@ -12,8 +12,8 @@ if ( ! class_exists( 'WordPressPluginSkeleton' ) ) {
 	 * @author Ian Dunn <ian@iandunn.name>
 	 */
 	class WordPressPluginSkeleton extends WPPSModule {
-		public static $notices; // Needs to be static so static methods can call enqueue notices. Needs to be public so other modules can enqueue notices.
-		protected static $readable_properties  = array(); // These should really be constants, but PHP doesn't allow class constants to be arrays
+		public static $notices;                              // Needs to be static so static methods can call enqueue notices. Needs to be public so other modules can enqueue notices.
+		protected static $readable_properties  = array();    // These should really be constants, but PHP doesn't allow class constants to be arrays
 		protected static $writeable_properties = array();
 		protected $modules;
 

@@ -54,7 +54,7 @@ if ( ! interface_exists( 'WPPSCustomPostType' ) ) {
 
 		/**
 		 * Determines whether a meta key should be considered public or not
-		 * 
+		 *
 		 * @param bool $protected
 		 * @param string $meta_key
 		 * @param mixed $meta_type

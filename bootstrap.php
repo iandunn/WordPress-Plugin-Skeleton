@@ -8,7 +8,7 @@ Author:      Ian Dunn
 Author URI:  http://iandunn.name
 */
 
-/* 
+/*
  * This plugin was built on top of WordPress-Plugin-Skeleton by Ian Dunn.
  * See https://github.com/iandunn/WordPress-Plugin-Skeleton for details.
  */
@@ -52,7 +52,7 @@ function wpps_requirements_met() {
  */
 function wpps_requirements_error() {
 	global $wp_version;
-	
+
 	require_once( dirname( __FILE__ ) . '/views/requirements-error.php' );
 }
 

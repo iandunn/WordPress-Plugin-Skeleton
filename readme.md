@@ -27,7 +27,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 ## Notes
 
 * I decided to not internationalize the skeleton because most of my clients don't need it and having to put all regular text in PHP strings annoys me. If you're distributing the plugin, though, then you should internationalize it.
-* I prefer having controllers and models in the same class/file, so I use an unofficial @mvc tag in the phpDoc comments to mentally keep track of which methods are controllers and which are models. 
+* I prefer having controllers and models in the same class/file, so I use an unofficial @mvc tag in the phpDoc comments to mentally keep track of which methods are controllers and which are models.
 * If you want to learn more about the principles behind the design of this plugin, I gave [a presentation on OOP at WordCamp Seattle 2013](http://iandunn.name/content/presentations/wp-oop-mvc/oop.php), and [another on MVC at WordCamp Columbus 2013](http://iandunn.name/content/presentations/wp-oop-mvc/mvc.php).
 
 
@@ -43,7 +43,7 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 * Find/replace class names/slugs
 * git mv files to match class slugs
 * Comment out references to classes that aren't needed now. Delete ones that will never be needed.
-* Rename generic comments, method names, etc to describe their specific implementations. 
+* Rename generic comments, method names, etc to describe their specific implementations.
 * If you're not using a custom post type or something else that updates the rewrite rules, you can comment out the flush_rewrite_rules() call in WordPresPluginSkeleton::activate() and ::deactivate().
 * For unit testing, install [SimpleTest for WordPress](http://wordpress.org/extend/plugins/simpletest-for-wordpress/) and use a shortcode like this: [simpletest name="WordPress Plugin Skeleton Unit Test Suite" path="/wordpress-plugin-skeleton/tests/wpps-test-suite.php"]
 

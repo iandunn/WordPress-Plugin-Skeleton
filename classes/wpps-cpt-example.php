@@ -166,7 +166,7 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 		 */
 		public static function markup_meta_boxes( $post, $box ) {
 			$variables = array();
-			
+
 			switch ( $box['id'] ) {
 				case WordPressPluginSkeleton::PREFIX . 'example-box':
 					$variables['exampleBoxField'] = get_post_meta( $post->ID, WordPressPluginSkeleton::PREFIX . 'example-box-field', true );
