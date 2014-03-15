@@ -1,4 +1,4 @@
-<?php
+g<?php
 
 if ( $_SERVER['SCRIPT_FILENAME'] == __FILE__ )
 	die( 'Access denied.' );
@@ -91,7 +91,7 @@ if ( ! class_exists( 'WPPSModule' ) ) {
 		 * @param  string $require               'once' to use require_once() | 'always' to use require()
 		 * @return string
 		 */
-		protected static function render_template( $default_template_path, $variables = array(), $require = 'once' ) {
+		protected static function render_template( $default_template_path = false, $variables = array(), $require = 'once' ) {
 			$template_path = locate_template( basename( $default_template_path ) );
 			if ( ! $template_path ) {
 				$template_path = dirname( __DIR__ ) . '/views/' . $default_template_path;
@@ -110,7 +110,7 @@ if ( ! class_exists( 'WPPSModule' ) ) {
 				
 				$template_content = apply_filters( WordPressPluginSkeleton::PREFIX . 'template_content', ob_get_clean(), $default_template_path, $template_path, $variables );
 			} else {
-				$template_content = false;
+				$template_content = '';
 			}
 			
 			return $template_content;
