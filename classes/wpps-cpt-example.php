@@ -174,6 +174,10 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 				 	$view                        = 'wpps-cpt-example/metabox-another-box.php';
 					break;
 				*/
+
+				default:
+					$view = false;
+					break;
 			}
 			
 			echo self::render_template( $view, $variables );
