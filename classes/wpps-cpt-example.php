@@ -84,13 +84,18 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 			$post_type_params = array(
 				'labels'          => $labels,
 				'singular_label'  => self::POST_TYPE_NAME,
-				'public'          => true,
+				'public'          => false,
+				'exclude_from_search'  => true,
+				'publicly_queryable'   => false,
+				'show_ui'              => true,
+				'show_in_menu'         => true,
+				'register_meta_box_cb' => __CLASS__ . '::add_meta_boxes',
 				'menu_position'   => 20,
 				'hierarchical'    => true,
 				'capability_type' => 'post',
-				'has_archive'     => true,
-				'rewrite'         => array( 'slug' => self::POST_TYPE_SLUG, 'with_front' => false ),
-				'query_var'       => true,
+				'has_archive'     => false,
+				'rewrite'         => false,
+				'query_var'       => false,
 				'supports'        => array( 'title', 'editor', 'author', 'thumbnail', 'revisions' )
 			);
 
@@ -317,7 +322,6 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 			// NOTE: Make sure you update the did_action() parameter in the corresponding callback method when changing the hooks here
 			add_action( 'init',                     __CLASS__ . '::create_post_type' );
 			add_action( 'init',                     __CLASS__ . '::create_taxonomies' );
-			add_action( 'admin_init',               __CLASS__ . '::add_meta_boxes' );
 			add_action( 'save_post',                __CLASS__ . '::save_post', 10, 2 );
 			add_filter( 'is_protected_meta',        __CLASS__ . '::is_protected_meta', 10, 3 );
 
