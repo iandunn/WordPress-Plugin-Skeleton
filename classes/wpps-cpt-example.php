@@ -82,21 +82,21 @@ if ( ! class_exists( 'WPPSCPTExample' ) ) {
 			);
 
 			$post_type_params = array(
-				'labels'          => $labels,
-				'singular_label'  => self::POST_TYPE_NAME,
-				'public'          => false,
+				'labels'               => $labels,
+				'singular_label'       => self::POST_TYPE_NAME,
+				'public'               => false,
 				'exclude_from_search'  => true,
 				'publicly_queryable'   => false,
 				'show_ui'              => true,
 				'show_in_menu'         => true,
 				'register_meta_box_cb' => __CLASS__ . '::add_meta_boxes',
-				'menu_position'   => 20,
-				'hierarchical'    => true,
-				'capability_type' => 'post',
-				'has_archive'     => false,
-				'rewrite'         => false,
-				'query_var'       => false,
-				'supports'        => array( 'title', 'editor', 'author', 'thumbnail', 'revisions' )
+				'menu_position'        => 20,
+				'hierarchical'         => true,
+				'capability_type'      => 'post',
+				'has_archive'          => false,
+				'rewrite'              => false,
+				'query_var'            => false,
+				'supports'             => array( 'title', 'editor', 'author', 'thumbnail', 'revisions' )
 			);
 
 			return apply_filters( WordPressPluginSkeleton::PREFIX . 'post-type-params', $post_type_params );
