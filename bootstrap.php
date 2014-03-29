@@ -63,7 +63,7 @@ function wpps_requirements_error() {
 if ( wpps_requirements_met() ) {
 	require_once( __DIR__ . '/classes/wpps-module.php' );
 	require_once( __DIR__ . '/classes/wordpress-plugin-skeleton.php' );
-	require_once( __DIR__ . '/includes/IDAdminNotices/id-admin-notices.php' );
+	require_once( __DIR__ . '/includes/admin-notice-helper/admin-notice-helper.php' );
 	require_once( __DIR__ . '/classes/wpps-custom-post-type.php' );
 	require_once( __DIR__ . '/classes/wpps-cpt-example.php' );
 	require_once( __DIR__ . '/classes/wpps-settings.php' );

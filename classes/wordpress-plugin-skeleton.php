@@ -8,7 +8,6 @@ if ( ! class_exists( 'WordPress_Plugin_Skeleton' ) ) {
 	 * WordPress_Plugin_Skeleton is an object-oriented/MVC base for building WordPress plugins
 	 */
 	class WordPress_Plugin_Skeleton extends WPPS_Module {
-		public static $notices;                              // Needs to be static so static methods can call enqueue notices. Needs to be public so other modules can enqueue notices.
 		protected static $readable_properties  = array();    // These should really be constants, but PHP doesn't allow class constants to be arrays
 		protected static $writeable_properties = array();
 		protected $modules;
@@ -186,16 +185,11 @@ if ( ! class_exists( 'WordPress_Plugin_Skeleton' ) ) {
 		 * @mvc Controller
 		 */
 		public function init() {
-			self::$notices = IDAdminNotices::getSingleton();
-			if ( self::DEBUG_MODE ) {
-				self::$notices->debugMode = true;
-			}
-
 			try {
 				$instance_example = new WPPS_Instance_Class( 'Instance example', '42' );
-				//self::$notices->enqueue( $instance_example->foo .' '. $instance_example->bar );
+				//add_notice( $instance_example->foo .' '. $instance_example->bar );
 			} catch ( Exception $exception ) {
-				self::$notices->enqueue( __METHOD__ . ' error: ' . $exception->getMessage(), 'error' );
+				add_notice( __METHOD__ . ' error: ' . $exception->getMessage(), 'error' );
 			}
 		}
 

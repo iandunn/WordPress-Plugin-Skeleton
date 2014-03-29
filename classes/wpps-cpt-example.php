@@ -44,7 +44,7 @@ if ( ! class_exists( 'WPPS_CPT_Example' ) ) {
 				$post_type        = register_post_type( self::POST_TYPE_SLUG, $post_type_params );
 
 				if ( is_wp_error( $post_type ) ) {
-					WordPress_Plugin_Skeleton::$notices->enqueue( __METHOD__ . ' error: ' . $post_type->get_error_message(), 'error' );
+					add_notice( __METHOD__ . ' error: ' . $post_type->get_error_message(), 'error' );
 				}
 			}
 		}
@@ -236,10 +236,10 @@ if ( ! class_exists( 'WPPS_CPT_Example' ) ) {
 		 */
 		protected static function save_custom_fields( $post_id, $new_values ) {
 			if ( isset( $new_values[ 'wpps_example-box-field' ] ) ) {
-				if ( true ) { // some business logic check
+				if ( false ) { // some business logic check
 					update_post_meta( $post_id, 'wpps_example-box-field', $new_values[ 'wpps_example-box-field' ] );
 				} else {
-					WordPress_Plugin_Skeleton::$notices->enqueue( 'Example of failing validation', 'error' );
+					add_notice( 'Example of failing validation', 'error' );
 				}
 			}
 		}

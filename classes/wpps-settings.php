@@ -318,7 +318,7 @@ if ( ! class_exists( 'WPPS_Settings' ) ) {
 			 */
 
 			if ( strcmp( $new_settings['basic']['field-example1'], 'valid data' ) !== 0 ) {
-				WordPress_Plugin_Skeleton::$notices->enqueue( 'Example 1 must equal "valid data"', 'error' );
+				add_notice( 'Example 1 must equal "valid data"', 'error' );
 				$new_settings['basic']['field-example1'] = self::$default_settings['basic']['field-example1'];
 			}
 
@@ -375,7 +375,7 @@ if ( ! class_exists( 'WPPS_Settings' ) ) {
 		public static function validate_user_fields( $user_id, $user_fields ) {
 			if ( $user_fields[ 'wpps_user-example-field1' ] == false ) {
 				$user_fields[ 'wpps_user-example-field1' ] = true;
-				WordPress_Plugin_Skeleton::$notices->enqueue( 'Example Field 1 should be true', 'error' );
+				add_notice( 'Example Field 1 should be true', 'error' );
 			}
 
 			if ( ! current_user_can( 'manage_options' ) ) {
@@ -383,7 +383,7 @@ if ( ! class_exists( 'WPPS_Settings' ) ) {
 
 				if ( $current_field2 != $user_fields[ 'wpps_user-example-field2' ] ) {
 					$user_fields[ 'wpps_user-example-field2' ] = $current_field2;
-					WordPress_Plugin_Skeleton::$notices->enqueue( 'Only administrators can change Example Field 2.', 'error' );
+					add_notice( 'Only administrators can change Example Field 2.', 'error' );
 				}
 			}
 

@@ -81,10 +81,10 @@ if ( ! class_exists( 'WPPS_Cron' ) ) {
 		 * @param array $schedules
 		 * @return array
 		 */
-		public static function exampleJob() {
+		public static function example_job() {
 			// Do stuff
 
-			WordPress_Plugin_Skeleton::$notices->enqueue( __METHOD__ . ' cron job fired.' );
+			add_notice( __METHOD__ . ' cron job fired.' );
 		}
 
 
@@ -99,11 +99,11 @@ if ( ! class_exists( 'WPPS_Cron' ) ) {
 		 */
 		public function register_hook_callbacks() {
 			add_action( 'wpps_cron_timed_jobs',  __CLASS__ . '::fire_job_at_time' );
-			add_action( 'wpps_cron_example_job', __CLASS__ . '::exampleJob' );
+			add_action( 'wpps_cron_example_job', __CLASS__ . '::example_job' );
 
-			add_action( 'init',                                               array( $this, 'init' ) );
+			add_action( 'init',                  array( $this, 'init' ) );
 
-			add_filter( 'cron_schedules',                                     __CLASS__ . '::add_custom_cron_intervals' );
+			add_filter( 'cron_schedules',        __CLASS__ . '::add_custom_cron_intervals' );
 		}
 
 		/**
