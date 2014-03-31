@@ -1,4 +1,4 @@
-# WordPress-Plugin-Skeleton
+# WordPress Plugin Skeleton
 
 The skeleton for an object-oriented/MVC WordPress plugin.
 
