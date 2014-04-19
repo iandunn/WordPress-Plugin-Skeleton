@@ -91,6 +91,8 @@ if ( ! class_exists( 'WPPS_Module' ) ) {
 		 * @return string
 		 */
 		protected static function render_template( $default_template_path = false, $variables = array(), $require = 'once' ) {
+			do_action( 'wpps_render_template_pre', $default_template_path, $variables );
+
 			$template_path = locate_template( basename( $default_template_path ) );
 			if ( ! $template_path ) {
 				$template_path = dirname( __DIR__ ) . '/views/' . $default_template_path;
@@ -112,6 +114,7 @@ if ( ! class_exists( 'WPPS_Module' ) ) {
 				$template_content = '';
 			}
 
+			do_action( 'wpps_render_template_post', $default_template_path, $variables, $template_path, $template_content );
 			return $template_content;
 		}
 
