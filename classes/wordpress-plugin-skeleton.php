@@ -104,21 +104,15 @@ if ( ! class_exists( 'WordPress_Plugin_Skeleton' ) ) {
 		 * @param bool $network_wide
 		 */
 		public function activate( $network_wide ) {
-			global $wpdb;
+			if ( $network_wide && is_multisite() ) {
+				$sites = wp_get_sites( array( 'limit' => false ) );
 
-			if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-				if ( $network_wide ) {
-					$blogs = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
-
-					foreach ( $blogs as $blog ) {
-						switch_to_blog( $blog );
-						$this->single_activate( $network_wide );
-					}
-
-					restore_current_blog();
-				} else {
+				foreach ( $sites as $site ) {
+					switch_to_blog( $site['blog_id'] );
 					$this->single_activate( $network_wide );
 				}
+
+				restore_current_blog();
 			} else {
 				$this->single_activate( $network_wide );
 			}
