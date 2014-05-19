@@ -82,6 +82,7 @@ if ( ! class_exists( 'WPPS_CPT_Example' ) ) {
 				'show_ui'              => true,
 				'show_in_menu'         => true,
 				'register_meta_box_cb' => __CLASS__ . '::add_meta_boxes',
+				'taxonomies'           => array( self::TAG_SLUG ),
 				'menu_position'        => 20,
 				'hierarchical'         => true,
 				'capability_type'      => 'post',
