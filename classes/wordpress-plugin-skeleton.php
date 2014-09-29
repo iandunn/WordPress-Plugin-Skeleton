@@ -110,9 +110,8 @@ if ( ! class_exists( 'WordPress_Plugin_Skeleton' ) ) {
 				foreach ( $sites as $site ) {
 					switch_to_blog( $site['blog_id'] );
 					$this->single_activate( $network_wide );
+					restore_current_blog();
 				}
-
-				restore_current_blog();
 			} else {
 				$this->single_activate( $network_wide );
 			}
