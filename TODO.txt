@@ -42,6 +42,7 @@
 
 * High Priority
 	* Add current_user_can checks to metaboxes?
+	* Internationalize all strings
 	* Change models to return a WP_Error instead of false or null, so that controllers can get a detailed error message
 		* Models shouldn't ever add notices, only return error to controller so it can add notice
 		* Throw exception if encounter unexpected condition, but return WP_Error if just need to return early

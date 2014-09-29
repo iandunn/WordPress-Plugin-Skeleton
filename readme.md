@@ -22,11 +22,10 @@ The skeleton for an object-oriented/MVC WordPress plugin.
 	* Custom hooks for extensibility
 	* JavaScript event handlers
 	* A test suite for unit testing with SimpleTest
-
+* Includes `render_template()`, a wrapper for rendering view files that allows other plugins and themes to easily modify or completely override the view.
 
 ## Notes
 
-* I decided to not internationalize the skeleton because most of my clients don't need it and having to put all regular text in PHP strings annoys me. If you're distributing the plugin, though, then you should internationalize it.
 * I prefer having controllers and models in the same class/file, so I use an unofficial @mvc tag in the phpDoc comments to mentally keep track of which methods are controllers and which are models.
 * If you want to learn more about the principles behind the design of this plugin, I gave [a presentation on OOP at WordCamp Seattle 2013](http://iandunn.name/content/presentations/wp-oop-mvc/oop.php), and [another on MVC at WordCamp Columbus 2013](http://iandunn.name/content/presentations/wp-oop-mvc/mvc.php).
 
