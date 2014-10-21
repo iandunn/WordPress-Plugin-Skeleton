@@ -137,8 +137,8 @@ if ( ! class_exists( 'WPPS_Cron' ) ) {
 		 * @mvc Controller
 		 */
 		public function deactivate() {
-			wp_clear_scheduled_hook( 'wpps_timed_jobs' );
-			wp_clear_scheduled_hook( 'wpps_example_job' );
+			wp_clear_scheduled_hook( 'wpps_cron_timed_jobs' );
+			wp_clear_scheduled_hook( 'wpps_cron_example_job' );
 		}
 
 		/**
