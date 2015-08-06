@@ -1,6 +1,6 @@
 <div class="wrap">
 	<div id="icon-options-general" class="icon32"><br /></div>
-	<h2><?php esc_html_e( WPPS_NAME ); ?> Settings</h2>
+	<h1><?php esc_html_e( WPPS_NAME ); ?> Settings</h1>
 
 	<form method="post" action="options.php">
 		<?php settings_fields( 'wpps_settings' ); ?>
